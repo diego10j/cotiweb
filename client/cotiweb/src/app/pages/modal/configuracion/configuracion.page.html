@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-button color="secondary" (click)="cerrar()">
+        <ion-icon name="close" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Configurar Servidor
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content >
+
+  <ion-row>
+
+    <ion-col size="12">
+      <ion-card class="bg-white" no-margin >
+
+        <ion-card-content>
+
+          <ion-item margin-bottom>
+            <ion-label class="fw500" color="dark">Protocolo</ion-label>
+            <ion-select [(ngModel)]="protocolo">
+              <ion-select-option>http</ion-select-option>
+              <ion-select-option>https</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item margin-bottom>
+            <ion-label color="primary" stacked>
+              <ion-text color="dark" class="fw500">Servidor</ion-text>
+            </ion-label>
+            <ion-input class="ion-text-end" type="text" [(ngModel)]="servidor" placeholder="127.0.0.1"></ion-input>
+          </ion-item>
+          <ion-item margin-bottom>
+            <ion-label color="primary" stacked>
+              <ion-text color="dark" class="fw500">Puerto</ion-text>
+            </ion-label>
+            <ion-input class="ion-text-end" type="number" [(ngModel)]="puerto" placeholder="8080"></ion-input>
+          </ion-item>
+
+          <ion-item margin-bottom>
+            <ion-label color="primary" stacked>
+              <ion-text color="dark" class="fw500">Puerto File Server</ion-text>
+            </ion-label>
+            <ion-input class="ion-text-end" type="number" [(ngModel)]="puertoFile" placeholder="80"></ion-input>
+          </ion-item>
+
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+
+  </ion-row>
+
+
+
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+      <ion-button slot="end" icon-left color="secondary" (click)="cerrar()">
+        Cancelar
+      </ion-button>
+      <ion-button slot="end" icon-left color="primary" (click)="guardar()">
+        Aceptar
+      </ion-button>
+    </ion-toolbar>
+  </ion-footer>

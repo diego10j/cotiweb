@@ -1,0 +1,52 @@
+<ion-app>
+  <ion-split-pane>
+    <ion-menu #menu type="overlay">
+      <ion-header no-border>
+        <ion-toolbar>
+          <ion-grid>
+            <ion-row align-items-center>
+              <ion-col size="2"  align-self-center text-center>
+                <ion-avatar>
+                  <img src="assets/img/logo.png">
+                </ion-avatar>
+              </ion-col>
+              <ion-col size="10"  align-self-center>                  
+                <ion-item lines="none">                    
+                  <ion-label >                    
+                    <h3 class="capitalize text-navy">{{utilitario.getVariableLocalStorage('NOMBRES')}}</h3>
+                    <p class="mayusculas">
+                      <ion-text style="font-size: 0.85em;" color="primary">{{utilitario.getVariableLocalStorage('NOMBRE_COMERCIAL_SUCU')}}
+                      </ion-text>
+                    </p>
+                  </ion-label>                  
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list class="nav">
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of listaMenu | async">
+            <ion-item class="full-width" [routerLink]="[p.redirectTo]">
+              <ion-icon [class]="p.color" slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                {{p.name}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <section class="full-width" margin-top>
+            <ion-button icon-left expand="block" color="primary" (click)="logout()">
+              <ion-icon slot="start" name="power"></ion-icon>
+              <ion-label>
+                Cerrar Sesión
+              </ion-label>
+            </ion-button>
+          </section>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet main></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

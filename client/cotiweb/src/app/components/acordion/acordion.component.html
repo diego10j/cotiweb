@@ -1,0 +1,17 @@
+
+<ion-item (click)="toggleAccordion()" type="button">
+  <ion-label text-wrap>
+    {{ name }}
+  </ion-label>
+  <ion-icon *ngIf="isMenuOpen"  slot="end" name="arrow-dropup"></ion-icon>
+  <ion-icon *ngIf="!isMenuOpen"  slot="end" name="arrow-dropdown"></ion-icon>
+ </ion-item>
+<div [ngClass]="this.isMenuOpen ? 'active' : 'inactive'">
+  <!-- 
+  <section class="image-wrapper">
+    <img [src]="image">
+  </section>-->
+  <p>{{ description }}</p>
+  <ion-button type="button" color="primary" fill="solid" size="default" (click)="broadcastName(name)">Console log me!
+  </ion-button>
+</div>

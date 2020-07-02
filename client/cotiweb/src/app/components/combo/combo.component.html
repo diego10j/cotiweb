@@ -1,0 +1,5 @@
+<ion-select class="select" ok-text="ACEPTAR" cancel-text="CANCELAR" 
+placeholder="Seleccione una opción..." (ionChange)="seleccionarOpcion($event)"  >
+  <ion-select-option  *ngFor="let fila of combo.datos" [value]="fila.CODIGO">
+    {{fila.VALOR}}</ion-select-option>
+</ion-select>

@@ -1,0 +1,69 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Inicio
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="presentarActionSheet()">
+        <ion-icon name="more" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+  <div class="bannerFondo"></div>
+
+ 
+
+  <ion-item-divider class="bg-gradient">
+    <div class="ion-text-center text-12pt text-white width100">
+      <span>Bienvenido al <strong>Sistema de Gestión Administrativa y Financiera</strong></span>
+    </div>
+  </ion-item-divider>
+
+<div class="ion-padding">
+  <ion-list class="list-transactions" lines="none">
+    <ion-item>
+        <ion-grid class="ion-no-padding ion-text-center">
+            <ion-row>
+              <ion-col  class="ion-text-center">
+                  <p>{{utilitario.getVariableLocalStorage('NOMBRE_COMERCIAL_SUCU')}}</p>
+                <ion-thumbnail>
+                  <div class="ion-padding-bottom" style="height: 90px;">
+                    <ion-img class="img" [src]="utilitario.getVariableLocalStorage('LOGO_SUCU')"></ion-img>
+                  </div>
+                </ion-thumbnail>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+    </ion-item>
+    <ion-item>
+      <div slot="start">
+        <fa-icon class="fa-2x text-primary" icon="building"></fa-icon>
+      </div>
+      <ion-label text-wrap>
+        <h2>{{utilitario.getVariableLocalStorage('NOM_SUCU')}}</h2>
+        <p>{{utilitario.getVariableLocalStorage('IDENTIFICACION_SUCU')}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+<!--
+  <app-acordion
+  *ngFor="let technology of technologies"
+  name="{{ technology.name }}"
+  description="{{ technology.description }}"
+  image="{{ technology.image }}"
+  (change)="captureName($event)"></app-acordion>
+-->
+
+
+</div>
+
+</ion-content>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="824px" height="824px" viewBox="0 0 824 824" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>background</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="1024_Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-200.000000, -60.000000)">
+        <g id="background" transform="translate(200.000000, 60.000000)">
+            <g>
+                <rect id="Rectangle-4" fill="#FAFBFC" x="0" y="0" width="824" height="824"></rect>
+                <polygon id="rightTriangle" fill="#F2F4F7" points="84 0 824 0 824 740"></polygon>
+                <polygon id="Path-2" fill="#FFFFFF" points="0 541 113 657 0 773"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,120 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { RestService } from './rest.service';
+import { UtilitarioService } from './utilitario.service';
+import { RestResponse, RestRequest } from '../interfaces/interfaces';
+import { Storage } from '@ionic/storage';
+import { Platform } from '@ionic/angular';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthenticationService {
+
+  // instancia del objeto de sesion
+  authenticationState = new BehaviorSubject(false);
+
+  constructor(public restService: RestService,
+              private utilitario: UtilitarioService,
+              private platform: Platform,
+              private storage: Storage) {
+    this.platform.ready().then(() => {
+      this.checkToken();
+    });
+  }
+
+  getEmpresas(): Promise<RestResponse> {
+    let respuesta = null;
+    const request: RestRequest = this.utilitario.getRestRequest();
+    return new Promise(resolve => {
+      this.restService.ejecutar('auth/getEmpresas', request).subscribe(resp => {
+        respuesta = resp;
+        if (resp.datos) {
+          const obj = JSON.parse(resp.datos);
+          respuesta.datos = obj.datos;
+        }
+        resolve(respuesta);
+      });
+    });
+  }
+
+  login(usuario: string, clave: string): Promise<RestResponse> {
+
+    const request: RestRequest = this.utilitario.getRestRequest();
+    request.usuario = usuario;
+    request.clave = clave;
+
+    return new Promise(resolve => {
+      let respuesta = null;
+      this.restService.ejecutar('auth/login', request).subscribe(resp => {
+        respuesta = resp;
+        if (resp.datos) {
+          const obj = JSON.parse(resp.datos);
+          respuesta.datos = obj.datos;
+        }
+        if (respuesta.error === 'false') {
+          // Crea variable de sesion
+          this.storage.set('AUTH-TOKEN', respuesta.token).then(res => {
+            this.authenticationState.next(true);
+            this.utilitario.crearVariableLocalStorage('IDE_USUA', respuesta.datos.IDE_USUA);
+            this.utilitario.crearVariableLocalStorage('IDE_EMPR', respuesta.datos.IDE_EMPR);
+            this.utilitario.crearVariableLocalStorage('USUARIO', usuario);
+            this.utilitario.crearVariableLocalStorage('NOMBRES', respuesta.datos.NOM_USUA);
+            this.utilitario.crearVariableLocalStorage('CORREO', respuesta.datos.MAIL_USUA);
+          });
+        }
+        resolve(respuesta);
+      });
+    });
+  }
+
+
+  getSucursalesUsuario(): Promise<RestResponse> {
+    const request: RestRequest = this.utilitario.getRestRequest();
+    return new Promise(resolve => {
+      let respuesta = null;
+      this.restService.ejecutar('auth/getSucursalesUsuario', request).subscribe(resp => {
+        respuesta = resp;
+        if (resp.datos) {
+          const obj = JSON.parse(resp.datos);
+          respuesta.datos = obj.datos;
+        }
+        resolve(respuesta);
+      });
+    });
+  }
+
+
+  logout() {
+    return this.storage.remove('AUTH-TOKEN').then(async () => {
+      this.utilitario.limpiarVariablesLocalStorage();
+      await this.utilitario.cargarVariablesConfiguracion();
+      this.authenticationState.next(false);
+    });
+  }
+
+  isAuthenticated() {
+    return this.authenticationState.value;
+  }
+
+  checkToken() {
+    return this.storage.get('AUTH-TOKEN').then(res => {
+      if (res) {
+        this.authenticationState.next(true);
+      }
+    });
+  }
+
+  getToken() {
+    return this.storage.get('AUTH-TOKEN').then(
+      data => { return data }
+    );
+  }
+
+  private getTokenState(user) {
+    return (user != null) ? true : false;
+  }
+
+ 
+
+}

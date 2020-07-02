@@ -1,0 +1,51 @@
+[
+  {
+    "icon": "home",
+    "name": "Inicio",
+    "redirectTo": "/private/home",
+    "color": "text-teal",
+    "seleccionado" : true
+  },
+  {
+    "icon": "cube",
+    "name": "Productos",
+    "redirectTo": "/private/productos",
+    "color": "text-coffee",
+    "seleccionado" : false
+  },
+  {
+    "icon": "people",
+    "name": "Clientes",
+    "redirectTo": "/private/clientes",
+    "color": "text-blue",
+    "seleccionado" : false
+  },
+  {
+    "icon": "cash",
+    "name": "Ventas",
+    "redirectTo": "/private/ventas",
+    "color": "text-olive",
+    "seleccionado" : false
+  },
+  {
+    "icon": "filing",
+    "name": "Proformas",
+    "redirectTo": "/private/proformas",
+    "color": "text-amber",
+    "seleccionado" : false
+  },
+  {
+    "icon": "contacts",
+    "name": "Proveedores",
+    "redirectTo": "/private/proveedores",
+    "color": "text-indigo",
+    "seleccionado" : false
+  },
+  {
+    "icon": "list-box",
+    "name": "Compras",
+    "redirectTo": "/private/compras",
+    "color": "text-maroon",
+    "seleccionado" : false
+  }
+]

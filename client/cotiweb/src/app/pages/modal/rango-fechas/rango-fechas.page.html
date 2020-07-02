@@ -1,0 +1,58 @@
+<ion-header>
+    <ion-toolbar color="secondary">
+      <ion-buttons slot="start">
+        <ion-button color="secondary" (click)="cerrar()">
+          <ion-icon name="arrow-back" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>
+          Rango de Fechas
+        </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content fullscreen="true">
+    <ion-row>
+  
+      <ion-col size="12">
+  
+        <ion-list lines="full" >
+          <ion-item>
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            <ion-label position="stacked">Fecha Inicio<ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-datetime [(ngModel)]="fechaInicio" placeholder="DD/MM/YYYY" displayFormat="DD/MM/YYYY"
+              [max]="fechaMaxima" cancelText="Cancelar" doneText="Aceptar"></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            <ion-label position="stacked">Fecha Fin<ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-datetime [(ngModel)]="fechaFin" placeholder="DD/MM/YYYY" displayFormat="DD/MM/YYYY" [max]="fechaMaxima"
+              cancelText="Cancelar" doneText="Aceptar"></ion-datetime>
+          </ion-item>
+        </ion-list>
+  
+      </ion-col>
+  
+    </ion-row>
+  
+  </ion-content>
+  
+  <ion-footer>
+    <ion-toolbar no-padding>
+      <ion-row>
+        <ion-col no-padding>
+          <ion-button icon-left expand="full" color="secondary" (click)="cerrar()">
+            Cancelar
+          </ion-button>
+        </ion-col>
+        <ion-col no-padding>
+          <ion-button icon-left expand="full" color="primary" (click)="aceptar()" [disabled]="!fechaInicio && !fechaFin">
+            Aceptar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  
+  </ion-footer>

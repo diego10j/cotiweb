@@ -1,0 +1,131 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Usuario
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-toolbar  class="bg-transparente">
+    <ion-segment >
+        <ion-segment-button checked layout="icon-start" (click)="cambiarSegmento(true)">
+          <ion-label>Información</ion-label>
+          <ion-icon name="person"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button layout="icon-start" (click)="cambiarSegmento(false)">
+          <ion-label>Contraseña</ion-label>
+          <ion-icon name="key"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+
+    <ion-row align-items-center *ngIf="buscando">
+        <ion-col col-12 align-self-center text-center>
+          <ion-spinner name="crescent"></ion-spinner>
+        </ion-col>
+      </ion-row>
+
+
+
+  <ion-grid  class="ion-no-margin ion-no-padding" *ngIf="isDatos">
+
+    <!-- Avatar Selector -->
+    <app-avatar-selector (avatarSel)="respuesta.datos.AVATAR_USUA = $event"></app-avatar-selector>
+
+    <form (ngSubmit)="guardar()" #fDatos="ngForm" *ngIf="respuesta.datos" >
+      <ion-row>
+        <ion-col>
+
+            <ion-list lines="full" >
+
+            <ion-item>
+              <ion-label position="stacked">Nombre Completo </ion-label>
+              <ion-input class="mayusculas"  [(ngModel)]="respuesta.datos.NOM_USUA" type="text"  name="nombre" required> </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Usuario </ion-label>
+              <ion-input disabled="true" type="text" [(ngModel)]="respuesta.datos.NICK_USUA"  name="nick"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Email</ion-label>
+              <ion-input name="email" type="email" [(ngModel)]="respuesta.datos.MAIL_USUA"  name="mail" required ></ion-input>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-toolbar class="ion-no-margin ion-no-padding">
+          <ion-row>
+            <ion-col size="12" no-padding>
+          <ion-button type="submit" expand="full" color="primary" [disabled]="!fDatos.valid">
+            Guardar
+          </ion-button>
+
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+
+    </form>
+  </ion-grid>
+
+
+
+  <ion-grid  class="ion-no-margin ion-no-padding" *ngIf="!isDatos">
+
+
+
+      <form (ngSubmit)="cambiaClave( )" #fClave="ngForm">
+          <ion-row>
+            <ion-col>
+    
+                <ion-list lines="full" >
+    
+       
+    
+    
+                <ion-item>
+                  <ion-label position="stacked" >Contraseña Actual</ion-label>
+                  <ion-input name="actual" type="password" [(ngModel)]="password.actual" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="stacked" >Contraseña Nueva</ion-label>
+                    <ion-input name="nueva" type="password" [(ngModel)]="password.nueva" required></ion-input>
+                  </ion-item>
+    
+                  
+                  <ion-item>
+                      <ion-label position="stacked" >Confirmar Contraseña</ion-label>
+                      <ion-input name="confirma" type="password" [(ngModel)]="password.confirma" required></ion-input>
+                    </ion-item>
+        
+    
+    
+    
+              </ion-list>
+            </ion-col>
+          </ion-row>
+    
+          <ion-toolbar class="ion-no-margin ion-no-padding">
+              <ion-row>
+                <ion-col size="12" no-padding>
+              <ion-button type="submit" icon-left expand="full" color="primary" [disabled]="!fClave.valid">
+                Cambiar
+              </ion-button>
+    
+            </ion-col>
+          </ion-row>
+        </ion-toolbar>
+    
+        </form>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,38 @@
+
+
+
+ /* Here we define the actual 'menu' and its 'options' */
+ .image-wrapper {
+    margin: 0 auto 2em auto;
+    width: 20%;
+
+    img {
+       display: block;
+       margin: auto;
+    }
+ }
+
+ div {
+    position: relative;
+    padding: 2em;
+    background: white;
+
+
+    ion-button {
+       position: absolute;
+       bottom: 20px;
+       right: 20px;
+    }
+
+ }
+
+ /* Following classes display/hide the 'menu'
+ // based on the state change detection in the
+ // component class */
+ .active {
+    display: block
+ }
+
+ .inactive {
+    display: none;
+ }
