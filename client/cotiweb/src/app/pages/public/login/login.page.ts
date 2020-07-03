@@ -32,7 +32,7 @@ export class LoginPage implements OnInit {
       form.value.usuario,
       form.value.clave,
     );
-    if (this.respuestaLogin.error === 'true') {
+    if (this.respuestaLogin.error === true) {
       this.utilitario.agregarMensaje('Error', this.respuestaLogin.mensaje);
     } else {
       this.menuCtrl.enable(true);

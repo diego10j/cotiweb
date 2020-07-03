@@ -46,30 +46,32 @@ export class AuthenticationService {
 
     return new Promise(resolve => {
       let respuesta = null;
-      this.restService.ejecutar('auth/login', request).subscribe(resp => {
+      this.restService.ejecutar('usuario/login', request).subscribe(resp => {
         respuesta = resp;
         if (resp.datos) {
-          const obj = JSON.parse(resp.datos);
-          respuesta.datos = obj.datos;
+          const obj = resp.datos;
+          respuesta.datos = obj;
         }
-        if (respuesta.error === 'false') {
+    if (respuesta.error === false) { 
           // Crea variable de sesion
-          this.storage.set('AUTH-TOKEN', respuesta.token).then(res => {
+          this.storage.set('COTI-TOKEN', respuesta.token).then(res => {
             this.authenticationState.next(true);
-            this.utilitario.crearVariableLocalStorage('IDE_USUA', respuesta.datos.IDE_USUA);
-            this.utilitario.crearVariableLocalStorage('IDE_EMPR', respuesta.datos.IDE_EMPR);
-            this.utilitario.crearVariableLocalStorage('USUARIO', usuario);
-            this.utilitario.crearVariableLocalStorage('NOMBRES', respuesta.datos.NOM_USUA);
-            this.utilitario.crearVariableLocalStorage('CORREO', respuesta.datos.MAIL_USUA);
+            this.utilitario.crearVariableLocalStorage('COD_USUA', respuesta.datos.COD_USUA);
+            this.utilitario.crearVariableLocalStorage('COD_PERF', respuesta.datos.COD_PERF);
+            this.utilitario.crearVariableLocalStorage('NOMBRE_USUA', respuesta.datos.NOMBRE_USUA);
+            this.utilitario.crearVariableLocalStorage('LOGIN_USUA', respuesta.datos.LOGIN_USUA);
+            this.utilitario.crearVariableLocalStorage('CORREO_USUA', respuesta.datos.CORREO_USUA);
+            this.utilitario.crearVariableLocalStorage('TELEFONO_USUA', respuesta.datos.TELEFONO_USUA);
+            this.utilitario.crearVariableLocalStorage('AVATAR_USUA', respuesta.datos.AVATAR_USUA);
           });
         }
-        resolve(respuesta);
+    resolve(respuesta);
       });
     });
   }
 
 
-  getSucursalesUsuario(): Promise<RestResponse> {
+getSucursalesUsuario(): Promise<RestResponse> {
     const request: RestRequest = this.utilitario.getRestRequest();
     return new Promise(resolve => {
       let respuesta = null;
@@ -85,28 +87,28 @@ export class AuthenticationService {
   }
 
 
-  logout() {
-    return this.storage.remove('AUTH-TOKEN').then(async () => {
+logout() {
+    return this.storage.remove('COTI-TOKEN').then(async () => {
       this.utilitario.limpiarVariablesLocalStorage();
       await this.utilitario.cargarVariablesConfiguracion();
       this.authenticationState.next(false);
     });
   }
 
-  isAuthenticated() {
+isAuthenticated() {
     return this.authenticationState.value;
   }
 
-  checkToken() {
-    return this.storage.get('AUTH-TOKEN').then(res => {
+checkToken() {
+    return this.storage.get('COTI-TOKEN').then(res => {
       if (res) {
         this.authenticationState.next(true);
       }
     });
   }
 
-  getToken() {
-    return this.storage.get('AUTH-TOKEN').then(
+getToken() {
+    return this.storage.get('COTI-TOKEN').then(
       data => { return data }
     );
   }

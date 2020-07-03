@@ -6,8 +6,8 @@ import { RestResponse, RestRequest } from '../interfaces/interfaces';
 import { environment } from '../../environments/environment';
 import { Router, NavigationExtras } from '@angular/router';
 
-const URL = environment.sigafi_rest_api;
-const URL_FILE_SERVER = environment.sigafi_file_server;
+const URL = environment.rest_api;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -134,23 +134,7 @@ eliminarVariableLocalStorage(variable: string) {
    */
   async cargarVariablesConfiguracion() {
     // Valida si existen variables de configuración para crearlas  por defecto
-    if (!this.isDefined(await this.getVariable('SERVIDOR'))) {
-      this.crearVariable('SERVIDOR', '127.0.0.1');
-      this.crearVariable('PROTOCOLO', 'http');
-      this.crearVariable('PUERTO', '8080');
-      this.crearVariable('PUERTOFILE', '80');
-    }
-    const PROTOCOLO = await this.getVariable('PROTOCOLO');
-    const SERVIDOR = await this.getVariable('SERVIDOR');
-    const PUERTO = await this.getVariable('PUERTO');
-    const PUERTOFILE = await this.getVariable('PUERTOFILE');
-    //this.crearVariableLocalStorage('RESTAPI', PROTOCOLO + '://' + SERVIDOR + ':' + PUERTO + URL);
-    //this.crearVariableLocalStorage('FILESERVER', PROTOCOLO + '://' + SERVIDOR + ':' + PUERTOFILE + URL_FILE_SERVER);
-
-    this.crearVariableLocalStorage('RESTAPI', PROTOCOLO +'://' + SERVIDOR + ':' + PUERTO + URL);
-    this.crearVariableLocalStorage('FILESERVER', PROTOCOLO +'://' + SERVIDOR + ':' + PUERTOFILE + URL_FILE_SERVER);
-
-    // this.crearVariableLocalStorage('FILESERVER', PROTOCOLO + '://192.168.64.2:' + PUERTOFILE + URL_FILE_SERVER);
+    this.crearVariableLocalStorage('RESTAPI', URL);
   }
 
   getFormatoNumero(numero: number): any {
@@ -209,7 +193,7 @@ eliminarVariableLocalStorage(variable: string) {
    */
   getRestResponse(): RestResponse {
     return {
-      error: '',
+      error: false,
       mensaje: '',
       totalRegistros: '0',
       token: null,
@@ -222,79 +206,13 @@ eliminarVariableLocalStorage(variable: string) {
   */
   getRestRequest(): RestRequest {
     return {
-      empresa: this.getVariableLocalStorage('SECUENCIAL'),
-      sentencia: '',
-      usuario: this.getVariableLocalStorage('USUARIO'),
-      clave: btoa(this.getVariableLocalStorage('USUARIO')),
-      ide_usua: this.getVariableLocalStorage('IDE_USUA'),
-      ide_sucu: this.getVariableLocalStorage('IDE_SUCU'),
-      ide_empr: this.getVariableLocalStorage('IDE_EMPR'),
+      usuario: this.getVariableLocalStorage('LOGIN_USUA'),
+      clave: btoa(this.getVariableLocalStorage('LOGIN_USUA')),
       pagina: 1,
       filas: 50
     };
   }
 
-  /**
-   * Despliega la pantalla de seleccionar sucursal si el usuario tiene asignado
-   * mas de 2 sucursales
-   * @param $title
-   * @param $message
-   */
-  async abrirSucursales(respuestaSucursales) {
-    // this.utilitario.crearVariableLocalStorage('SECUENCIAL', '1');
-    // this.utilitario.crearVariableLocalStorage('IDE_USUA', '11');
-    // let respuestaSucursales: RestResponse = this.utilitario.getRestResponse();
-    // respuestaSucursales = await this.authenticationService.getSucursalesUsuario();
-    // this.utilitario.abrirSucursales(respuestaSucursales);
-
-    if (respuestaSucursales.error === 'true') {
-      this.agregarMensaje('Error', respuestaSucursales.mensaje);
-      return;
-    }
-    const sucursales = [];
-    for (const fila of respuestaSucursales.datos) {
-      sucursales.push({
-        type: 'radio',
-        label: fila.NOM_SUCU,
-        value: fila.SIS_IDE_SUCU
-      });
-
-      if (respuestaSucursales.totalRegistros === '1') {
-        this.crearVariableLocalStorage('IDE_SUCU', fila.SIS_IDE_SUCU);
-        this.crearVariableLocalStorage('NOM_SUCU', fila.NOM_SUCU);
-        this.crearVariableLocalStorage('NOMBRE_COMERCIAL_SUCU', fila.NOMBRE_COMERCIAL_SUCU);
-        this.crearVariableLocalStorage('IDENTIFICACION_SUCU', fila.IDENTIFICACION_SUCU);
-        this.crearVariableLocalStorage('LOGO_SUCU', 'data:image/png;base64, ' + fila.LOGO_SUCU);
-        this.crearVariableLocalStorage('SUCURSALES', 'false');
-        return;
-      }
-    }
-
-    const prompt = await this.alertCtrl.create({
-      message: 'Seleccione una Sucursal',
-      inputs: sucursales,
-      buttons: [
-        {
-          text: 'ACEPTAR',
-          handler: data => {
-            this.crearVariableLocalStorage('IDE_SUCU', data);
-            for (const fila of respuestaSucursales.datos) {
-              if (fila.SIS_IDE_SUCU === data) {
-                this.crearVariableLocalStorage('NOM_SUCU', fila.NOM_SUCU);
-                this.crearVariableLocalStorage('NOMBRE_COMERCIAL_SUCU', fila.NOMBRE_COMERCIAL_SUCU);
-                this.crearVariableLocalStorage('IDENTIFICACION_SUCU', fila.IDENTIFICACION_SUCU);
-                this.crearVariableLocalStorage('LOGO_SUCU', 'data:image/png;base64, ' + fila.LOGO_SUCU);
-                this.crearVariableLocalStorage('SUCURSALES', 'true');
-                break;
-              }
-            }
-            this.abrirPagina('home');
-          }
-        }],
-      backdropDismiss: false
-    });
-    await prompt.present();
-  }
 
   /**
    * Genera sentecia Insert para API Rest

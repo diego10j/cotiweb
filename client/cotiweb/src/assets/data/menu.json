@@ -29,14 +29,14 @@
   },
   {
     "icon": "filing",
-    "name": "Proformas",
+    "name": "Reportes",
     "redirectTo": "/private/proformas",
     "color": "text-amber",
     "seleccionado" : false
   },
   {
     "icon": "contacts",
-    "name": "Proveedores",
+    "name": "Usuarios",
     "redirectTo": "/private/proveedores",
     "color": "text-indigo",
     "seleccionado" : false

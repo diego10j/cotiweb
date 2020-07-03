@@ -23,7 +23,7 @@ export class TokenInterceptor implements HttpInterceptor {
     return from(this.authService.getToken()).pipe(mergeMap((token) => {
       const changedReq = request.clone({
           setHeaders: {
-              'auth-token': `${token}`
+              'cotiweb-token': `${token}`
           }
       });
       return next.handle(changedReq);

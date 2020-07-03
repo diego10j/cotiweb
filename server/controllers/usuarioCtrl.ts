@@ -9,7 +9,10 @@ class UsuarioCtrl {
     public static tabla :string='USUARIO';
 
     public listar(req: Request, res: Response) {
-        const query = `SELECT * FROM ${UsuarioCtrl.tabla}`;
+        const query = `SELECT COD_USUA,NOMBRE_USUA,LOGIN_USUA,NOMBRE_PERF,CORREO_USUA,TELEFONO_USUA,ACTIVO_USUA 
+        FROM ${UsuarioCtrl.tabla} a 
+        INNER JOIN PERFIL b on a.COD_PERF = b.COD_PERF 
+        ORDER BY NOMBRE_USUA`;
         MySQL.consultar(query, (err: any, data: Object[]) => {
             if (err) {
                 res.status(400).json({
@@ -17,19 +20,10 @@ class UsuarioCtrl {
                     mensaje: err
                 });
             }
-            if (data !== null) {
-                res.json({
-                    error: false,
-                    data: data
-                });
-            }
-            else {
-                res.json({
-                    error: false,
-                    data: null,
-                    mensaje: 'No existen registros'
-                });
-            }
+            res.json({
+                error: false,
+                data: data
+            });
         });
     }
 

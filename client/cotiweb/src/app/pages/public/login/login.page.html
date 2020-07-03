@@ -1,5 +1,5 @@
 
-<ion-content fullscreen="true"  class="bg-image no-scroll" padding center>
+<ion-content class="bg-image no-scroll" padding center>
   <ion-slides [options]="sliderOpts">
     <ion-slide>
       <ion-grid fixed>
@@ -11,8 +11,8 @@
           </ion-col>
         </ion-row>
         <form padding-horizontal text-center #form="ngForm" (ngSubmit)="login(form)" method="post">
-          <ion-row>
-            <ion-col>
+          <ion-row justify-content-center align-items-center class="alinear-centro">
+            <ion-col size="6">
 
               <ion-item>
                 <ion-icon name="person" slot="start"></ion-icon>
@@ -28,8 +28,8 @@
             </ion-col>
           </ion-row>
 
-          <ion-row>
-            <ion-col>
+          <ion-row justify-content-center align-items-center class="alinear-centro">
+            <ion-col size="6">
               <ion-button type="submit" [disabled]="form.form.invalid" icon-left size="medium" expand="full"
                 shape="round" color="primary" style="margin-top: 30px;">
                 <ion-icon slot="start" name="log-in"></ion-icon>

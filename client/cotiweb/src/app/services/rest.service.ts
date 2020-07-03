@@ -19,7 +19,7 @@ export class RestService {
       console.error('Error RestService :  ' + JSON.stringify(error)); // log to console instead
       // Let the app keep running by returning an empty result.
       const response: RestResponse = {
-        error: 'true',
+        error: true,
         mensaje: 'Servidor no disponible',
         totalRegistros: null,
         token: null,
@@ -32,7 +32,7 @@ export class RestService {
   consultar(sentencia: string, pagina: number): Promise<RestResponse> {
     // console.log(sentencia);
     const request: RestRequest = this.utilitario.getRestRequest();
-    request.sentencia = btoa(sentencia);
+    //.....request.sentencia = btoa(sentencia);
     request.pagina = pagina;
     let respuesta = null;
     return new Promise(resolve => {
@@ -44,7 +44,7 @@ export class RestService {
           respuesta.datos = obj.datos;
           // console.log(this.respuesta);
         }
-        if (resp.error==='true'){
+        if (resp.error=== true){
           this.utilitario.agregarMensaje('Error', resp.mensaje);
         }
         resolve(respuesta);
@@ -54,7 +54,7 @@ export class RestService {
 
   consultarUnico(sentencia: string): Promise<RestResponse> {
     const request: RestRequest = this.utilitario.getRestRequest();
-    request.sentencia = btoa(sentencia);
+    //.....request.sentencia = btoa(sentencia);
     request.pagina = 1;
     let respuesta = null;
     return new Promise(resolve => {
@@ -66,7 +66,7 @@ export class RestService {
           respuesta.datos = obj.datos;
           // console.log(this.respuesta);
         }
-        if (resp.error==='true'){
+        if (resp.error=== true){
           this.utilitario.agregarMensaje('Error', resp.mensaje);
         }
         resolve(respuesta);
@@ -76,7 +76,7 @@ export class RestService {
 
   insertar(sentencia: string): Promise<RestResponse> {
     const request: RestRequest = this.utilitario.getRestRequest();
-    request.sentencia = sentencia;
+    //......request.sentencia = sentencia;
     let respuesta = null;
     return new Promise(resolve => {
       this.ejecutar('rest/insertar', request).subscribe(resp => {
@@ -93,7 +93,7 @@ export class RestService {
 
   actualizar(sentencia: string): Promise<RestResponse> {
     const request: RestRequest = this.utilitario.getRestRequest();
-    request.sentencia = sentencia;
+    //.......request.sentencia = sentencia;
     let respuesta = null;
     return new Promise(resolve => {
       this.ejecutar('rest/actualizar', request).subscribe(resp => {
@@ -105,7 +105,7 @@ export class RestService {
 
   eliminar(sentencia: string): Promise<RestResponse> {
     const request: RestRequest = this.utilitario.getRestRequest();
-    request.sentencia = sentencia;
+    //.....request.sentencia = sentencia;
     let respuesta = null;
     return new Promise(resolve => {
       this.ejecutar('rest/eliminar', request).subscribe(resp => {

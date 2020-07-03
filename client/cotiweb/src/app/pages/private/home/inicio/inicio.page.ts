@@ -14,33 +14,10 @@ export class InicioPage {
   constructor(public utilitario: UtilitarioService, private authenticationService: AuthenticationService,
     private actionSheetCtrl: ActionSheetController, private menuCtrl: MenuController) { }
 
-  async ionViewWillEnter() {
-    if (!this.utilitario.isDefined(this.utilitario.getVariableLocalStorage('IDE_SUCU'))) {
-      this.cambiarSucursal();
-    }
-  }
-
-  async cambiarSucursal() {
-    let respuestaSucursales: RestResponse = this.utilitario.getRestResponse();
-    respuestaSucursales = await this.authenticationService.getSucursalesUsuario();
-    await this.utilitario.abrirSucursales(respuestaSucursales);
-  }
-
 
   async presentarActionSheet() {
 
     const opciones = [];
-    if (this.utilitario.getVariableLocalStorage('SUCURSALES') === 'true') {
-      opciones.push(
-        {
-          text: 'Cambiar de Sucursal',
-          icon: 'swap',
-          handler: async () => {
-            await this.cambiarSucursal();
-          }
-        }
-      );
-    }
     opciones.push({
       text: 'Cerrar Sesión',
       icon: 'power',

@@ -40,7 +40,7 @@ export class UsuarioPage {
     };
     let respuesta: RestResponse = this.utilitario.getRestResponse();
     respuesta = await this.restService.actualizar(this.utilitario.generarUpdate('SIS_USUARIO', 'IDE_USUA', this.respuesta.datos,condiciones));
-    if(respuesta.error === 'false'){
+    if(respuesta.error === false){
       //Guardo correctamente
 this.utilitario.agregarMensaje("","Se guardo correctamente");
     }
@@ -67,5 +67,4 @@ this.utilitario.agregarMensaje("","Se guardo correctamente");
   cambiaClave(){
     
   }
-
 }

@@ -8,7 +8,7 @@ export interface OpcionMenu {
 }
 
 export interface RestResponse {
-  error: string;
+  error: boolean;
   mensaje: string;
   totalRegistros: string;
   token: string;
@@ -16,13 +16,8 @@ export interface RestResponse {
 }
 
 export interface RestRequest {
-  empresa: string;
-  sentencia: string;
   usuario: string;
   clave: string;
-  ide_usua: string;
-  ide_sucu: string ;
-  ide_empr: string ;
   pagina: number;
   filas: number;
 }
