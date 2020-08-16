@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -16,9 +16,10 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,13 +33,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     PipesModule,
     HttpClientModule,
     FontAwesomeModule,
-    PanelMenuModule
+    PanelMenuModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Geolocation,
     SocialSharing,
+    FileTransfer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HTTP_INTERCEPTORS,
@@ -47,7 +49,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     },
     [DatePipe]
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 

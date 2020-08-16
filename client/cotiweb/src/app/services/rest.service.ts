@@ -29,22 +29,43 @@ export class RestService {
     };
   }
 
-  consultar(sentencia: string, pagina: number): Promise<RestResponse> {
+  consultar(metodo: string, pagina: number): Promise<RestResponse> {
     // console.log(sentencia);
     const request: RestRequest = this.utilitario.getRestRequest();
     //.....request.sentencia = btoa(sentencia);
     request.pagina = pagina;
     let respuesta = null;
     return new Promise(resolve => {
-      this.ejecutar('rest/consultar', request).subscribe(resp => {
+      this.ejecutar(metodo, request).subscribe(resp => {
         respuesta = resp;
+        //ojo borrar 
         if (resp.datos) {
-          const obj = JSON.parse(resp.datos);
-          // console.log(obj.datos);
-          respuesta.datos = obj.datos;
+          respuesta.datos = resp.datos;
           // console.log(this.respuesta);
         }
-        if (resp.error=== true){
+        if (resp.error === true) {
+          this.utilitario.agregarMensaje('Error', resp.mensaje);
+        }
+        resolve(respuesta);
+      });
+    });
+  }
+
+  /**
+   * LLama mediante post a un metodo del api rest
+   * @param metodo 
+   * @param request 
+   */
+  llamarServicioWeb(metodo: string, request: any): Promise<RestResponse> {
+    let respuesta = null;
+    return new Promise(resolve => {
+      this.ejecutar(metodo, request).subscribe(resp => {
+        respuesta = resp;
+        if (resp.datos) {
+          respuesta.datos = resp.datos;
+          // console.log(this.respuesta);
+        }
+        if (resp.error === true) {
           this.utilitario.agregarMensaje('Error', resp.mensaje);
         }
         resolve(respuesta);
@@ -66,7 +87,7 @@ export class RestService {
           respuesta.datos = obj.datos;
           // console.log(this.respuesta);
         }
-        if (resp.error=== true){
+        if (resp.error === true) {
           this.utilitario.agregarMensaje('Error', resp.mensaje);
         }
         resolve(respuesta);
@@ -74,53 +95,55 @@ export class RestService {
     });
   }
 
-  insertar(sentencia: string): Promise<RestResponse> {
-    const request: RestRequest = this.utilitario.getRestRequest();
-    //......request.sentencia = sentencia;
+  insertar(metodo: string, request: any): Promise<RestResponse> {
     let respuesta = null;
     return new Promise(resolve => {
-      this.ejecutar('rest/insertar', request).subscribe(resp => {
-        respuesta = resp;
-        if (resp.datos) {
-          // console.log(resp.datos);
-          respuesta.datos = resp.datos;
-          // console.log(this.respuesta);
-        }
-        resolve(respuesta);
-      });
-    });
-  }
-
-  actualizar(sentencia: string): Promise<RestResponse> {
-    const request: RestRequest = this.utilitario.getRestRequest();
-    //.......request.sentencia = sentencia;
-    let respuesta = null;
-    return new Promise(resolve => {
-      this.ejecutar('rest/actualizar', request).subscribe(resp => {
+      this.ejecutar(metodo, request).subscribe(resp => {
         respuesta = resp;
         resolve(respuesta);
       });
     });
   }
 
-  eliminar(sentencia: string): Promise<RestResponse> {
+  actualizar(metodo: string, request: any): Promise<RestResponse> {
+    let respuesta = null;
+    return new Promise(resolve => {
+      this.ejecutar(metodo, request).subscribe(resp => {
+        respuesta = resp;
+        resolve(respuesta);
+      });
+    });
+  }
+
+  eliminar(metodo: string): Promise<RestResponse> {
     const request: RestRequest = this.utilitario.getRestRequest();
     //.....request.sentencia = sentencia;
     let respuesta = null;
     return new Promise(resolve => {
-      this.ejecutar('rest/eliminar', request).subscribe(resp => {
+      this.ejecutar(metodo, request).subscribe(resp => {
         respuesta = resp;
         resolve(respuesta);
       });
     });
   }
 
-  ejecutar(metodo: string, request: RestRequest): Observable<RestResponse> {
-    const SIGAFI_RESTAPI = this.utilitario.getVariableLocalStorage('RESTAPI');
+  ejecutar(metodo: string, request: any): Observable<RestResponse> {
+    const RESTAPI = this.utilitario.getRestApi();
     //console.log (SIGAFI_RESTAPI);
-    return this.http.post<RestResponse>(SIGAFI_RESTAPI + '/' + metodo, request).pipe(
+    return this.http.post<RestResponse>(RESTAPI + '/' + metodo, request).pipe(
       catchError(this.handleError(metodo))
     );
+  }
+
+
+  getCombo(tabla: string, campoCodigo: string, campoLabel: string, condicion?: string): Promise<RestResponse> {
+    const parametros = {
+      tabla,
+      campoCodigo,
+      campoLabel,
+      condicion,
+    }
+    return this.llamarServicioWeb('sistema/getCombo', parametros);
   }
 
 }

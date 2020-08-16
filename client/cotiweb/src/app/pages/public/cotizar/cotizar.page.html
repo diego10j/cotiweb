@@ -1,0 +1,145 @@
+<ion-header no-border>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="catalogo"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="abrirLista()">
+        <fa-layers size="2x">
+          <fa-icon [icon]="['far', 'list-alt']"></fa-icon>
+          <fa-layers-counter *ngIf="numNotificaciones > 0" [content]="numNotificaciones" class="fa-lg">
+          </fa-layers-counter>
+        </fa-layers>
+        <span class="ion-margin-horizontal"> Mi lista</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+
+  <ion-card class="bg-white">
+    <form [formGroup]="form">
+      <ion-card-header>
+        <ion-card-title>Datos del Solicitante</ion-card-title>
+        <ion-card-subtitle>Los campos marcados con (*) son obligatorios.</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-row align-items-center *ngIf="ejecutando">
+          <ion-col col-12 align-self-center text-center>
+            <ion-spinner name="crescent"></ion-spinner>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="6" size-xl="6" size-lg="6" size-md="6" size-sm="12" size-xs="12">
+            <ion-list lines="full" class="ion-no-margin ion-no-padding">
+              <ion-item>
+                <ion-label position="stacked">Nombres <ion-text color="danger">*</ion-text>
+                </ion-label>
+                <ion-input type="text" formControlName="NOMBRES_CLIE"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked"> Correo electrónico <ion-text color="danger">*</ion-text>
+                </ion-label>
+                <ion-input type="email" formControlName="CORREO_CLIE"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Teléfono <ion-text color="danger">*</ion-text>
+                </ion-label>
+                <ion-input type="telf" formControlName="TELEFONO_CLIE"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Tipo Identificación </ion-label>
+                <ion-select interface="popover" formControlName="TIPO_ID_CLIE">
+                  <ion-select-option value="C">CÉDULA</ion-select-option>
+                  <ion-select-option value="R">RUC</ion-select-option>
+                  <ion-select-option value="P">PASAPORTE</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Identificación </ion-label>
+                <ion-input type="text" formControlName="INDENTIFICACION_CLIE"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Dirección </ion-label>
+                <ion-input type="text" formControlName="DIRECCION_CLIE"></ion-input>
+              </ion-item>
+
+            </ion-list>
+          </ion-col>
+          <ion-col size="6" size-xl="6" size-lg="6" size-md="6" size-sm="12" size-xs="12">
+
+            <p-panel [style]="{'text-align':'center'}">
+              <p-header>
+                <ion-item lines="none">
+                  <ion-label>Ubicación en el mapa </ion-label>
+                  <ion-spinner name="lines-small" *ngIf="cargandoGeo"></ion-spinner>
+                  <ion-toggle slot="end" (ionChange)="getGeo()"></ion-toggle>
+                </ion-item>
+              </p-header>
+              <!-- mapa -->
+              <div class="mapDiv">
+                <app-mapa *ngIf="usarGeo" [coords]="ubicacion.coords" [draggable]="true"
+                  (coordenadasSeleccionada)="ubicacion.coords = $event">
+                </app-mapa>
+                <img *ngIf="!usarGeo" src="/assets/svg/mapa.svg" alt="Mapa" style="height: 100%; width: 100%;">
+              </div>
+
+
+
+
+            </p-panel>
+
+
+
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+
+      <ion-toolbar color="light">
+
+        <ion-card-header color="light">
+          <ion-card-title>Detalle de la Cotización</ion-card-title>
+        </ion-card-header>
+
+
+        <ion-buttons slot="end" class="ion-margin-horizontal">
+          <ion-button [disabled]="!form.valid || ejecutando" (click)="guardar()" class="animated flash" fill="solid"
+            color="success" (click)="abrirCotizar()">
+            CONFIRMAR DATOS
+            <ion-icon slot="start" name="checkmark"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+
+      <ion-card-content>
+        <ion-row class="ion-padding-top">
+          <p-table #dt [value]="listaProductos" tableStyleClass="prime-table" [paginator]="false" [rows]="100"
+            [responsive]="true" [resizableColumns]="true" columnResizeMode="expand">
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 50%;">Producto</th>
+                <th style="width: 25%;">Cantidad</th>
+                <th style="width: 25%;">Unidad</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-fila>
+              <tr>
+                <td>{{fila.nombre}}</td>
+                <td>{{fila.cantidad}}</td>
+                <td>{{fila.unidad}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ion-row>
+      </ion-card-content>
+
+
+    </form>
+
+  </ion-card>
+
+</ion-content>

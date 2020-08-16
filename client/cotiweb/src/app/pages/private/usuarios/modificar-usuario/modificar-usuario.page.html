@@ -1,0 +1,82 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Modificar Usuario
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <p-toast></p-toast>
+  <ion-content>
+    <ion-row align-items-center *ngIf="buscando">
+      <ion-col col-12 align-self-center text-center>
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-col>
+    </ion-row>
+    <ion-card class="bg-white" *ngIf="!buscando">
+      <ion-card-content>
+        <form [formGroup]="form">
+          <ion-row>
+            <ion-col size="6" size-xl="8" size-lg="8" size-md="8" size-sm="12" size-xs="12">
+              <div class="ui-fluid" >
+                <ion-row>
+                  <ion-col class="p-field" size="6">
+                    <ion-label position="stacked" class="text-muted">Nick</ion-label>
+                    <input type="text" formControlName="LOGIN_USUA" pInputText>
+                  </ion-col>
+                  <ion-col class="p-field" size="6">
+                    <ion-label position="stacked" class="text-muted">Perfil</ion-label>
+                    <p-dropdown formControlName="COD_PERF" [options]="comboPerfiles"></p-dropdown>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="p-field" size="6">
+                    <ion-label position="stacked" class="text-muted">Email</ion-label>
+                    <input type="email" formControlName="CORREO_USUA" pInputText>
+                  </ion-col>
+                  <ion-col class="p-field" size="6">
+                    <ion-label position="stacked" class="text-muted">Teléfono</ion-label>
+                    <input type="tel" formControlName="TELEFONO_USUA" pInputText>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="p-field" size="6">
+                    <ion-label position="stacked" class="text-muted">Activo</ion-label>
+                    <br>
+                    <p-checkbox formControlName="ACTIVO_USUA" [binary]="true"></p-checkbox>
+                  </ion-col>
+                </ion-row>
+              </div>
+            </ion-col>
+            <ion-col size="4" size-xl="4" size-lg="4" size-md="4" size-sm="12" size-xs="12">
+              <div class="vertical-padding">
+                <ion-grid>
+                  <ion-row align-items-center *ngIf="!buscando">
+                    <img src="/assets/svg/usuario.svg" alt="Avatar de usuario" height="160">
+                  </ion-row>
+                  <ion-row align-items-center *ngIf="buscando">
+                    <ion-col col-12 align-self-center text-center>
+                      <ion-spinner name="crescent"></ion-spinner>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-padding-top">
+            <ion-button color="medium" (click)="cancelar()">
+              <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+              <ion-label>CANCELAR</ion-label>
+            </ion-button>
+            <ion-button (click)="modificar()" [disabled]="!form.valid || ejecutando" >
+              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+              <ion-label>GUARDAR</ion-label>
+            </ion-button>
+          </ion-row>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>

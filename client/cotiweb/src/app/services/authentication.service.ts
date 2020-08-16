@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
+import { RestRequest, RestResponse } from '../interfaces/interfaces';
 import { RestService } from './rest.service';
 import { UtilitarioService } from './utilitario.service';
-import { RestResponse, RestRequest } from '../interfaces/interfaces';
-import { Storage } from '@ionic/storage';
-import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -52,10 +52,11 @@ export class AuthenticationService {
           const obj = resp.datos;
           respuesta.datos = obj;
         }
-    if (respuesta.error === false) { 
+        if (respuesta.error === false) { 
           // Crea variable de sesion
           this.storage.set('COTI-TOKEN', respuesta.token).then(res => {
             this.authenticationState.next(true);
+            this.utilitario.crearVariableLocalStorage('COTI-OKEN', respuesta.token);
             this.utilitario.crearVariableLocalStorage('COD_USUA', respuesta.datos.COD_USUA);
             this.utilitario.crearVariableLocalStorage('COD_PERF', respuesta.datos.COD_PERF);
             this.utilitario.crearVariableLocalStorage('NOMBRE_USUA', respuesta.datos.NOMBRE_USUA);
@@ -65,7 +66,7 @@ export class AuthenticationService {
             this.utilitario.crearVariableLocalStorage('AVATAR_USUA', respuesta.datos.AVATAR_USUA);
           });
         }
-    resolve(respuesta);
+        resolve(respuesta);
       });
     });
   }
@@ -90,7 +91,6 @@ getSucursalesUsuario(): Promise<RestResponse> {
 logout() {
     return this.storage.remove('COTI-TOKEN').then(async () => {
       this.utilitario.limpiarVariablesLocalStorage();
-      await this.utilitario.cargarVariablesConfiguracion();
       this.authenticationState.next(false);
     });
   }

@@ -8,8 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { AvatarSelectorComponent } from './avatar-selector/avatar-selector.component';
 import { ResultadoVacioComponent } from './resultado-vacio/resultado-vacio.component';
 import { AcordionComponent } from './acordion/acordion.component';
-
-
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -18,7 +17,7 @@ import { AcordionComponent } from './acordion/acordion.component';
     ComboComponent,
     AvatarSelectorComponent,
     ResultadoVacioComponent,
-    AcordionComponent
+    AcordionComponent,
   ],
   exports: [
     MapaComponent,
@@ -26,12 +25,13 @@ import { AcordionComponent } from './acordion/acordion.component';
     ComboComponent,
     AvatarSelectorComponent,
     ResultadoVacioComponent,
-    AcordionComponent
+    AcordionComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    DropdownModule,
   ]
 })
 export class ComponentsModule { }

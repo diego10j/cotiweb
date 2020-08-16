@@ -1,0 +1,77 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Mis Cotizaciones
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <p-toast></p-toast>
+  <ion-toolbar color="light">
+      <div style="padding-top: 5px; margin-top: 5px;">
+        <ion-searchbar  mode="ios" placeholder="Buscar Cliente"></ion-searchbar>
+      </div>
+
+    <ion-buttons slot="end">
+      <ion-button icon-left (click)="crear()">
+        <ion-icon slot="start" name="search"></ion-icon>
+        <ion-label>
+          MODIFICAR COTIZACIÓN
+        </ion-label>
+      </ion-button>
+      <ion-button icon-left (click)="crear()">
+        <ion-icon slot="start" name="refresh"></ion-icon>
+        <ion-label>
+          SOLICITAR APROBACIÓN
+        </ion-label>
+      </ion-button>
+      <ion-button icon-left (click)="crear()" title="IMPRIMIR">
+        <ion-icon slot="icon-only" name="print"></ion-icon>
+      </ion-button>
+      <ion-button icon-left  (click)="crear()" title="ENVIAR POR EMAIL">
+        <ion-icon slot="icon-only" name="mail"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-row class="ion-padding-top ion-padding-horizontal">
+    <p-table #dt [value]="respuesta.datos" tableStyleClass="prime-table" [paginator]="true" [rows]="10"
+      [globalFilterFields]="['NOMBRES_CLIE']" [responsive]="true" [resizableColumns]="true" columnResizeMode="expand">
+
+      <ng-template pTemplate="caption" *ngIf="buscando">
+        <ion-row align-items-center>
+          <ion-col col-12 align-self-center text-center>
+            <ion-spinner name="crescent"></ion-spinner>
+          </ion-col>
+        </ion-row>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th [style]="{'width': 'auto'}">SECUENCIAL</th>
+          <th [style]="{'width': 'auto'}">ESTADO</th>
+          <th [style]="{'width': 'auto'}">FECHA</th>
+          <th [style]="{'width': 'auto'}">CLIENTE</th>
+          <th [style]="{'width': 'auto'}">CORREO</th>
+          <th [style]="{'width': 'auto'}">TIPO</th>
+          <th [style]="{'width': 'auto'}">TOTAL</th>
+          <th [style]="{'width': 'auto'}">USUARIO</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-fila>
+        <tr>
+          <td>{{fila.SECUENCIAL_CABC}}</td>
+          <td>{{fila.NOBRE_ESCO}}</td>
+          <td>{{fila.FECHA_CABC}}</td>
+          <td>{{fila.NOMBRES_CLIE}}</td>
+          <td>{{fila.CORREO_CLIE}}</td>
+          <td>{{fila.NOMBRE_TICO}}</td>
+          <td>{{fila.TOTAL_CABC}}</td>
+          <td>{{fila.NOMBRE_USUA}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ion-row>
+</ion-content>

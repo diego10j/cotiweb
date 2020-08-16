@@ -1,0 +1,89 @@
+<ion-header no-border>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+          Datos de la Empresa
+      </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="bg-white">
+    <ion-card-content>
+      <form>
+        <ion-row>
+          <ion-col size="8" size-xl="8" size-lg="8" size-md="8" size-sm="12" size-xs="12">
+            <div class="ui-fluid">
+              <ion-row>
+                <ion-col class="p-field" size="12">
+                  <ion-label position="stacked" class="text-muted">Nombre</ion-label>
+                  <input class="mayusculas" type="text" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="12">
+                  <ion-label position="stacked" class="text-muted">Razon Social</ion-label>
+                  <input class="mayusculas" type="text" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">R.U.C</ion-label>
+                  <input type="text" pInputText>
+                </ion-col>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Teléfono</ion-label>
+                  <input type="tel" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="12">
+                  <ion-label position="stacked" class="text-muted">Dirección</ion-label>
+                  <input class="mayusculas" type="text" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Email</ion-label>
+                  <input type="email"  pInputText>
+                </ion-col>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Lleva Contabilidad</ion-label>
+                  <input type="tel"  pInputText>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-col>
+          <ion-col size="4" size-xl="4" size-lg="4" size-md="4" size-sm="12" size-xs="12">
+            <div class="vertical-padding">
+              <ion-grid>
+                <ion-row>
+                  <img src="/assets/svg/imagen.svg" alt="Imagen Logo" height="160">
+                </ion-row>
+                <ion-row align-items-center class="ion-padding-top">
+                  <ion-col col-12 align-self-center text-center>
+                    <ion-button color="secondary" size="small" [disabled]="ejecutando">Seleccionar Logo</ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-top">
+          <ion-button color="medium" (click)="cancelar()">
+            <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+            <ion-label>CANCELAR</ion-label>
+          </ion-button>
+          <ion-button >
+            <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            <ion-label>GUARDAR</ion-label>
+          </ion-button>
+        </ion-row>
+      </form>
+    </ion-card-content>
+
+  </ion-card>
+</ion-content>

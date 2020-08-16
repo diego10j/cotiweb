@@ -2,46 +2,16 @@
   <ion-menu side="start" content-id="main-content">
     <ion-header>
       <ion-toolbar translucent>
-        <ion-title>CotiWeb</ion-title>
+        <ion-title (click)="abrirPagina('inicio')" >CotiWeb</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-
-      <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>
-      <ion-list class="nav">
-        <ion-menu-toggle auto-hide="false" *ngFor="let p of listaMenu | async">
-          <ion-item class="full-width" [routerLink]="[p.redirectTo]">
-            <ion-icon [class]="p.color" slot="start" [name]="p.icon"></ion-icon>
-            <ion-label>
-              {{p.name}}
-            </ion-label>
-          </ion-item>
-        </ion-menu-toggle>
-        <section class="full-width" margin-top>
-          <ion-button icon-left expand="block" color="primary" (click)="logout()">
-            <ion-icon slot="start" name="power"></ion-icon>
-            <ion-label>
-              Cerrar Sesión
-            </ion-label>
-          </ion-button>
-        </section>
-      </ion-list>
-
-    
-
+      <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>    
     </ion-content>
   </ion-menu>
 
   <div class="ion-page" id="main-content">
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
     <ion-router-outlet main></ion-router-outlet>
   </div>
-  
- 
+
 </ion-app>

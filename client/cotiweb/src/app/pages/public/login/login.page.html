@@ -3,6 +3,7 @@
   <ion-slides [options]="sliderOpts">
     <ion-slide>
       <ion-grid fixed>
+        
         <ion-row>
           <ion-col>
             <div padding-horizontal text-center class="animated fadeInDown">
@@ -10,6 +11,7 @@
             </div>
           </ion-col>
         </ion-row>
+        
         <form padding-horizontal text-center #form="ngForm" (ngSubmit)="login(form)" method="post">
           <ion-row justify-content-center align-items-center class="alinear-centro">
             <ion-col size="6">
@@ -42,8 +44,8 @@
             </ion-col>
           </ion-row>
         </form>
+        
       </ion-grid>
-
     </ion-slide>
 
 

@@ -21,3 +21,12 @@ export interface RestRequest {
   pagina: number;
   filas: number;
 }
+
+export interface Producto {
+  codigo: string;
+  nombre: string;
+  cantidad: number;
+  imagen: string;
+  unidad: string;
+  codigo_unidad:string;
+}

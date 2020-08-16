@@ -15,9 +15,14 @@ const routes: Routes = [
   {
     path: 'private',
     canLoad: [AuthGuardService],
+    runGuardsAndResolvers: 'always',
     loadChildren: './pages/private/private-routing.module#PrivateRoutingModule'
-  }
-];
+  },
+  { path: 'catalogo', loadChildren: './pages/public/catalogo/catalogo.module#CatalogoPageModule' },
+  { path: 'info-producto', loadChildren: './pages/public/info-producto/info-producto.module#InfoProductoPageModule' },
+  { path: 'cotizar', loadChildren: './pages/public/cotizar/cotizar.module#CotizarPageModule' },
+  { path: 'mi-lista', loadChildren: './pages/public/mi-lista/mi-lista.module#MiListaPageModule' },
+ ];
 
 @NgModule({
   imports: [

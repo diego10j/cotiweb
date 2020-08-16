@@ -563,10 +563,10 @@ $image-size: 90px;
 }
 
 ion-content {
-  --background: #f2f2f7; //fafafa  f4f5f8
+  --background: #F9F9F9; //fafafa  f4f5f8
 }
 .content-bg {
-  background: #f2f2f7;  //fafafa f4f5f8
+  background: #F9F9F9;  //fafafa f4f5f8
 }
 
 .bg-primary {
@@ -625,7 +625,7 @@ ion-content {
 
 .image-round {
   background-color: #cecece;
-  border: 2px solid #fafafa;
+  border: 2px solid #d8d8d8;
   border-radius: 50%;
   display: block;
   height: $image-size;
@@ -714,3 +714,6 @@ ion-content {
   --background: linear-gradient(90deg, rgba(57,184,182) 0%, rgba(57, 138, 184) 100%);
 }
 
+.centrar{
+  text-align: center;
+}

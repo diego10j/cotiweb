@@ -37,7 +37,7 @@
   {
     "icon": "contacts",
     "name": "Usuarios",
-    "redirectTo": "/private/proveedores",
+    "redirectTo": "/private/usuarios",
     "color": "text-indigo",
     "seleccionado" : false
   },

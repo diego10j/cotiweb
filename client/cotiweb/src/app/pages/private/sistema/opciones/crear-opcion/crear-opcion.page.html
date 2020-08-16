@@ -1,0 +1,87 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Crear Opcion
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <p-toast></p-toast>
+  <ion-content>
+    <ion-card class="bg-white">
+      <ion-card-content>
+        <form>
+          <ion-row>
+            <ion-col size="8" size-xl="8" size-lg="8" size-md="8" size-sm="12" size-xs="12">
+              <div class="ui-fluid">
+                <ion-row>
+                  <ion-col class="p-field" size="12">
+                    <ion-label position="stacked" class="text-muted">Nombre </ion-label>
+                    <input class="mayusculas" type="text" pInputText>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="p-field" size="12">
+                    <ion-label position="stacked" class="text-muted">Descripción</ion-label>
+                    <input class="mayusculas" type="text" pInputText>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="p-field" size="12">
+                    <ion-label position="stacked" class="text-muted">Path</ion-label>
+                    <input class="mayusculas" type="text" pInputText>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="p-field" size="12">
+                    <ion-label position="stacked" class="text-muted">Grupo</ion-label>
+                    <p-dropdown  [options]="comboGrupo"></p-dropdown>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="p-field" size="6">
+                    <ion-label position="stacked" class="text-muted">Icono</ion-label>
+                    <input class="mayusculas" type="text" pInputText>
+                    
+                  </ion-col>
+                  <ion-col size="1">
+                    <div class="ion-padding-top">
+                      <i class="pi pi-check" style="font-size: 3em"></i>
+                    </div>
+                    
+                  </ion-col>
+                  <ion-col class="p-field" size="5">
+                    <ion-label position="stacked" class="text-muted">Activo</ion-label>
+                    <br>
+                    <p-checkbox [binary]="true"></p-checkbox>
+                  </ion-col>
+                </ion-row>
+              </div>
+            </ion-col>
+            <ion-col size="4" size-xl="4" size-lg="4" size-md="4" size-sm="12" size-xs="12">
+              <div class="vertical-padding">
+                <ion-grid>
+                  <ion-row>
+                    <img src="/assets/svg/opcion.svg" alt="Avatar de usuario" height="160">
+                  </ion-row>
+                </ion-grid>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-padding-top">
+            <ion-button color="medium" (click)="cancelar()">
+              <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+              <ion-label>CANCELAR</ion-label>
+            </ion-button>
+            <ion-button  (click)="crear()">
+              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+              <ion-label>GUARDAR</ion-label>
+            </ion-button>
+          </ion-row>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>

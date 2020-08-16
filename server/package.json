@@ -9,6 +9,7 @@
   "author": "Diego Fernando Jácome Guayasamin",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^14.0.14",
     "bcrypt": "^3.0.8",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",

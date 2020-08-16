@@ -7,7 +7,7 @@ import { LoginPage } from './login.page';
 import { ConfiguracionPage } from '../../modal/configuracion/configuracion.page';
 import { ConfiguracionPageModule } from '../../modal/configuracion/configuracion.module';
 import { ComponentsModule } from '../../../components/components.module';
-
+import {PanelModule} from 'primeng/panel';
 
 const routes: Routes = [
   {
@@ -25,6 +25,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
+    PanelModule,
     RouterModule.forChild(routes),
     ConfiguracionPageModule
   ],

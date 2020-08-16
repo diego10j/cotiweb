@@ -1,0 +1,47 @@
+<ion-header no-border>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+          Archivos del Producto
+      </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar>
+    <ion-item>
+      <ion-searchbar mode="ios" placeholder="Buscar Producto"></ion-searchbar>
+    </ion-item>
+    <ion-buttons slot="end">
+      <ion-button icon-left color="success" (click)="crear()" fill="solid">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          <ion-label>
+              AGREGAR ARCHIVO
+          </ion-label>
+      </ion-button>
+  </ion-buttons>
+  </ion-toolbar>
+
+<!-- Segment in a toolbar -->
+<ion-toolbar>
+  <ion-segment>
+    <ion-segment-button value="IMÁGENES">
+      <ion-icon name="images"></ion-icon>
+      IMÁGENES
+    </ion-segment-button>
+    <ion-segment-button value="ARCHIVOS">
+      <ion-icon name="paper"></ion-icon>
+      ARCHIVOS
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+
+<div>
+  <ion-row>
+    <img src="/assets/productos/ascorbico.png" alt="Avatar de usuario" height="160">
+  </ion-row>
+</div>
+
+</ion-content>

@@ -1,0 +1,53 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Gráficos Estadisticos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+
+<ion-row>
+  <ion-col size="6">
+    <ion-card class="bg-white">
+      <p-chart type="bar" [data]="data"></p-chart>
+    </ion-card>
+    
+  </ion-col>
+  <ion-col size="6">
+    <ion-card class="bg-white">
+      <p-chart type="doughnut" [data]="data1"></p-chart>
+    </ion-card>
+  
+  </ion-col>
+</ion-row>
+<ion-row class="ion-padding-top">
+  <ion-col size="6">
+    <ion-card class="bg-white">
+      <p-chart type="line" [data]="data"></p-chart>
+    </ion-card>
+    
+  </ion-col>
+  <ion-col size="6">
+    <ion-card class="bg-white">
+      <p-table [value]="cars">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>MEJORES VENDEDORES</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+            <tr>
+                <td>{{car.label}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </ion-card>
+
+  </ion-col>
+</ion-row>
+
+</ion-content>

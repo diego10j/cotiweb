@@ -1,0 +1,87 @@
+<ion-header no-border>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="abrirLista()">
+        <fa-layers size="2x">
+          <fa-icon [icon]="['far', 'list-alt']"></fa-icon>
+          <fa-layers-counter *ngIf="numNotificaciones > 0" [content]="numNotificaciones" class="fa-lg">
+          </fa-layers-counter>
+        </fa-layers>
+        <span class="ion-margin-horizontal"> Mi lista</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+
+  <ion-card class="bg-white">
+    <ion-row>
+      <ion-col size="3" size-xl="3" size-lg="3" size-md="3" size-sm="12" size-xs="12">
+        <ion-toolbar>
+          <ion-title>Busqueda</ion-title>
+        </ion-toolbar>
+        <ion-item lines="full">
+          
+          <ion-searchbar class="animated fadeIn" mode="ios" placeholder="Producto"
+            (input)="dt.filter($event.target.value, 'contains')" showCancelButton="never" >
+          </ion-searchbar>
+        </ion-item>
+        <ion-item-divider>
+          <ion-label>
+            Categorias
+          </ion-label>
+        </ion-item-divider>
+        <ion-list>
+          <ion-item *ngFor="let categoria of listaCategorias">
+            <ion-label>{{categoria.valor}}</ion-label>
+            <ion-checkbox slot="end" [(ngModel)]="categoria.isChecked" (ionChange)="filtrarPorCategoria()"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col size="9" size-xl="9" size-lg="9" size-md="9" size-sm="12" size-xs="12">
+        <div *ngIf="buscando">
+          <ion-row align-items-center>
+            <ion-col col-12 align-self-center text-center>
+              <ion-spinner name="crescent"></ion-spinner>
+            </ion-col>
+          </ion-row>
+        </div>
+        <p-dataView #dt [value]="respuesta.datos" paginator="true" rows="10" paginatorPosition="both" layout="grid"
+          filterBy="NOMBRE_PROD"  [rowsPerPageOptions]="[10,20,30]" emptyMessage="No existen productos"
+          paginatorPosition="bottom" 
+          showCurrentPageReport="true" pageLinks="5" alwaysShowPaginator="true" >
+
+
+
+          <ng-template let-fila pTemplate="gridItem">
+            <ion-col size="12" size-xl="3" size-lg="4" size-md="6" size-sm="6" size-xs="12">
+              <p-panel [style]="{'text-align':'center'}">
+                <p-header>
+                  <div class="car-detail">
+                    {{ fila.NOMBRE_PROD }}</div>
+
+                </p-header>
+                <div class="align-middle align-items-center" style="margin-left: 30%;cursor: pointer;">
+                  <img [src]="fila.IMAGEN_PROD" width="60" height="70" (click)="abrirDetalleProducto(fila.COD_PROD)">
+                </div>
+
+              </p-panel>
+            </ion-col>
+          </ng-template>
+
+          
+        </p-dataView>
+
+     
+
+      </ion-col>
+
+    </ion-row>
+  </ion-card>
+
+
+
+
+</ion-content>
