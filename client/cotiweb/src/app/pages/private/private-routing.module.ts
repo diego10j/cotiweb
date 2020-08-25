@@ -34,6 +34,8 @@ const routes: Routes = [
   { path: 'validez-cotizacion', loadChildren: './cotizaciones/validez-cotizacion/validez-cotizacion.module#ValidezCotizacionPageModule' },
   { path: 'condicion-cotizacion', loadChildren: './cotizaciones/condicion-cotizacion/condicion-cotizacion.module#CondicionCotizacionPageModule' },
   { path: 'graficos', loadChildren: './cotizaciones/graficos/graficos.module#GraficosPageModule' },
+  { path: 'formulario', loadChildren: './cotizaciones/formulario/formulario.module#FormularioPageModule' },
+  { path: 'modificar', loadChildren: './cotizaciones/modificar/modificar.module#ModificarPageModule' },
   ];
 @NgModule({
   declarations: [],

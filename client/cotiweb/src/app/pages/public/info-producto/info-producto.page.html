@@ -61,9 +61,9 @@
                       </ion-col>
                       <ion-col size="6">
                         
-                          <ion-button size="small" expand="full" color="primary" >¡Cotizar ahora!</ion-button>
+                          <ion-button size="small" [disabled]="cantidad<=0"  expand="full" color="primary" >¡Cotizar ahora!</ion-button>
                
-                          <ion-button *ngIf="!isAgregado" size="small"  expand="full" color="light" class="ion-margin-top" (click)="agregarLista()">Agregar a la Lista</ion-button>
+                          <ion-button *ngIf="!isAgregado"  [disabled]="cantidad<=0"  size="small"  expand="full" color="light" class="ion-margin-top" (click)="agregarLista()">Agregar a la Lista</ion-button>
 
 
                           <ion-button *ngIf="isAgregado" size="small"  expand="full" color="success" disabled="true" class="ion-margin-top">

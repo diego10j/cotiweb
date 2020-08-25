@@ -17,6 +17,8 @@ export class CotizacionesPage {
   public buscando = false;
   public pagina: number;
 
+  public seleccionado: any;
+
   constructor(private restService: RestService,
               private utilitario: UtilitarioService,
               private messageService: MessageService,
@@ -33,48 +35,9 @@ export class CotizacionesPage {
     return this.restService.consultar('cotizacion/listar', this.pagina);
   }
 
-  public crear() {
-    this.utilitario.abrirPagina('crear-perfil');
+  public ver(){
+    this.utilitario.abrirPagina('formulario');
   }
 
-  public modificar(event) {
-    const parametros = {
-      seleccionado: event.COD_USUA,
-    };
-    this.utilitario.abrirPagina('modificar-perfil', parametros);
-  }
-
-  public async eliminar(event) {
-    const parametros = {
-      seleccionado: event.COD_USUA,
-    };
-    this.buscando = true;
-    const resp : RestResponse = await this.restService.eliminar('sistema/eliminarPerfil/' + parametros.seleccionado);
-    if (resp.error === false) {
-      this.messageService.add({ severity: 'success', summary: '', detail: 'Se eliminó correctamente.' });
-    }
-    this.respuesta = await this.consulta();
-    this.buscando = false;
-  }
-
-  public async confirmarEliminar(event) {
-    const alert = await this.alertController.create({
-      header: 'Eliminar',
-      message: '¿Seguro desea eliminar el registro seleccionado?',
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          cssClass: 'secondary',
-        }, {
-          text: 'Si',
-          handler: () => {
-            this.eliminar(event);
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
 
 }

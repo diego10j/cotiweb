@@ -8,7 +8,7 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content class="ion-padding-horizontal">
   <p-toast></p-toast>
   <ion-toolbar color="light">
       <div style="padding-top: 5px; margin-top: 5px;">
@@ -16,7 +16,7 @@
       </div>
 
     <ion-buttons slot="end">
-      <ion-button icon-left (click)="crear()">
+      <ion-button icon-left (click)="modificar()">
         <ion-icon slot="start" name="search"></ion-icon>
         <ion-label>
           MODIFICAR COTIZACIÓN
@@ -28,17 +28,22 @@
           SOLICITAR APROBACIÓN
         </ion-label>
       </ion-button>
-      <ion-button icon-left (click)="crear()" title="IMPRIMIR">
-        <ion-icon slot="icon-only" name="print"></ion-icon>
-      </ion-button>
-      <ion-button icon-left  (click)="crear()" title="ENVIAR POR EMAIL">
-        <ion-icon slot="icon-only" name="mail"></ion-icon>
-      </ion-button>
+
+
+        <ion-button icon-left color="success" (click)="crear()" fill="solid">
+            <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+            <ion-label>
+                INSERTAR
+            </ion-label>
+        </ion-button>
+ 
+
     </ion-buttons>
   </ion-toolbar>
   <ion-row class="ion-padding-top ion-padding-horizontal">
     <p-table #dt [value]="respuesta.datos" tableStyleClass="prime-table" [paginator]="true" [rows]="10"
-      [globalFilterFields]="['NOMBRES_CLIE']" [responsive]="true" [resizableColumns]="true" columnResizeMode="expand">
+      [globalFilterFields]="['NOMBRES_CLIE']" [responsive]="true" [resizableColumns]="true" columnResizeMode="expand"
+      selectionMode="single" [(selection)]="seleccionado" dataKey="COD_CABC">
 
       <ng-template pTemplate="caption" *ngIf="buscando">
         <ion-row align-items-center>
@@ -57,19 +62,23 @@
           <th [style]="{'width': 'auto'}">CORREO</th>
           <th [style]="{'width': 'auto'}">TIPO</th>
           <th [style]="{'width': 'auto'}">TOTAL</th>
-          <th [style]="{'width': 'auto'}">USUARIO</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-fila>
-        <tr>
-          <td>{{fila.SECUENCIAL_CABC}}</td>
-          <td>{{fila.NOBRE_ESCO}}</td>
-          <td>{{fila.FECHA_CABC}}</td>
+        <tr [pSelectableRow]="fila">
+          <td>{{fila.COD_CABC}}</td>
+          <td>
+            <div class="badges">
+              <span class="p-tag p-tag-rounded">{{fila.NOMBRE_ESCO}}</span>
+              
+            </div>
+            
+            </td>
+          <td>{{fila.FECHA_CABC | date: "dd/MM/yyyy" }}</td>
           <td>{{fila.NOMBRES_CLIE}}</td>
           <td>{{fila.CORREO_CLIE}}</td>
           <td>{{fila.NOMBRE_TICO}}</td>
           <td>{{fila.TOTAL_CABC}}</td>
-          <td>{{fila.NOMBRE_USUA}}</td>
         </tr>
       </ng-template>
     </p-table>

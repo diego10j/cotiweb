@@ -1,0 +1,150 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="clientes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Cotización
+    </ion-title>
+    <div slot="end">
+      <ion-label slot="start">No. <ion-text color="danger">{{COD_CABC}}</ion-text>
+      </ion-label>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+
+  <ion-card class="bg-white">
+    <div *ngFor="let cab of respuesta.datos | slice:0:1; let i=index"  class="content-bg ion-padding-top">
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="12" size-xl="12" size-lg="12" size-md="12" size-sm="6" size-xs="6">
+          <div class="ui-fluid">
+            <ion-row>
+              <ion-col class="p-field" size="12">
+                <ion-label position="stacked" class="text-muted">Cliente </ion-label>
+                <p-dropdown  [options]="comboCliente"></p-dropdown>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="p-field" size="6">
+                <ion-label position="stacked" class="text-muted">Fecha</ion-label>
+                <input type="text" value='{{cab.FECHA_CABC | date: "dd/MM/yyyy"}}' pInputText>
+              </ion-col>
+              <ion-col class="p-field" size="6">
+                <ion-label position="stacked" class="text-muted">Correo Electrónico</ion-label>
+                <input type="telf" [(ngModel)]="cab.CORREO_CABC" pInputText>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="p-field" size="6">
+                <ion-label position="stacked" class="text-muted">Teléfono</ion-label>
+                <input type="telf" [(ngModel)]="cab.TELEFONO_CABC" pInputText>
+              </ion-col>
+              <ion-col class="p-field" size="6">
+                <ion-label position="stacked" class="text-muted">Dirección</ion-label>
+                <input type="text" value='{{cab.DIRECCION_CABC}}' pInputText>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="p-field" size="3">
+                <ion-label position="stacked" class="text-muted">Tipo Cotización </ion-label>
+                <p-dropdown  [options]="comboTipoCotiza"></p-dropdown>
+              </ion-col>
+              <ion-col class="p-field" size="3">
+                <ion-label position="stacked" class="text-muted">Estado </ion-label>
+                <p-dropdown  [options]="comboEstadoCotiza"></p-dropdown>
+              </ion-col>
+              <ion-col class="p-field" size="3">
+                <ion-label position="stacked" class="text-muted">Validez </ion-label>
+                <p-dropdown  [options]="comboValidez"></p-dropdown>
+              </ion-col>
+              <ion-col class="p-field" size="3">
+                <ion-label position="stacked" class="text-muted">Condición </ion-label>
+                <p-dropdown  [options]="comboCondiCotiza"></p-dropdown>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+
+      </ion-row>
+         </ion-card-content>
+    </div>
+
+      <ion-card-content>
+        <ion-row class="ion-padding-top">
+          <p-table #dt [value]="respuesta.datos"  tableStyleClass="prime-table" [paginator]="false" [rows]="100"
+            [responsive]="true" [resizableColumns]="true" columnResizeMode="expand">
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 50%;">Producto</th>
+                <th style="width: 25%;">Cantidad</th>
+                <th style="width: 25%;">Unidad</th>
+                <th style="width: 25%;">Precio</th>
+                <th style="width: 25%;">IVA</th>
+                <th style="width: 25%;">Subtotal</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-fila>
+              <tr>
+                <td>{{fila.NOMBRE_PROD}}</td>
+                <td>{{fila.CANTIDAD_DECO}}</td>
+                <td>{{fila.NOMBRE_UNID}}</td>
+                <td>{{fila.PRECIO_DECO}}</td>
+                <td>{{fila.IVA_DECO}}</td>
+                <td>{{fila.TOTAL_DECO}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ion-row>
+        <ion-row>
+          <ion-col size="8">
+
+          </ion-col>
+          <ion-col size="4">
+            <ion-row>
+              <ion-col size="6">
+                SUBTOTAL
+              </ion-col>
+              <ion-col size="6">
+                0.00
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="6">
+                SUBTOTAL 0%
+              </ion-col>
+              <ion-col size="6">
+                0.00
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                IVA
+              </ion-col>
+              <ion-col size="6">
+                0.00
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                TOTAL
+              </ion-col>
+              <ion-col size="6">
+                0.00
+              </ion-col>
+            </ion-row>
+
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+
+
+
+  </ion-card>
+
+</ion-content>

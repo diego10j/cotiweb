@@ -1,0 +1,247 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="clientes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Cotización N° {{COD_CABC}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="imprimir()" title="Imprimir" >
+        <ion-icon name="print" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button  (click)="enviarMail()" title="Enviar al Correo" >
+        <ion-icon name="mail" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-card class="bg-white">
+
+
+    <div *ngFor="let cab of respuesta.datos | slice:0:1; let i=index">
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="12" size-xl="12" size-lg="12" size-md="12" size-sm="6" size-xs="6">
+            <div class="ui-fluid">
+              <ion-row>
+                <ion-col class="p-field" size="12">
+                  <ion-label position="stacked" class="text-muted">Cliente </ion-label>
+                  <p-dropdown [options]="comboCliente"></p-dropdown>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Fecha</ion-label>
+                  <input type="text" value='{{cab.FECHA_CABC | date: "dd/MM/yyyy"}}' pInputText>
+                </ion-col>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Correo Electrónico</ion-label>
+                  <input type="telf" [(ngModel)]="cab.CORREO_CABC" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Teléfono</ion-label>
+                  <input type="telf" [(ngModel)]="cab.TELEFONO_CABC" pInputText>
+                </ion-col>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Dirección</ion-label>
+                  <input type="text" value='{{cab.DIRECCION_CABC}}' pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="3">
+                  <ion-label position="stacked" class="text-muted">Tipo Cotización </ion-label>
+                  <p-dropdown [options]="comboTipoCotiza"></p-dropdown>
+                </ion-col>
+                <ion-col class="p-field" size="3">
+                  <ion-label position="stacked" class="text-muted">Estado </ion-label>
+                  <p-dropdown [options]="comboEstadoCotiza"></p-dropdown>
+                </ion-col>
+                <ion-col class="p-field" size="3">
+                  <ion-label position="stacked" class="text-muted">Validez </ion-label>
+                  <p-dropdown [options]="comboValidez"></p-dropdown>
+                </ion-col>
+                <ion-col class="p-field" size="3">
+                  <ion-label position="stacked" class="text-muted">Condición </ion-label>
+                  <p-dropdown [options]="comboCondiCotiza"></p-dropdown>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-col>
+
+        </ion-row>
+      </ion-card-content>
+    </div>
+
+    <ion-card-content>
+
+      <ion-row >      
+        <p-table #dt [value]="respuesta.datos"  [paginator]="false" [rows]="100"
+        dataKey="COD_DECO">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Unidad</th>
+              <th>Precio</th>
+              <th>IVA</th>
+              <th>Subtotal</th>
+              <th style="width:4rem"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-fila>
+            <tr>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown [options]="comboProductos" [(ngModel)]="fila.COD_PROD" [style]="{'width':'100%'}" (onChange)="seleccionaProducto($event, fila)">
+                    </p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{fila.NOMBRE_PROD}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="number"  [(ngModel)]="fila.CANTIDAD_DECO" required (ngModelChange)="calcularDetalle(fila)">
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{fila.CANTIDAD_DECO}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown [options]="comboUnidades" [(ngModel)]="fila.COD_UNID" [style]="{'width':'100%'}">
+                    </p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{fila.NOMBRE_UNID}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="number" [(ngModel)]="fila.PRECIO_DECO" required (ngModelChange)="calcularDetalle(fila)">
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{fila.PRECIO_DECO}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown [options]="comboIVA" [(ngModel)]="fila.IVA_DECO" [style]="{'width':'100%'}" (onChange)="calcularDetalle(fila)">
+                    </p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{fila.IVA_DECO == 1 ? 'SI': 'NO'}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td >
+                    {{fila.TOTAL_DECO | currency: 'USD'}}
+              </td>
+              <td>
+  
+                <fa-icon class="fa-lg text-red" icon="times-circle" tappable (click)="eliminar(fila)"></fa-icon>
+           
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+  
+      </ion-row>
+  
+      <ion-row *ngFor="let cab of respuesta.datos | slice:0:1; let i=index">
+      
+        <ion-col size="8">
+  
+        </ion-col>
+        <ion-col size="4">
+          <ion-row>
+            <ion-col size="6">
+              <strong>SUBTOTAL :</strong>    
+            </ion-col>
+            <ion-col size="6">
+              {{cab.SUBTOTAL_CABC | currency: 'USD'}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <strong>SUBTOTAL 0% :</strong>   
+            </ion-col>
+            <ion-col size="6">
+              {{cab.SUBTOTAL0_CABC | currency: 'USD'}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <strong>IVA</strong>  
+            </ion-col>
+            <ion-col size="6">
+              {{cab.IVA_CABC | currency: 'USD'}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <strong>TOTAL :</strong>  
+            </ion-col>
+            <ion-col size="6">
+              {{cab.TOTAL_CABC | currency: 'USD'}}
+            </ion-col>
+          </ion-row>
+  
+        </ion-col>
+  
+      </ion-row>
+  
+  
+
+    </ion-card-content>
+
+
+    <ion-row>
+      <ion-toolbar color="light" class="ion-padding-horizontal">
+
+        <ion-buttons slot="start">
+          <ion-button icon-left fill="solid" color="medium" (click)="cancelar()">
+            <ion-icon  name="arrow-back"></ion-icon>
+            <ion-label>CANCELAR</ion-label>
+          </ion-button>
+          <ion-button  icon-left fill="solid" (click)="crear()" color="primary">
+            <ion-icon  name="checkmark"></ion-icon>
+            <ion-label>GUARDAR</ion-label>
+          </ion-button>
+        </ion-buttons>
+
+        <ion-buttons slot="end">
+          <ion-button  icon-left fill="solid"  color="success" (click)="crear()">
+            <ion-icon  name="add"></ion-icon>
+            <ion-label>AGREGAR PRODUCTO</ion-label>
+          </ion-button>
+        </ion-buttons>
+
+      </ion-toolbar>
+
+    </ion-row>
+
+
+
+  </ion-card>
+
+
+
+
+</ion-content>

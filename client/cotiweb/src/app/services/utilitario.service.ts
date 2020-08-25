@@ -245,11 +245,13 @@ export class UtilitarioService {
     }
   }
 
-  getCombo(combo: RestResponse): SelectItem[] {
-    const vacio = [{ label: "Seleccionar...", value: null }];
+  getCombo(combo: RestResponse , vacio=true ): SelectItem[] {
     let datosCombo: SelectItem[];
     datosCombo = combo.datos;
-    datosCombo.unshift(...vacio);
+    if(vacio){
+      const selecciona = [{ label: "Seleccionar...", value: null }];
+      datosCombo.unshift(...selecciona);
+    }
     return datosCombo;
   }
 

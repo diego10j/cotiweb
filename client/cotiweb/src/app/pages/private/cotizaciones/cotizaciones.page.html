@@ -16,7 +16,7 @@
       </div>
 
     <ion-buttons slot="end">
-      <ion-button icon-left (click)="crear()">
+      <ion-button icon-left (click)="ver()">
         <ion-icon slot="start" name="search"></ion-icon>
         <ion-label>
           VER COTIZACIÓN
@@ -44,7 +44,8 @@
   </ion-toolbar>
   <ion-row class="ion-padding-top ion-padding-horizontal">
     <p-table #dt [value]="respuesta.datos" tableStyleClass="prime-table" [paginator]="true" [rows]="10"
-      [globalFilterFields]="['NOMBRES_CLIE']" [responsive]="true" [resizableColumns]="true" columnResizeMode="expand">
+      [globalFilterFields]="['NOMBRES_CLIE']" [responsive]="true" [resizableColumns]="true" columnResizeMode="expand"
+      selectionMode="single" [(selection)]="seleccionado" dataKey="COD_CABC">
 
       <ng-template pTemplate="caption" *ngIf="buscando">
         <ion-row align-items-center>
@@ -67,10 +68,10 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-fila>
-        <tr>
-          <td>{{fila.SECUENCIAL_CABC}}</td>
-          <td>{{fila.NOBRE_ESCO}}</td>
-          <td>{{fila.FECHA_CABC}}</td>
+        <tr [pSelectableRow]="fila">
+          <td>{{fila.COD_CABC}}</td>
+          <td>{{fila.NOMBRE_ESCO}}</td>
+          <td>{{fila.FECHA_CABC | date: "dd/MM/yyyy" }}</td>
           <td>{{fila.NOMBRES_CLIE}}</td>
           <td>{{fila.CORREO_CLIE}}</td>
           <td>{{fila.NOMBRE_TICO}}</td>

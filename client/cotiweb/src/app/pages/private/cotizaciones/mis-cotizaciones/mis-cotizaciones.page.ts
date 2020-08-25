@@ -16,6 +16,7 @@ export class MisCotizacionesPage {
   public respuesta: RestResponse = this.utilitario.getRestResponse();
   public buscando = false;
   public pagina: number;
+  public seleccionado: any;
 
   constructor(private restService: RestService,
               private utilitario: UtilitarioService,
@@ -30,18 +31,12 @@ export class MisCotizacionesPage {
   }
 
   private consulta(): Promise<RestResponse> {
-    return this.restService.consultar('cotizacion/listar', this.pagina);
+    const COD_USUA = this.utilitario.getVariableLocalStorage('COD_USUA');
+    return this.restService.consultar('cotizacion/misCotizaciones/'+COD_USUA, this.pagina);
   }
 
   public crear() {
     this.utilitario.abrirPagina('crear-perfil');
-  }
-
-  public modificar(event) {
-    const parametros = {
-      seleccionado: event.COD_USUA,
-    };
-    this.utilitario.abrirPagina('modificar-perfil', parametros);
   }
 
   public async eliminar(event) {
@@ -75,6 +70,11 @@ export class MisCotizacionesPage {
       ],
     });
     await alert.present();
+  }
+
+
+  public modificar(){
+    this.utilitario.abrirPagina('modificar');
   }
 
 }
