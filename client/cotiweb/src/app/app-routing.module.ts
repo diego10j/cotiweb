@@ -5,7 +5,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'catalogo',
     pathMatch: 'full'
   },
   {
@@ -14,12 +14,12 @@ const routes: Routes = [
   },
   {
     path: 'private',
-    canLoad: [AuthGuardService],
-    runGuardsAndResolvers: 'always',
+    //canLoad: [AuthGuardService],
+    //runGuardsAndResolvers: 'always',
     loadChildren: './pages/private/private-routing.module#PrivateRoutingModule'
   },
   { path: 'catalogo', loadChildren: './pages/public/catalogo/catalogo.module#CatalogoPageModule' },
-  { path: 'info-producto', loadChildren: './pages/public/info-producto/info-producto.module#InfoProductoPageModule' },
+  { path: 'info-producto/:id', loadChildren: './pages/public/info-producto/info-producto.module#InfoProductoPageModule' },
   { path: 'cotizar', loadChildren: './pages/public/cotizar/cotizar.module#CotizarPageModule' },
   { path: 'mi-lista', loadChildren: './pages/public/mi-lista/mi-lista.module#MiListaPageModule' },
  ];

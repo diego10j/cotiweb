@@ -63,10 +63,7 @@ export class CatalogoPage {
 
 
   public abrirDetalleProducto(event) {
-    const parametros = {
-      seleccionado: event,
-    };
-    this.utilitario.abrirPaginaPublica('info-producto', parametros);
+    this.utilitario.abrirPaginaPublica('info-producto/'+btoa(JSON.stringify(event)));
   }
 
   public abrirLista() {

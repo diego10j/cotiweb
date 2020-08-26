@@ -36,6 +36,7 @@ export class LoginPage implements OnInit {
       this.utilitario.agregarMensaje('Error', this.respuestaLogin.mensaje);
     } else {
       this.menuCtrl.enable(true);
+      this.utilitario.abrirPagina('inicio');
     }
     form.reset();
   }

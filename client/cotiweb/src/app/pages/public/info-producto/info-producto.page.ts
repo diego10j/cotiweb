@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestResponse, Producto } from '../../../interfaces/interfaces';
 import { RestService } from '../../../services/rest.service';
 import { UtilitarioService } from '../../../services/utilitario.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-info-producto',
@@ -21,11 +21,15 @@ export class InfoProductoPage {
   public isAgregado = false;
 
   constructor(private router: Router,private restService: RestService,
-    private utilitario: UtilitarioService ) { 
-      this.seleccionado = this.router.getCurrentNavigation().extras.state.seleccionado;
+    private utilitario: UtilitarioService,private route: ActivatedRoute ) { 
+      //this.seleccionado = this.router.getCurrentNavigation().extras.state.seleccionado;
     }
 
   public async ionViewWillEnter() {
+
+    this.route.params.subscribe((params: Params) => this.seleccionado = params.id);
+    this.seleccionado = atob(this.seleccionado);
+
     this.buscando = true;
     this.pagina = 1;
     this.respuesta = await this.consulta();

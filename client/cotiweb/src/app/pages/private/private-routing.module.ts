@@ -3,6 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/private/inicio',
+    pathMatch: 'full',
+  },
   { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosPageModule' },
   { path: 'crear-usuario', loadChildren: './usuarios/crear-usuario/crear-usuario.module#CrearUsuarioPageModule' },
   { path: 'modificar-usuario', loadChildren: './usuarios/modificar-usuario/modificar-usuario.module#ModificarUsuarioPageModule' },
