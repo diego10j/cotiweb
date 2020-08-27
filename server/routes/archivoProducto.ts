@@ -49,13 +49,21 @@ userRoutes.post( '/upload', verificaToken , async (req: any, res: Response) => {
             mensaje: 'Lo que subió no es una imagen'
         }); 
     }
-
-    await fileSystem.guardarImagenTemporal( file, req.usuario.COD_USUA);
-
+    const nombreImagen =await fileSystem.guardarImagen(file);
     res.json({
         ok: true,
-        file: file.mimetype
+        mimetype: file.mimetype,
+        nombreImagen
     });
+});
+
+userRoutes.get('/imagen/:img', (req: any, res: Response) => {
+
+     const img    = req.params.img;
+
+    const pathFoto = fileSystem.getFotoUrl( img );
+
+    res.sendFile( pathFoto );
 
 });
 

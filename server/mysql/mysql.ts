@@ -108,13 +108,7 @@ export default class MySQL {
                 console.log("Error al insertar : " + err);
                 return callback(err);
             }
-
-            if (results.affectedRows === 0) {
-                callback('El registro a eliminar no existe ')
-            }
-            else {
-                callback(null, results.affectedRows);
-            }
+                callback(null, results.affectedRows);            
         });
     }
 
@@ -133,12 +127,7 @@ export default class MySQL {
                 console.log("Error al insertar : " + err);
                 return callback(err);
             }
-            if (results.changedRows === 0) {
-                callback('El registro a modificar no existe ')
-            }
-            else {
-                callback(null, results.changedRows);
-            }
+            callback(null, results.changedRows);
         });
     }
 

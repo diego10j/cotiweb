@@ -162,7 +162,7 @@ class ArchivoProductoCtrl {
             });
         }
         
-        await fileSystem.guardarImagenTemporal(file, req.usuario.COD_USUA);
+        await fileSystem.guardarImagen(file);
 
         res.json({
             ok: true,

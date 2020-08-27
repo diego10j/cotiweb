@@ -11,18 +11,18 @@ userRoutes.post('/login', usuarioCtrl.login);
 userRoutes.post('/crear', usuarioCtrl.crear);
 
 // Eliminar
-userRoutes.delete('/eliminar/:id', usuarioCtrl.eliminar);
+userRoutes.post('/eliminar/:id', usuarioCtrl.eliminar);
 
 // Actualizar
-userRoutes.put('/actualizar/:id', usuarioCtrl.actualizar);
+userRoutes.post('/actualizar/:id', usuarioCtrl.actualizar);
 
 //Listar
-userRoutes.get('/listar', verificaToken, usuarioCtrl.listar);
+userRoutes.post('/listar', verificaToken, usuarioCtrl.listar);
 
 //Buscar por Id
-userRoutes.get('/buscarPorId/:id', verificaToken, usuarioCtrl.buscarPorId);
+userRoutes.post('/buscarPorId/:id', verificaToken, usuarioCtrl.buscarPorId);
 
 //Retorna datos del usuario que se encuentran en el token
-userRoutes.get('/verificaToken', verificaToken, usuarioCtrl.verificaToken);
+userRoutes.post('/verificaToken', verificaToken, usuarioCtrl.verificaToken);
 
 export default userRoutes;

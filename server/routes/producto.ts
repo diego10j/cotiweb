@@ -8,18 +8,18 @@ const userRoutes = Router();
 userRoutes.post('/crear', verificaToken, productoCtrl.crear);
 
 // Eliminar
-userRoutes.delete('/eliminar/:id', verificaToken, productoCtrl.eliminar);
+userRoutes.post('/eliminar/:id', verificaToken, productoCtrl.eliminar);
 
 // Actualizar
-userRoutes.put('/actualizar/:id', verificaToken, productoCtrl.actualizar);
+userRoutes.post('/actualizar/:id', verificaToken, productoCtrl.actualizar);
 
 //Listar
-userRoutes.get('/listar', verificaToken, productoCtrl.listar);
+userRoutes.post('/listar', verificaToken, productoCtrl.listar);
 
 //Buscar por Id
-userRoutes.get('/buscarPorId/:id', verificaToken, productoCtrl.buscarPorId);
+userRoutes.post('/buscarPorId/:id', verificaToken, productoCtrl.buscarPorId);
 
 //getProductosPorTipo
-userRoutes.get('/getProductosPorTipo', verificaToken, productoCtrl.getProductosPorTipo);
+userRoutes.post('/getProductosPorTipo', verificaToken, productoCtrl.getProductosPorTipo);
 
 export default userRoutes;

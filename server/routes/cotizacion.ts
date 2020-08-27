@@ -1,0 +1,32 @@
+import { Router } from 'express';
+import { verificaToken } from '../middlewares/autenticacion';
+import cotizacionCtrl from '../controllers/cotizacionCtrl';
+
+const userRoutes = Router();
+
+// Crear
+userRoutes.post('/crear', verificaToken, cotizacionCtrl.crear);
+
+// Eliminar
+userRoutes.post('/eliminar/:id', verificaToken, cotizacionCtrl.eliminar);
+
+// Actualizar
+userRoutes.post('/actualizar/:id', verificaToken, cotizacionCtrl.actualizar);
+
+//Listar
+userRoutes.post('/listar', verificaToken, cotizacionCtrl.listar);
+
+//Buscar por Id
+userRoutes.post('/buscarPorId/:id', verificaToken, cotizacionCtrl.buscarPorId);
+
+userRoutes.post('/getEstados', verificaToken, cotizacionCtrl.getEstados);
+userRoutes.post('/getTipos', verificaToken, cotizacionCtrl.getTipos);
+userRoutes.post('/getValidez', verificaToken, cotizacionCtrl.getValidez);
+userRoutes.post('/getCondicion', verificaToken, cotizacionCtrl.getCondicion);
+
+
+
+//misCotizaciones
+userRoutes.post('/misCotizaciones/:id', verificaToken, cotizacionCtrl.misCotizaciones);
+
+export default userRoutes;

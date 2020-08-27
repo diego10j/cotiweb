@@ -11,23 +11,14 @@ class TipoProductoCtrl {
         MySQL.consultar(query, (err: any, data: Object[]) => {
             if (err) {
                 res.status(400).json({
-                    ok: false,
-                    error: err
+                    error: true,
+                    mensaje: err
                 });
             }
-            if (data !== null) {
-                res.json({
-                    ok: true,
-                    data: data
-                });
-            }
-            else {
-                res.json({
-                    ok: true,
-                    data: null,
-                    error: 'No existen registros'
-                });
-            }
+            res.json({
+                error: false,
+                datos: data
+            });
         });
     }
 

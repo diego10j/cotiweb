@@ -8,16 +8,16 @@ const userRoutes = Router();
 userRoutes.post('/crear', verificaToken, tipoProductoCtrl.crear);
 
 // Eliminar
-userRoutes.delete('/eliminar/:id', verificaToken, tipoProductoCtrl.eliminar);
+userRoutes.post('/eliminar/:id', verificaToken, tipoProductoCtrl.eliminar);
 
 // Actualizar
-userRoutes.put('/actualizar/:id', verificaToken, tipoProductoCtrl.actualizar);
+userRoutes.post('/actualizar/:id', verificaToken, tipoProductoCtrl.actualizar);
 
 //Listar
-userRoutes.get('/listar', verificaToken, tipoProductoCtrl.listar);
+userRoutes.post('/listar', verificaToken, tipoProductoCtrl.listar);
 
 //Buscar por Id
-userRoutes.get('/buscarPorId/:id', verificaToken, tipoProductoCtrl.buscarPorId);
+userRoutes.post('/buscarPorId/:id', verificaToken, tipoProductoCtrl.buscarPorId);
 
 
 

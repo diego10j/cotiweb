@@ -6,7 +6,7 @@ import Token from '../classes/token';
 
 class UsuarioCtrl {
 
-    public static tabla :string='USUARIO';
+    public static tabla: string = 'USUARIO';
 
     public listar(req: Request, res: Response) {
         const query = `SELECT COD_USUA,NOMBRE_USUA,LOGIN_USUA,NOMBRE_PERF,CORREO_USUA,TELEFONO_USUA,ACTIVO_USUA 
@@ -22,7 +22,7 @@ class UsuarioCtrl {
             }
             res.json({
                 error: false,
-                data: data
+                datos: data
             });
         });
     }
@@ -38,19 +38,11 @@ class UsuarioCtrl {
                     mensaje: err
                 });
             }
-            if (data !== null) {
-                res.json({
-                    error: false,
-                    data: data
-                });
-            }
-            else {
-                res.json({
-                    error: false,
-                    datos: null,
-                    mensaje: 'No existen registros'
-                });
-            }
+            res.json({
+                error: false,
+                datos: data
+            });
+
         });
     }
 
@@ -74,12 +66,10 @@ class UsuarioCtrl {
                     mensaje: err
                 });
             }
-            else {
-                res.json({
-                    error: false,
-                    insertId: insertId
-                });
-            }
+            res.json({
+                error: false,
+                insertId: insertId
+            });
         });
     }
 
@@ -95,19 +85,25 @@ class UsuarioCtrl {
                     mensaje: err
                 });
             }
-            else {
-                res.json({
-                    error: false,
-                    affectedRows: affectedRows
-                });
-            }
+
+            res.json({
+                error: false,
+                affectedRows: affectedRows
+            });
+
         });
     }
 
     public actualizar(req: Request, res: Response) {
         const campos = {
+            COD_PERF: req.body.COD_PERF,
             NOMBRE_USUA: req.body.NOMBRE_USUA,
-            LOGIN_USUA: req.body.LOGIN_USUA
+            LOGIN_USUA: req.body.LOGIN_USUA,
+            CORREO_USUA: req.body.CORREO_USUA,
+            TELEFONO_USUA: req.body.TELEFONO_USUA,
+            ACTIVO_USUA: true, //CAMBIAR
+            AVATAR_USUA: req.body.AVATAR_USUA,
+            CAMBIA_CLAVE: true
         };
         const condiciones = {
             COD_USUA: req.params.id
@@ -119,12 +115,12 @@ class UsuarioCtrl {
                     mensaje: err
                 });
             }
-            else {
-                res.json({
-                    error: false,
-                    changedRows: changedRows
-                });
-            }
+
+            res.json({
+                error: false,
+                changedRows: changedRows
+            });
+
         });
     }
 
@@ -143,7 +139,7 @@ class UsuarioCtrl {
                 });
             }
             if (data !== null) {
-               
+
                 if (bcrypt.compareSync(CLAVE_USUA, data[0].CLAVE_USUA)) {
                     const tokenUser = Token.getJwtToken({
                         COD_USUA: data[0].COD_USUA,
@@ -152,7 +148,7 @@ class UsuarioCtrl {
                     res.json({
                         error: false,
                         token: tokenUser,
-                        datos:{
+                        datos: {
                             COD_USUA: data[0].COD_USUA,
                             COD_PERF: data[0].COD_PERF,
                             NOMBRE_USUA: data[0].NOMBRE_USUA,
@@ -183,7 +179,7 @@ class UsuarioCtrl {
         const usuario = req.usuario;
         res.json({
             error: false,
-            datos:usuario
+            datos: usuario
         });
     }
 
