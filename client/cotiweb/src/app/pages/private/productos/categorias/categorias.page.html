@@ -8,8 +8,10 @@
       </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding-horizontal">
+<ion-content>
+    <app-nota [opciones]="listaBreadcrumb"></app-nota>
   <p-toast></p-toast>
+  <ion-card class="bg-white">
   <ion-toolbar>
       <ion-item>
           <ion-icon name="search" slot="start"></ion-icon>
@@ -43,7 +45,7 @@
                   <th [style]="{'width': 'auto'}">NOMBRE</th>
                   <th [style]="{'width': 'auto'}">DESCRIPCIÓN</th>
                   <th [style]="{'width': 'auto'}">ACTIVO</th>
-                  <th [style]="{'width': '20px'}" class="centrar"></th>
+                  <th style="width: 8em"></th>
               </tr>
           </ng-template>
           <ng-template pTemplate="body" let-fila>
@@ -57,7 +59,7 @@
                               <ion-icon name="create"></ion-icon>
                           </ion-button>
                           <ion-button icon-left color="danger" (click)="confirmarEliminar(fila)">
-                              <ion-icon name="trash"></ion-icon>
+                              <ion-icon name="close-circle"></ion-icon>
                           </ion-button>
                       </ion-buttons>
                   </td>
@@ -65,4 +67,5 @@
           </ng-template>
       </p-table>
   </ion-row>
+</ion-card>
 </ion-content>

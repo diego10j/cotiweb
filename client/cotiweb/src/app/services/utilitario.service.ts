@@ -255,7 +255,6 @@ export class UtilitarioService {
     return datosCombo;
   }
 
-
   async agregarListaProductos(producto: Producto) {
     let lista: Producto[] = [];
     const listaGuardada: Producto[] = await this.storage.get('lista');

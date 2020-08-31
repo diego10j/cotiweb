@@ -9,6 +9,7 @@ import { AvatarSelectorComponent } from './avatar-selector/avatar-selector.compo
 import { ResultadoVacioComponent } from './resultado-vacio/resultado-vacio.component';
 import { AcordionComponent } from './acordion/acordion.component';
 import {DropdownModule} from 'primeng/dropdown';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {DropdownModule} from 'primeng/dropdown';
     FormsModule,
     IonicModule,
     DropdownModule,
+    BreadcrumbModule,
   ]
 })
 export class ComponentsModule { }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MessageService, SelectItem } from 'primeng/api';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { MessageService, SelectItem, MenuItem } from 'primeng/api';
 import { RestResponse } from '../../../../interfaces/interfaces';
 import { RestService } from '../../../../services/rest.service';
 import { UtilitarioService } from '../../../../services/utilitario.service';
@@ -20,12 +20,16 @@ export class ModificarUsuarioPage {
   public ejecutando = false;
   public respuesta: RestResponse = this.utilitario.getRestResponse();
   public comboPerfiles: SelectItem[];
+  public listaBreadcrumb: MenuItem[];
 
-  constructor(private router: Router, private restService: RestService,
+  constructor(private route: ActivatedRoute, private restService: RestService,
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
-    // Recupera parámetro enviado
-    this.seleccionado = this.router.getCurrentNavigation().extras.state.seleccionado;
+      this.listaBreadcrumb = [
+        { label: 'SISTEMA' },
+        { label: 'Usuarios' , routerLink: '/private/usuarios'},
+        { label: 'Modificar Usuario' }
+      ];
     this.form = this.fb.group({
       COD_PERF: new FormControl('', Validators.required),
       NOMBRE_USUA: new FormControl('', Validators.required),
@@ -40,6 +44,7 @@ export class ModificarUsuarioPage {
   }
 
   public async ionViewWillEnter() {
+    this.route.params.subscribe((params: Params) => this.seleccionado = params.id);
     this.buscando = true;
     this.comboPerfiles = this.utilitario.getCombo(await this.restService.getCombo('PERFIL', 'COD_PERF', 'NOMBRE_PERF'));
     this.respuesta = await this.consulta();
@@ -49,10 +54,6 @@ export class ModificarUsuarioPage {
 
   private consulta(): Promise<RestResponse> {
     return this.restService.consultar('usuario/buscarPorId/' + this.seleccionado, 1);
-  }
-
-  public cancelar() {
-    this.utilitario.abrirPagina('usuarios');
   }
 
   public async modificar() {

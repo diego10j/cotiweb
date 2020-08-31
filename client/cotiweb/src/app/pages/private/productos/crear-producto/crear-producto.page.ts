@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MessageService, SelectItem } from 'primeng/api';
+import { MessageService, SelectItem, MenuItem } from 'primeng/api';
 import { RestResponse } from '../../../../interfaces/interfaces';
 import { RestService } from '../../../../services/rest.service';
 import { UploadService } from '../../../../services/upload.service';
@@ -18,12 +18,19 @@ export class CrearProductoPage {
   public ejecutando = false;
   public comboTipo: SelectItem[];
   public comboUnidad: SelectItem[];
+  public listaBreadcrumb: MenuItem[];
 
   constructor(private restService: RestService,
     private utilitario: UtilitarioService,
     private upload: UploadService,
     private messageService: MessageService,
     private fb: FormBuilder) {
+
+      this.listaBreadcrumb = [
+        { label: 'PRODUCTOS' },
+        { label: 'Productos' , routerLink: '/private/productos'},
+        { label: 'Crear Producto' }
+      ];
     this.form = this.fb.group({
       COD_TIPR: new FormControl('', Validators.required),
       COD_UNID: new FormControl(''),

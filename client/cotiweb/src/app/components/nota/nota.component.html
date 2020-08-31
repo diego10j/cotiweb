@@ -1,15 +1,1 @@
-<ion-card mode="ios" [ngClass]="{'animated zoomIn': animated}">
-  <ion-card-content class="ion-no-padding">
-    <ion-list class="ion-no-padding" lines="none">
-      <ion-item>
-        <ion-avatar slot="start">
-          <img [src]="imagen" />
-        </ion-avatar>
-        <ion-label text-wrap>
-          <h2>{{texto}}</h2>
-          <p class="text-secondary" *ngIf="textoSecundario">{{textoSecundario}}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
+<p-breadcrumb [model]="opciones" [home]="home"></p-breadcrumb>

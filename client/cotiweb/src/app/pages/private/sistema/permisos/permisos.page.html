@@ -8,37 +8,49 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
   <ion-card class="bg-white">
     <ion-row>
       <ion-col size="6" size-xl="6" size-lg="6" size-md="6" size-sm="12" size-xs="12">
-        
-
-        <p-table #dt [value]="respuesta.datos" tableStyleClass="prime-table" [paginator]="true" [rows]="10"
-        [responsive]="true" [resizableColumns]="true"
-        columnResizeMode="expand">
-
-        <ng-template pTemplate="caption" *ngIf="buscando">
+        <p-table #dt [value]="respuesta.datos" tableStyleClass="prime-table" [paginator]="false" [rows]="100"
+          [responsive]="true" [resizableColumns]="true" columnResizeMode="expand" [(selection)]="perfilSeleccionado"
+          dataKey="COD_PERF" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+          <ng-template pTemplate="caption" *ngIf="buscando">
             <ion-row align-items-center>
-                <ion-col col-12 align-self-center text-center>
-                    <ion-spinner name="crescent"></ion-spinner>
-                </ion-col>
+              <ion-col col-12 align-self-center text-center>
+                <ion-spinner name="crescent"></ion-spinner>
+              </ion-col>
             </ion-row>
-        </ng-template>
+          </ng-template>
 
-        <ng-template pTemplate="header">
+          <ng-template pTemplate="header">
             <tr>
-                <th [style]="{'width': 'auto'}">PERFIL</th>
+              <th style="width: 3em"></th>
+              <th [style]="{'width': 'auto'}">PERFIL</th>
 
             </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-fila>
-            <tr>
-                <td>{{fila.NOMBRE_PERF}}</td>
+          </ng-template>
+          <ng-template pTemplate="body" let-fila>
+            <tr [pSelectableRow]="fila">
+              <td>
+                <p-tableRadioButton [value]="fila"></p-tableRadioButton>
+              </td>
+              <td>{{fila.NOMBRE_PERF}}</td>
             </tr>
-        </ng-template>
-    </p-table>
+          </ng-template>
+        </p-table>
+
+        <ion-toolbar color="light">
+
+          <ion-buttons slot="start">
+            <ion-button  icon-left fill="solid" (click)="guardar()" color="primary">
+              <ion-icon  name="checkmark"></ion-icon>
+              <ion-label>GUARDAR</ion-label>
+            </ion-button>
+          </ion-buttons>
+  
+        </ion-toolbar>
 
       </ion-col>
       <ion-col size="3" size-xl="3" size-lg="3" size-md="3" size-sm="12" size-xs="12">
@@ -48,7 +60,7 @@
         <ion-list>
           <ion-item *ngFor="let perf of listaCategorias">
             <ion-label>{{perf.valor}}</ion-label>
-            <ion-checkbox slot="start"></ion-checkbox>
+            <ion-checkbox slot="start" [(ngModel)]="perf.isChecked"></ion-checkbox>
           </ion-item>
         </ion-list>
       </ion-col>

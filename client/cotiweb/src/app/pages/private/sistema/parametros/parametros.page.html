@@ -8,8 +8,10 @@
       </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding-horizontal">
+<ion-content>
   <p-toast></p-toast>
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
+  <ion-card class="bg-white">
   <ion-toolbar>
       <ion-item>
           <ion-icon name="search" slot="start"></ion-icon>
@@ -35,7 +37,7 @@
                 <th [style]="{'width': 'auto'}">NEMONICO</th>
                   <th [style]="{'width': 'auto'}">DESCRIPCION</th>
                   <th [style]="{'width': 'auto'}">VALOR</th>
-                  <th [style]="{'width': '20px'}" class="centrar"></th>
+                  <th style="width: 8em"></th>
               </tr>
           </ng-template>
           <ng-template pTemplate="body" let-fila>
@@ -54,4 +56,5 @@
           </ng-template>
       </p-table>
   </ion-row>
+</ion-card>
 </ion-content>

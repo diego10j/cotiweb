@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MessageService, SelectItem } from 'primeng/api';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { MessageService, SelectItem, MenuItem } from 'primeng/api';
 import { RestResponse } from '../../../../interfaces/interfaces';
 import { RestService } from '../../../../services/rest.service';
 import { UtilitarioService } from '../../../../services/utilitario.service';
@@ -21,12 +21,16 @@ export class ModificarProductoPage {
   public respuesta: RestResponse = this.utilitario.getRestResponse();
   public comboTipo: SelectItem[];
   public comboUnidad: SelectItem[];
+  public listaBreadcrumb: MenuItem[];
 
-  constructor(private router: Router, private restService: RestService,
+  constructor(private route: ActivatedRoute, private restService: RestService,
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
-    // Recupera parámetro enviado
-    this.seleccionado = this.router.getCurrentNavigation().extras.state.seleccionado;
+      this.listaBreadcrumb = [
+        { label: 'PRODUCTOS' },
+        { label: 'Productos' , routerLink: '/private/productos'},
+        { label: 'Modificar Producto' }
+      ];
     this.form = this.fb.group({
       COD_TIPR: new FormControl('', Validators.required),
       COD_UNID: new FormControl(''),
@@ -39,6 +43,7 @@ export class ModificarProductoPage {
 
   public async ionViewWillEnter() {
     this.buscando = true;
+    this.route.params.subscribe((params: Params) => this.seleccionado = params.id);
     this.comboTipo = this.utilitario.getCombo(await this.restService.getCombo('TIPO_PRODUCTO', 'COD_TIPR', 'NOMBRE_TIPR'));
     this.comboUnidad = this.utilitario.getCombo(await this.restService.getCombo('UNIDAD_MEDIDA', 'COD_UNID', 'NOMBRE_UNID'));
     this.respuesta = await this.consulta();

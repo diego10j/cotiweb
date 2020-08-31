@@ -1,3 +1,4 @@
+import {MenuItem} from 'primeng/api';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -6,12 +7,12 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./nota.component.scss'],
 })
 export class NotaComponent implements OnInit {
-  @Input() texto: string;
-  @Input() textoSecundario: string;
-  @Input() imagen: string;
-  @Input() animated: false;
+  @Input() opciones:  MenuItem[];
+  public home: MenuItem;
 
-  constructor() { }
+  constructor() {
+    this.home = {icon: 'pi pi-home',routerLink: '/private/inicio'};
+   }
 
   ngOnInit() {}
 

@@ -26,6 +26,7 @@ const routes: Routes = [
     ToastModule,
     TableModule,
     CheckboxModule,
+    ComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [CategoriasPage]

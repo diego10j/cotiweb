@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MessageService, SelectItem } from 'primeng/api';
+import { MessageService, SelectItem, MenuItem } from 'primeng/api';
 import { RestResponse } from '../../../../interfaces/interfaces';
 import { RestService } from '../../../../services/rest.service';
 import { UtilitarioService } from '../../../../services/utilitario.service';
@@ -16,10 +16,18 @@ export class CrearUsuarioPage {
   public form: FormGroup;
   public ejecutando = false;
   public comboPerfiles: SelectItem[];
+  public listaBreadcrumb: MenuItem[];
 
   constructor(private restService: RestService,
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
+
+      this.listaBreadcrumb = [
+        { label: 'SISTEMA' },
+        { label: 'Usuarios' , routerLink: '/private/usuarios'},
+        { label: 'Crear Usuario' }
+      ];
+
     this.form = this.fb.group({
       COD_PERF: new FormControl('', Validators.required),
       NOMBRE_USUA: new FormControl('', Validators.required),

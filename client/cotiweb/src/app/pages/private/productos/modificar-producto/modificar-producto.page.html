@@ -9,16 +9,18 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
   <p-toast></p-toast>
-  <ion-content>
+  <form [formGroup]="form">
+  <ion-card class="bg-white" *ngIf="!buscando">
     <ion-row align-items-center *ngIf="buscando">
       <ion-col col-12 align-self-center text-center>
         <ion-spinner name="crescent"></ion-spinner>
       </ion-col>
     </ion-row>
-    <ion-card class="bg-white" *ngIf="!buscando">
+    
       <ion-card-content>
-        <form [formGroup]="form">
+        
           <ion-row>
             <ion-col size="8" size-xl="8" size-lg="8" size-md="8" size-sm="12" size-xs="12">
               <div class="ui-fluid">
@@ -74,18 +76,14 @@
                 </ion-grid>
               </div>
             </ion-col>
-          </ion-row>
-          <ion-row class="ion-padding-top">
-            <ion-button color="medium" (click)="cancelar()">
-              <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-              <ion-label>CANCELAR</ion-label>
-            </ion-button>
-            <ion-button [disabled]="!form.valid || ejecutando" (click)="modificar()">
-              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
-              <ion-label>GUARDAR</ion-label>
-            </ion-button>
-          </ion-row>
-        </form>
+          </ion-row>  
       </ion-card-content>
+      <ion-row class="ion-padding-top">
+        <ion-button [disabled]="!form.valid || ejecutando" (click)="modificar()">
+          <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+          <ion-label>GUARDAR</ion-label>
+        </ion-button>
+      </ion-row>
     </ion-card>
+  </form>
   </ion-content>

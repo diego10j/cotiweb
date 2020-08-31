@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { MessageService } from 'primeng/api';
+import { MessageService, MenuItem } from 'primeng/api';
 import { RestResponse } from '../../../interfaces/interfaces';
 import { RestService } from '../../../services/rest.service';
 import { UtilitarioService } from '../../../services/utilitario.service';
@@ -16,11 +16,17 @@ export class UsuariosPage {
   public respuesta: RestResponse = this.utilitario.getRestResponse();
   public buscando = false;
   public pagina: number;
+  public listaBreadcrumb: MenuItem[];
 
   constructor(private restService: RestService,
               private utilitario: UtilitarioService,
               private messageService: MessageService,
-              private alertController: AlertController) { }
+              private alertController: AlertController) { 
+                this.listaBreadcrumb = [
+                  { label: 'SISTEMA' },
+                  { label: 'Usuarios' }
+                ];
+              }
 
   public async ionViewWillEnter() {
     this.buscando = true;
@@ -38,10 +44,7 @@ export class UsuariosPage {
   }
 
   public modificar(event) {
-    const parametros = {
-      seleccionado: event.COD_USUA,
-    };
-    this.utilitario.abrirPagina('modificar-usuario', parametros);
+    this.utilitario.abrirPaginaPublica('private/modificar-usuario/' + event.COD_USUA);
   }
 
   public async eliminar(event) {

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RestResponse } from '../../../../interfaces/interfaces';
 import { RestService } from '../../../../services/rest.service';
 import { UtilitarioService } from '../../../../services/utilitario.service';
-import { MessageService } from 'primeng/api';
+import { MessageService, MenuItem } from 'primeng/api';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -16,11 +16,17 @@ export class PerfilesPage {
   public respuesta: RestResponse = this.utilitario.getRestResponse();
   public buscando = false;
   public pagina: number;
+  public listaBreadcrumb: MenuItem[];
 
   constructor(private restService: RestService,
               private utilitario: UtilitarioService,
               private messageService: MessageService,
-              private alertController: AlertController) { }
+              private alertController: AlertController) { 
+                this.listaBreadcrumb = [
+                  { label: 'SISTEMA' },
+                  { label: 'Perfiles' }
+                ];
+              }
 
   public async ionViewWillEnter() {
     this.buscando = true;
@@ -38,18 +44,12 @@ export class PerfilesPage {
   }
 
   public modificar(event) {
-    const parametros = {
-      seleccionado: event.COD_USUA,
-    };
-    this.utilitario.abrirPagina('modificar-perfil', parametros);
+    this.utilitario.abrirPaginaPublica('private/modificar-perfil/' + event.COD_PERF);
   }
 
   public async eliminar(event) {
-    const parametros = {
-      seleccionado: event.COD_USUA,
-    };
     this.buscando = true;
-    const resp : RestResponse = await this.restService.eliminar('sistema/eliminarPerfil/' + parametros.seleccionado);
+    const resp : RestResponse = await this.restService.eliminar('sistema/eliminarPerfil/' + event.COD_PERF);
     if (resp.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se eliminó correctamente.' });
     }

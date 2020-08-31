@@ -9,31 +9,32 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
   <p-toast></p-toast>
-  <ion-content>
+  <form [formGroup]="form">
     <ion-card class="bg-white">
       <ion-card-content>
-        <form>
+ 
           <ion-row>
             <ion-col size="8" size-xl="8" size-lg="8" size-md="8" size-sm="12" size-xs="12">
               <div class="ui-fluid">
                 <ion-row>
                   <ion-col class="p-field" size="12">
                     <ion-label position="stacked" class="text-muted">Nombre </ion-label>
-                    <input class="mayusculas" type="text" pInputText>
+                    <input class="mayusculas" formControlName="NOMBRE_TIPR" type="text" pInputText>
                   </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col class="p-field" size="12">
                     <ion-label position="stacked" class="text-muted">Descripción</ion-label>
-                    <input class="mayusculas" type="text" pInputText>
+                    <input class="mayusculas" type="text" formControlName="DESCRIPCION_TIPR"  pInputText>
                   </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col class="p-field" size="6">
-                    <ion-label position="stacked" class="text-muted">Activo</ion-label>
+                    <ion-label position="stacked"  class="text-muted">Activo</ion-label>
                     <br>
-                    <p-checkbox [binary]="true"></p-checkbox>
+                    <p-checkbox [binary]="true" formControlName="ACTIVO_TIPR" ></p-checkbox>
                   </ion-col>
                 </ion-row>
               </div>
@@ -47,18 +48,16 @@
                 </ion-grid>
               </div>
             </ion-col>
-          </ion-row>
-          <ion-row class="ion-padding-top">
-            <ion-button color="medium" (click)="cancelar()">
-              <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-              <ion-label>CANCELAR</ion-label>
-            </ion-button>
-            <ion-button  (click)="crear()">
-              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
-              <ion-label>GUARDAR</ion-label>
-            </ion-button>
-          </ion-row>
-        </form>
+          </ion-row>  
       </ion-card-content>
+      <ion-row class="ion-padding-top">
+        <ion-toolbar color="light" class="ion-padding-horizontal">
+          <ion-button [disabled]="!form.valid || ejecutando" (click)="crear()">
+            <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            <ion-label>GUARDAR</ion-label>
+          </ion-button>
+        </ion-toolbar>
+      </ion-row>
     </ion-card>
+  </form>
   </ion-content>

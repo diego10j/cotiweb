@@ -9,7 +9,6 @@ import { PermisosPage } from './permisos.page';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { ComponentsModule } from '../../../../components/components.module';
-
 const routes: Routes = [
   {
     path: '',

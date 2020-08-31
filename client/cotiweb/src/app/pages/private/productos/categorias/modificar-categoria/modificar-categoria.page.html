@@ -1,9 +1,63 @@
-<ion-header>
+<ion-header no-border>
   <ion-toolbar>
-    <ion-title>modificarCategoria</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Modificar Categoría
+    </ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
-</ion-content>
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
+  <p-toast></p-toast>
+  <form [formGroup]="form">
+    <ion-card class="bg-white">
+      <ion-card-content>
+ 
+          <ion-row>
+            <ion-col size="8" size-xl="8" size-lg="8" size-md="8" size-sm="12" size-xs="12">
+              <div class="ui-fluid">
+                <ion-row>
+                  <ion-col class="p-field" size="12">
+                    <ion-label position="stacked" class="text-muted">Nombre </ion-label>
+                    <input class="mayusculas" formControlName="NOMBRE_TIPR" type="text" pInputText>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="p-field" size="12">
+                    <ion-label position="stacked" class="text-muted">Descripción</ion-label>
+                    <input class="mayusculas" type="text" formControlName="DESCRIPCION_TIPR"  pInputText>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="p-field" size="6">
+                    <ion-label position="stacked"  class="text-muted">Activo</ion-label>
+                    <br>
+                    <p-checkbox [binary]="true" formControlName="ACTIVO_TIPR" ></p-checkbox>
+                  </ion-col>
+                </ion-row>
+              </div>
+            </ion-col>
+            <ion-col size="4" size-xl="4" size-lg="4" size-md="4" size-sm="12" size-xs="12">
+              <div class="vertical-padding">
+                <ion-grid>
+                  <ion-row>
+                    <img src="/assets/svg/categoria.svg" alt="Avatar de usuario" height="160">
+                  </ion-row>
+                </ion-grid>
+              </div>
+            </ion-col>
+          </ion-row>  
+      </ion-card-content>
+      <ion-row class="ion-padding-top">
+        <ion-toolbar color="light" class="ion-padding-horizontal">
+          <ion-button [disabled]="!form.valid || ejecutando" (click)="modificar()">
+            <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            <ion-label>GUARDAR</ion-label>
+          </ion-button>
+        </ion-toolbar>
+      </ion-row>
+    </ion-card>
+  </form>
+  </ion-content>

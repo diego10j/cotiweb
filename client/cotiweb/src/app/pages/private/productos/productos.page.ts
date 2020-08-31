@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestResponse } from '../../../interfaces/interfaces';
 import { RestService } from '../../../services/rest.service';
 import { UtilitarioService } from '../../../services/utilitario.service';
-import { MessageService } from 'primeng/api';
+import { MessageService, MenuItem } from 'primeng/api';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -16,11 +16,17 @@ export class ProductosPage {
   public respuesta: RestResponse = this.utilitario.getRestResponse();
   public buscando = false;
   public pagina: number;
+  public listaBreadcrumb: MenuItem[];
 
   constructor(private restService: RestService,
     private utilitario: UtilitarioService,
     private messageService: MessageService,
-    private alertController: AlertController) { }
+    private alertController: AlertController) { 
+      this.listaBreadcrumb = [
+        { label: 'PRODUCTOS' },
+        { label: 'Productos' }
+      ];
+    }
 
   public async ionViewWillEnter() {
     this.buscando = true;
@@ -38,10 +44,7 @@ export class ProductosPage {
   }
 
   public modificar(event) {
-    const parametros = {
-      seleccionado: event.COD_PROD,
-    };
-    this.utilitario.abrirPagina('modificar-producto', parametros);
+    this.utilitario.abrirPaginaPublica('private/modificar-producto/'+event.COD_PROD);
   }
 
   public async eliminar(event) {

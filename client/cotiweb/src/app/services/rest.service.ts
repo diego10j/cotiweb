@@ -16,11 +16,15 @@ export class RestService {
   private handleError<T>(operation = 'operation', result?: RestResponse) {
     return (error: any): Observable<RestResponse> => {
       // TODO: send the error to remote logging infrastructure
-      console.error('Error RestService :  ' + JSON.stringify(error)); // log to console instead
+      //console.log(JSON.stringify(error.error) +' Error RestService :  ' + JSON.stringify(error)); // log to console instead
       // Let the app keep running by returning an empty result.
+      let msgError= 'Servidor no disponible';
+      if(error.error.mensaje){
+        msgError=error.error.mensaje;
+      }
       const response: RestResponse = {
         error: true,
-        mensaje: 'Servidor no disponible',
+        mensaje: msgError,
         totalRegistros: null,
         token: null,
         datos: null
@@ -100,6 +104,9 @@ export class RestService {
     return new Promise(resolve => {
       this.ejecutar(metodo, request).subscribe(resp => {
         respuesta = resp;
+        if (resp.error === true) {
+          this.utilitario.agregarMensaje('Error', resp.mensaje);
+        }
         resolve(respuesta);
       });
     });
@@ -110,6 +117,9 @@ export class RestService {
     return new Promise(resolve => {
       this.ejecutar(metodo, request).subscribe(resp => {
         respuesta = resp;
+        if (resp.error === true) {
+          this.utilitario.agregarMensaje('Error', resp.mensaje);
+        }
         resolve(respuesta);
       });
     });
@@ -122,6 +132,9 @@ export class RestService {
     return new Promise(resolve => {
       this.ejecutar(metodo, request).subscribe(resp => {
         respuesta = resp;
+        if (resp.error === true) {
+          this.utilitario.agregarMensaje('Error al eliminar', resp.mensaje);
+        }
         resolve(respuesta);
       });
     });

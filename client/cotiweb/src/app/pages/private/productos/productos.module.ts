@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProductosPage } from './productos.page';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { ComponentsModule } from '../../../components/components.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     IonicModule,
     TableModule,
     ToastModule,
+    ComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ProductosPage]
