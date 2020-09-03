@@ -41,6 +41,8 @@ const routes: Routes = [
   { path: 'graficos', loadChildren: './cotizaciones/graficos/graficos.module#GraficosPageModule' },
   { path: 'formulario', loadChildren: './cotizaciones/formulario/formulario.module#FormularioPageModule' },
   { path: 'modificar', loadChildren: './cotizaciones/modificar/modificar.module#ModificarPageModule' },
+  { path: 'crear-unidad', loadChildren: './productos/unidades/crear-unidad/crear-unidad.module#CrearUnidadPageModule' },
+  { path: 'modificar-unidad', loadChildren: './productos/unidades/modificar-unidad/modificar-unidad.module#ModificarUnidadPageModule' },
   ];
 @NgModule({
   declarations: [],

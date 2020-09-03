@@ -36,8 +36,8 @@ export class EmpresaPage {
       RUC_EMPR: new FormControl('', Validators.required),
       RAZON_SOCIAL_EMPR: new FormControl(''),
       CONTABILIDAD_EMPR: new FormControl(''),
-      LONGITUD_EMPR: new FormControl('', Validators.required),
-      LATITUD_EMPR: new FormControl('', Validators.required),
+      LONGITUD_EMPR: new FormControl(''),
+      LATITUD_EMPR: new FormControl(''),
       LOGO_EMPR: new FormControl(''),
     });
   }
@@ -56,7 +56,7 @@ export class EmpresaPage {
 
   public async modificar() {
     this.ejecutando = true;
-    this.respuesta = await this.restService.actualizar('sistema/actualizarEmpresa', this.form.value);
+    this.respuesta = await this.restService.actualizar('sistema/actualizarDatosEmpresa/1', this.form.value);
     this.ejecutando = false;
     if (this.respuesta.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });

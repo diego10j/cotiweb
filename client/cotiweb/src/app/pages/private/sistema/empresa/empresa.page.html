@@ -77,7 +77,7 @@
       <ion-row class="ion-padding-top">
         <ion-toolbar color="light" class="ion-padding-horizontal">
 
-          <ion-button>
+          <ion-button [disabled]="!form.valid || ejecutando" (click)="modificar()">
             <ion-icon slot="icon-only" name="checkmark"></ion-icon>
             <ion-label>GUARDAR</ion-label>
           </ion-button>
