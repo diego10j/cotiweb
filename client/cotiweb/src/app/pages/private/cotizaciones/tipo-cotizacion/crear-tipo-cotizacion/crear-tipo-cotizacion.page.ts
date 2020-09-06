@@ -6,12 +6,12 @@ import { UtilitarioService } from '../../../../../services/utilitario.service';
 import { RestResponse } from '../../../../../interfaces/interfaces';
 
 @Component({
-  selector: 'app-crear-unidad',
-  templateUrl: './crear-unidad.page.html',
-  styleUrls: ['./crear-unidad.page.scss'],
+  selector: 'app-crear-tipo-cotizacion',
+  templateUrl: './crear-tipo-cotizacion.page.html',
+  styleUrls: ['./crear-tipo-cotizacion.page.scss'],
   providers: [MessageService],
 })
-export class CrearUnidadPage {
+export class CrearTipoCotizacionPage {
 
   public form: FormGroup;
   public ejecutando = false;
@@ -21,23 +21,22 @@ export class CrearUnidadPage {
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
       this.listaBreadcrumb = [
-        { label: 'PRODUCTOS' },
-        { label: 'Unidades de Medida' , routerLink: '/private/unidades'},
-        { label: 'Crear Unidad de Medida' }
+        { label: 'COTIZACIONES' },
+        { label: 'Tipos de Cotizaciones' , routerLink: '/private/tipo-cotizacion'},
+        { label: 'Crear Tipo Cotización' }
       ];
     this.form = this.fb.group({
-      NOMBRE_UNID: new FormControl('', Validators.required),
-      SIMBOLO_UNID: new FormControl('', Validators.required),
-      ACTIVO_UNID: new FormControl('', Validators.required),
+      NOMBRE_TICO: new FormControl('', Validators.required),
+      ACTIVO_TICO: new FormControl('', Validators.required),
     });
-    this.form.controls.ACTIVO_UNID.setValue(true);
+    this.form.controls.ACTIVO_TICO.setValue(true);
   }
  
 
   public async crear() {
     this.ejecutando = true;
     let respuesta: RestResponse = this.utilitario.getRestResponse();
-    respuesta = await this.restService.insertar('unidadMedida/crear', this.form.value);
+    respuesta = await this.restService.insertar('tipoCotizacion/crear', this.form.value);
     this.ejecutando = false;
     if (respuesta.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });

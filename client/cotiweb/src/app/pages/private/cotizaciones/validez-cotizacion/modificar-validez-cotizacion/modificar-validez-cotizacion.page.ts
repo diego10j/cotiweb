@@ -7,12 +7,12 @@ import { RestService } from '../../../../../services/rest.service';
 import { UtilitarioService } from '../../../../../services/utilitario.service';
 
 @Component({
-  selector: 'app-modificar-unidad',
-  templateUrl: './modificar-unidad.page.html',
-  styleUrls: ['./modificar-unidad.page.scss'],
+  selector: 'app-modificar-validez-cotizacion',
+  templateUrl: './modificar-validez-cotizacion.page.html',
+  styleUrls: ['./modificar-validez-cotizacion.page.scss'],
   providers: [MessageService],
 })
-export class ModificarUnidadPage {
+export class ModificarValidezCotizacionPage {
 
   public form: FormGroup;
   public seleccionado: any;
@@ -25,15 +25,15 @@ export class ModificarUnidadPage {
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
       this.listaBreadcrumb = [
-        { label: 'PRODUCTOS' },
-        { label: 'Unidades de Medida' , routerLink: '/private/unidades'},
-        { label: 'Modificar Unidad de Medida' }
+        { label: 'COTIZACIONES' },
+        { label: 'Validez de Cotizaciones' , routerLink: '/private/validez-cotizacion'},
+        { label: 'Modificar Validez Cotización' }
       ];
     // Recupera parámetro enviado
     this.form = this.fb.group({
-      NOMBRE_UNID: new FormControl('', Validators.required),
-      SIMBOLO_UNID: new FormControl('', Validators.required),
-      ACTIVO_UNID: new FormControl('', Validators.required),
+      NOMBRE_VACO: new FormControl('', Validators.required),
+      DIAS_VACO: new FormControl('', Validators.required),
+      ACTIVO_VACO: new FormControl('', Validators.required),
     });
 
   }
@@ -47,12 +47,12 @@ export class ModificarUnidadPage {
   }
 
   private consulta(): Promise<RestResponse> {
-    return this.restService.consultar('unidadMedida/buscarPorId/' + this.seleccionado, 1);
+    return this.restService.consultar('validezCotizacion/buscarPorId/' + this.seleccionado, 1);
   }
 
   public async modificar() {
     this.ejecutando = true;
-    this.respuesta = await this.restService.actualizar('unidadMedida/actualizar/' + this.seleccionado, this.form.value);
+    this.respuesta = await this.restService.actualizar('validezCotizacion/actualizar/' + this.seleccionado, this.form.value);
     this.ejecutando = false;
     if (this.respuesta.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });

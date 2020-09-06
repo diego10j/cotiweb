@@ -6,12 +6,12 @@ import { UtilitarioService } from '../../../../../services/utilitario.service';
 import { RestResponse } from '../../../../../interfaces/interfaces';
 
 @Component({
-  selector: 'app-crear-unidad',
-  templateUrl: './crear-unidad.page.html',
-  styleUrls: ['./crear-unidad.page.scss'],
+  selector: 'app-crear-condicion-cotizacion',
+  templateUrl: './crear-condicion-cotizacion.page.html',
+  styleUrls: ['./crear-condicion-cotizacion.page.scss'],
   providers: [MessageService],
 })
-export class CrearUnidadPage {
+export class CrearCondicionCotizacionPage {
 
   public form: FormGroup;
   public ejecutando = false;
@@ -21,23 +21,22 @@ export class CrearUnidadPage {
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
       this.listaBreadcrumb = [
-        { label: 'PRODUCTOS' },
-        { label: 'Unidades de Medida' , routerLink: '/private/unidades'},
-        { label: 'Crear Unidad de Medida' }
+        { label: 'COTIZACIONES' },
+        { label: 'Condiciones de la Cotización' , routerLink: '/private/condicion-cotizacion'},
+        { label: 'Crear Condición Cotización' }
       ];
     this.form = this.fb.group({
-      NOMBRE_UNID: new FormControl('', Validators.required),
-      SIMBOLO_UNID: new FormControl('', Validators.required),
-      ACTIVO_UNID: new FormControl('', Validators.required),
+      NOMBRE_COCO: new FormControl('', Validators.required),
+      ACTIVO_COCO: new FormControl('', Validators.required),
     });
-    this.form.controls.ACTIVO_UNID.setValue(true);
+    this.form.controls.ACTIVO_COCO.setValue(true);
   }
  
 
   public async crear() {
     this.ejecutando = true;
     let respuesta: RestResponse = this.utilitario.getRestResponse();
-    respuesta = await this.restService.insertar('unidadMedida/crear', this.form.value);
+    respuesta = await this.restService.insertar('condicionCotizacion/crear', this.form.value);
     this.ejecutando = false;
     if (respuesta.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });

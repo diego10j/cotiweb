@@ -3,16 +3,16 @@ import { MessageService, MenuItem } from 'primeng/api';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { RestResponse } from '../../../../../interfaces/interfaces';
 import { ActivatedRoute, Params } from '@angular/router';
-import { RestService } from '../../../../../services/rest.service';
 import { UtilitarioService } from '../../../../../services/utilitario.service';
+import { RestService } from '../../../../../services/rest.service';
 
 @Component({
-  selector: 'app-modificar-unidad',
-  templateUrl: './modificar-unidad.page.html',
-  styleUrls: ['./modificar-unidad.page.scss'],
+  selector: 'app-modificar-tipo-cotizacion',
+  templateUrl: './modificar-tipo-cotizacion.page.html',
+  styleUrls: ['./modificar-tipo-cotizacion.page.scss'],
   providers: [MessageService],
 })
-export class ModificarUnidadPage {
+export class ModificarTipoCotizacionPage {
 
   public form: FormGroup;
   public seleccionado: any;
@@ -25,15 +25,14 @@ export class ModificarUnidadPage {
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
       this.listaBreadcrumb = [
-        { label: 'PRODUCTOS' },
-        { label: 'Unidades de Medida' , routerLink: '/private/unidades'},
-        { label: 'Modificar Unidad de Medida' }
+        { label: 'COTIZACIONES' },
+        { label: 'Tipos de Cotizaciones' , routerLink: '/private/tipo-cotizacion'},
+        { label: 'Modificar Tipo Cotización' }
       ];
     // Recupera parámetro enviado
     this.form = this.fb.group({
-      NOMBRE_UNID: new FormControl('', Validators.required),
-      SIMBOLO_UNID: new FormControl('', Validators.required),
-      ACTIVO_UNID: new FormControl('', Validators.required),
+      NOMBRE_TICO: new FormControl('', Validators.required),
+      ACTIVO_TICO: new FormControl('', Validators.required),
     });
 
   }
@@ -47,12 +46,12 @@ export class ModificarUnidadPage {
   }
 
   private consulta(): Promise<RestResponse> {
-    return this.restService.consultar('unidadMedida/buscarPorId/' + this.seleccionado, 1);
+    return this.restService.consultar('tipoCotizacion/buscarPorId/' + this.seleccionado, 1);
   }
 
   public async modificar() {
     this.ejecutando = true;
-    this.respuesta = await this.restService.actualizar('unidadMedida/actualizar/' + this.seleccionado, this.form.value);
+    this.respuesta = await this.restService.actualizar('tipoCotizacion/actualizar/' + this.seleccionado, this.form.value);
     this.ejecutando = false;
     if (this.respuesta.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });

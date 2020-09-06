@@ -6,6 +6,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { CondicionCotizacionPage } from './condicion-cotizacion.page';
+import { ToastModule } from 'primeng/toast';
+import { TableModule } from 'primeng/table';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ComponentsModule } from '../../../../components/components.module';
 
 const routes: Routes = [
   {
@@ -19,6 +23,10 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    ToastModule,
+    TableModule,
+    CheckboxModule,
+    ComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [CondicionCotizacionPage]

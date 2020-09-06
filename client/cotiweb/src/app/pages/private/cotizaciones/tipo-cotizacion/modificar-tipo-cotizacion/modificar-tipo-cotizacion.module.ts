@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ModificarUnidadPage } from './modificar-unidad.page';
+import { ModificarTipoCotizacionPage } from './modificar-tipo-cotizacion.page';
 import { ComponentsModule } from '../../../../../components/components.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -18,7 +18,7 @@ import { ToastModule } from 'primeng/toast';
 const routes: Routes = [
   {
     path: '',
-    component: ModificarUnidadPage
+    component: ModificarTipoCotizacionPage
   }
 ];
 
@@ -39,6 +39,6 @@ const routes: Routes = [
     ToastModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ModificarUnidadPage]
+  declarations: [ModificarTipoCotizacionPage]
 })
-export class ModificarUnidadPageModule {}
+export class ModificarTipoCotizacionPageModule {}

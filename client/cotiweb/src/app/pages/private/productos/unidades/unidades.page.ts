@@ -50,7 +50,7 @@ export class UnidadesPage {
   public async eliminar(event) {
  
     this.buscando = true;
-    const resp : RestResponse = await this.restService.eliminar('unidadMedia/eliminar/' + event.COD_UNID);
+    const resp : RestResponse = await this.restService.eliminar('unidadMedida/eliminar/' + event.COD_UNID);
     if (resp.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se eliminó correctamente.' });
     }

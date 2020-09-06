@@ -7,12 +7,12 @@ import { RestService } from '../../../../../services/rest.service';
 import { UtilitarioService } from '../../../../../services/utilitario.service';
 
 @Component({
-  selector: 'app-modificar-unidad',
-  templateUrl: './modificar-unidad.page.html',
-  styleUrls: ['./modificar-unidad.page.scss'],
+  selector: 'app-modificar-condicion-cotizacion',
+  templateUrl: './modificar-condicion-cotizacion.page.html',
+  styleUrls: ['./modificar-condicion-cotizacion.page.scss'],
   providers: [MessageService],
 })
-export class ModificarUnidadPage {
+export class ModificarCondicionCotizacionPage {
 
   public form: FormGroup;
   public seleccionado: any;
@@ -25,15 +25,14 @@ export class ModificarUnidadPage {
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
       this.listaBreadcrumb = [
-        { label: 'PRODUCTOS' },
-        { label: 'Unidades de Medida' , routerLink: '/private/unidades'},
-        { label: 'Modificar Unidad de Medida' }
+        { label: 'COTIZACIONES' },
+        { label: 'Condiciones de la Cotización' , routerLink: '/private/condicion-cotizacion'},
+        { label: 'Modificar Condición Cotización' }
       ];
     // Recupera parámetro enviado
     this.form = this.fb.group({
-      NOMBRE_UNID: new FormControl('', Validators.required),
-      SIMBOLO_UNID: new FormControl('', Validators.required),
-      ACTIVO_UNID: new FormControl('', Validators.required),
+      NOMBRE_COCO: new FormControl('', Validators.required),
+      ACTIVO_COCO: new FormControl('', Validators.required),
     });
 
   }
@@ -47,12 +46,12 @@ export class ModificarUnidadPage {
   }
 
   private consulta(): Promise<RestResponse> {
-    return this.restService.consultar('unidadMedida/buscarPorId/' + this.seleccionado, 1);
+    return this.restService.consultar('condicionCotizacion/buscarPorId/' + this.seleccionado, 1);
   }
 
   public async modificar() {
     this.ejecutando = true;
-    this.respuesta = await this.restService.actualizar('unidadMedida/actualizar/' + this.seleccionado, this.form.value);
+    this.respuesta = await this.restService.actualizar('condicionCotizacion/actualizar/' + this.seleccionado, this.form.value);
     this.ejecutando = false;
     if (this.respuesta.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });

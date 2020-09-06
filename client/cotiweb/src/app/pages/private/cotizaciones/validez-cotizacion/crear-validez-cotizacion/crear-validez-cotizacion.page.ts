@@ -6,12 +6,12 @@ import { UtilitarioService } from '../../../../../services/utilitario.service';
 import { RestResponse } from '../../../../../interfaces/interfaces';
 
 @Component({
-  selector: 'app-crear-unidad',
-  templateUrl: './crear-unidad.page.html',
-  styleUrls: ['./crear-unidad.page.scss'],
+  selector: 'app-crear-validez-cotizacion',
+  templateUrl: './crear-validez-cotizacion.page.html',
+  styleUrls: ['./crear-validez-cotizacion.page.scss'],
   providers: [MessageService],
 })
-export class CrearUnidadPage {
+export class CrearValidezCotizacionPage  {
 
   public form: FormGroup;
   public ejecutando = false;
@@ -21,23 +21,23 @@ export class CrearUnidadPage {
     private utilitario: UtilitarioService, private messageService: MessageService,
     private fb: FormBuilder) {
       this.listaBreadcrumb = [
-        { label: 'PRODUCTOS' },
-        { label: 'Unidades de Medida' , routerLink: '/private/unidades'},
-        { label: 'Crear Unidad de Medida' }
+        { label: 'COTIZACIONES' },
+        { label: 'Validez de Cotizaciones' , routerLink: '/private/validez-cotizacion'},
+        { label: 'Crear Vlidez Cotización' }
       ];
     this.form = this.fb.group({
-      NOMBRE_UNID: new FormControl('', Validators.required),
-      SIMBOLO_UNID: new FormControl('', Validators.required),
-      ACTIVO_UNID: new FormControl('', Validators.required),
+      NOMBRE_VACO: new FormControl('', Validators.required),
+      DIAS_VACO: new FormControl('', Validators.required),
+      ACTIVO_VACO: new FormControl('', Validators.required),
     });
-    this.form.controls.ACTIVO_UNID.setValue(true);
+    this.form.controls.ACTIVO_VACO.setValue(true);
   }
  
 
   public async crear() {
     this.ejecutando = true;
     let respuesta: RestResponse = this.utilitario.getRestResponse();
-    respuesta = await this.restService.insertar('unidadMedida/crear', this.form.value);
+    respuesta = await this.restService.insertar('validezCotizacion/crear', this.form.value);
     this.ejecutando = false;
     if (respuesta.error === false) {
       this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });

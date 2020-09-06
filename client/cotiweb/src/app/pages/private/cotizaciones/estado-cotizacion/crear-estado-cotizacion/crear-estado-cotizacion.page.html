@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Modificar Unidad de Medida
+      Crear Estado Cotización
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -21,20 +21,20 @@
                 <ion-row>
                   <ion-col class="p-field" size="12">
                     <ion-label position="stacked" class="text-muted">Nombre </ion-label>
-                    <input class="mayusculas" formControlName="NOMBRE_UNID" type="text" pInputText>
+                    <input class="mayusculas" formControlName="NOMBRE_ESCO" type="text" pInputText>
                   </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col class="p-field" size="12">
-                    <ion-label position="stacked" class="text-muted">Simbolo</ion-label>
-                    <input class="mayusculas" type="text" formControlName="SIMBOLO_UNID"  pInputText>
+                    <ion-label position="stacked" class="text-muted">Descripción </ion-label>
+                    <input class="mayusculas" formControlName="DESCRIPCION_ESCO" type="text" pInputText>
                   </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col class="p-field" size="6">
                     <ion-label position="stacked"  class="text-muted">Activo</ion-label>
                     <br>
-                    <p-checkbox [binary]="true" formControlName="ACTIVO_UNID" ></p-checkbox>
+                    <p-checkbox [binary]="true" formControlName="ACTIVO_ESCO" ></p-checkbox>
                   </ion-col>
                 </ion-row>
               </div>
@@ -52,7 +52,7 @@
       </ion-card-content>
       <ion-row class="ion-padding-top">
         <ion-toolbar color="light" class="ion-padding-horizontal">
-          <ion-button [disabled]="!form.valid || ejecutando" (click)="modificar()">
+          <ion-button [disabled]="!form.valid || ejecutando" (click)="crear()">
             <ion-icon slot="icon-only" name="checkmark"></ion-icon>
             <ion-label>GUARDAR</ion-label>
           </ion-button>

@@ -42,8 +42,17 @@ const routes: Routes = [
   { path: 'formulario', loadChildren: './cotizaciones/formulario/formulario.module#FormularioPageModule' },
   { path: 'modificar', loadChildren: './cotizaciones/modificar/modificar.module#ModificarPageModule' },
   { path: 'crear-unidad', loadChildren: './productos/unidades/crear-unidad/crear-unidad.module#CrearUnidadPageModule' },
-  { path: 'modificar-unidad', loadChildren: './productos/unidades/modificar-unidad/modificar-unidad.module#ModificarUnidadPageModule' },
-  ];
+  { path: 'modificar-unidad/:id', loadChildren: './productos/unidades/modificar-unidad/modificar-unidad.module#ModificarUnidadPageModule' },
+  { path: 'crear-tipo-cotizacion', loadChildren: './cotizaciones/tipo-cotizacion/crear-tipo-cotizacion/crear-tipo-cotizacion.module#CrearTipoCotizacionPageModule' },
+  { path: 'modificar-tipo-cotizacion/:id', loadChildren: './cotizaciones/tipo-cotizacion/modificar-tipo-cotizacion/modificar-tipo-cotizacion.module#ModificarTipoCotizacionPageModule' },
+  { path: 'crear-condicion-cotizacion', loadChildren: './cotizaciones/condicion-cotizacion/crear-condicion-cotizacion/crear-condicion-cotizacion.module#CrearCondicionCotizacionPageModule' },
+  { path: 'modificar-condicion-cotizacion/:id', loadChildren: './cotizaciones/condicion-cotizacion/modificar-condicion-cotizacion/modificar-condicion-cotizacion.module#ModificarCondicionCotizacionPageModule' },
+  { path: 'modificar-validez-cotizacion/:id', loadChildren: './cotizaciones/validez-cotizacion/modificar-validez-cotizacion/modificar-validez-cotizacion.module#ModificarValidezCotizacionPageModule' },
+  { path: 'crear-validez-cotizacion', loadChildren: './cotizaciones/validez-cotizacion/crear-validez-cotizacion/crear-validez-cotizacion.module#CrearValidezCotizacionPageModule' },
+  { path: 'estado-cotizacion', loadChildren: './cotizaciones/estado-cotizacion/estado-cotizacion.module#EstadoCotizacionPageModule' },
+  { path: 'crear-estado-cotizacion', loadChildren: './cotizaciones/estado-cotizacion/crear-estado-cotizacion/crear-estado-cotizacion.module#CrearEstadoCotizacionPageModule' },
+  { path: 'modificar-estado-cotizacion/:id', loadChildren: './cotizaciones/estado-cotizacion/modificar-estado-cotizacion/modificar-estado-cotizacion.module#ModificarEstadoCotizacionPageModule' },
+   ];
 @NgModule({
   declarations: [],
   imports: [
