@@ -717,3 +717,19 @@ ion-content {
 .centrar{
   text-align: center;
 }
+
+body .ui-widget {
+  font-size: 13px;
+}
+
+
+.my-custom-modal-css .modal-wrapper {
+  height: 90%;
+  width: 90%;
+  display: block;  
+}
+
+.modal50 .alert-wrapper {
+  width: 50%;
+  max-width: 50%;
+}

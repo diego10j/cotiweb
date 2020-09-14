@@ -8,79 +8,83 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding-horizontal">
+<ion-content>
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
   <p-toast></p-toast>
-  <ion-toolbar color="light">
-      <div style="padding-top: 5px; margin-top: 5px;">
-        <ion-searchbar  mode="ios" placeholder="Buscar Cliente"></ion-searchbar>
-      </div>
+  <ion-card class="bg-white">
 
-    <ion-buttons slot="end">
-      <ion-button icon-left (click)="modificar()">
-        <ion-icon slot="start" name="search"></ion-icon>
-        <ion-label>
-          MODIFICAR COTIZACIÓN
-        </ion-label>
-      </ion-button>
-      <ion-button icon-left (click)="crear()">
-        <ion-icon slot="start" name="refresh"></ion-icon>
-        <ion-label>
-          SOLICITAR APROBACIÓN
-        </ion-label>
-      </ion-button>
-
+    <ion-toolbar color="light">
+      <ion-buttons slot="start">
+        <ion-button icon-left color="tertiary" (click)="modificar()" fill="solid" [disabled]="!seleccionado">
+          <ion-icon slot="start" name="create"></ion-icon>
+          <ion-label>
+            MODIFICAR COTIZACIÓN
+          </ion-label>
+        </ion-button>
+        <ion-button icon-left color="dark" (click)="solicitarAprobacion()" fill="solid" [disabled]="!seleccionado">
+          <ion-icon slot="start" name="swap"></ion-icon>
+          <ion-label>
+            SOLICITAR APROBACIÓN
+          </ion-label>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
 
         <ion-button icon-left color="success" (click)="crear()" fill="solid">
-            <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-            <ion-label>
-                INSERTAR
-            </ion-label>
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          <ion-label>
+            INSERTAR
+          </ion-label>
         </ion-button>
- 
+      </ion-buttons>
 
-    </ion-buttons>
-  </ion-toolbar>
-  <ion-row class="ion-padding-top ion-padding-horizontal">
-    <p-table #dt [value]="respuesta.datos" tableStyleClass="prime-table" [paginator]="true" [rows]="10"
-      [globalFilterFields]="['NOMBRES_CLIE']" [responsive]="true" [resizableColumns]="true" columnResizeMode="expand"
-      selectionMode="single" [(selection)]="seleccionado" dataKey="COD_CABC">
 
-      <ng-template pTemplate="caption" *ngIf="buscando">
-        <ion-row align-items-center>
-          <ion-col col-12 align-self-center text-center>
-            <ion-spinner name="crescent"></ion-spinner>
-          </ion-col>
-        </ion-row>
-      </ng-template>
 
-      <ng-template pTemplate="header">
-        <tr>
-          <th [style]="{'width': 'auto'}">SECUENCIAL</th>
-          <th [style]="{'width': 'auto'}">ESTADO</th>
-          <th [style]="{'width': 'auto'}">FECHA</th>
-          <th [style]="{'width': 'auto'}">CLIENTE</th>
-          <th [style]="{'width': 'auto'}">CORREO</th>
-          <th [style]="{'width': 'auto'}">TIPO</th>
-          <th [style]="{'width': 'auto'}">TOTAL</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-fila>
-        <tr [pSelectableRow]="fila">
-          <td>{{fila.COD_CABC}}</td>
-          <td>
-            <div class="badges">
-              <span class="p-tag p-tag-rounded">{{fila.NOMBRE_ESCO}}</span>
-              
-            </div>
-            
+    </ion-toolbar>
+
+
+    <ion-row class="ion-padding-top ion-padding-horizontal">
+      <p-table #dt [value]="respuesta.datos" tableStyleClass="prime-table" [paginator]="true" [rows]="10"
+        [globalFilterFields]="['NOMBRES_CLIE']" [responsive]="true" [resizableColumns]="true" columnResizeMode="expand"
+        selectionMode="single" [(selection)]="seleccionado" dataKey="COD_CABC">
+
+        <ng-template pTemplate="caption" *ngIf="buscando">
+          <ion-row align-items-center>
+            <ion-col col-12 align-self-center text-center>
+              <ion-spinner name="crescent"></ion-spinner>
+            </ion-col>
+          </ion-row>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th [style]="{'width': 'auto'}">SECUENCIAL</th>
+            <th [style]="{'width': 'auto'}">ESTADO</th>
+            <th [style]="{'width': 'auto'}">FECHA</th>
+            <th [style]="{'width': 'auto'}">CLIENTE</th>
+            <th [style]="{'width': 'auto'}">CORREO</th>
+            <th [style]="{'width': 'auto'}">TIPO</th>
+            <th [style]="{'width': 'auto'}">TOTAL</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fila>
+          <tr [pSelectableRow]="fila">
+            <td>{{fila.COD_CABC}}</td>
+            <td>
+              <div class="badges">
+                <span class="p-tag p-tag-rounded">{{fila.NOMBRE_ESCO}}</span>
+
+              </div>
+
             </td>
-          <td>{{fila.FECHA_CABC | date: "dd/MM/yyyy" }}</td>
-          <td>{{fila.NOMBRES_CLIE}}</td>
-          <td>{{fila.CORREO_CLIE}}</td>
-          <td>{{fila.NOMBRE_TICO}}</td>
-          <td>{{fila.TOTAL_CABC}}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </ion-row>
+            <td>{{fila.FECHA_CABC | date: "dd/MM/yyyy" }}</td>
+            <td>{{fila.NOMBRES_CLIE}}</td>
+            <td>{{fila.CORREO_CLIE}}</td>
+            <td>{{fila.NOMBRE_TICO}}</td>
+            <td>{{fila.TOTAL_CABC }} </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ion-row>
+  </ion-card>
 </ion-content>

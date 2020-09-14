@@ -14,7 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
-
+import {CalendarModule} from 'primeng/calendar';
 const routes: Routes = [
   {
     path: '',
@@ -38,6 +38,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     ToastModule,
+    CalendarModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ModificarPage]

@@ -4,81 +4,111 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Lista de Cotizaciones
+      Listado de Cotizaciones
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
   <p-toast></p-toast>
-  <ion-toolbar color="light">
-      <div style="padding-top: 5px; margin-top: 5px;">
-        <ion-searchbar  mode="ios" placeholder="Buscar Cliente"></ion-searchbar>
-      </div>
+  <ion-card class="bg-white">
+    <ion-toolbar color="light">
+      <ion-buttons slot="start">
+        <ion-button icon-left color="tertiary" (click)="crear()" fill="solid" [disabled]="!seleccionado">
+          <ion-icon slot="start" name="person-add"></ion-icon>
+          <ion-label>
+            ASIGNAR VENDEDOR
+          </ion-label>
+        </ion-button>
+        <ion-button icon-left color="dark" (click)="abrirCambiarEstado()" fill="solid" [disabled]="!seleccionado">
+          <ion-icon slot="start" name="refresh"></ion-icon>
+          <ion-label>
+            CAMBIAR DE ESTADO
+          </ion-label>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
 
-    <ion-buttons slot="end">
-      <ion-button icon-left (click)="ver()">
-        <ion-icon slot="start" name="search"></ion-icon>
-        <ion-label>
-          VER COTIZACIÓN
-        </ion-label>
-      </ion-button>
-      <ion-button icon-left (click)="crear()">
-        <ion-icon slot="start" name="person-add"></ion-icon>
-        <ion-label>
-          ASIGNAR VENDEDOR
-        </ion-label>
-      </ion-button>
-      <ion-button icon-left (click)="crear()">
-        <ion-icon slot="start" name="refresh"></ion-icon>
-        <ion-label>
-          CAMBIAR DE ESTADO
-        </ion-label>
-      </ion-button>
-      <ion-button icon-left (click)="crear()" title="IMPRIMIR">
-        <ion-icon slot="icon-only" name="print"></ion-icon>
-      </ion-button>
-      <ion-button icon-left  (click)="crear()" title="ENVIAR POR EMAIL">
-        <ion-icon slot="icon-only" name="mail"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-  <ion-row class="ion-padding-top ion-padding-horizontal">
-    <p-table #dt [value]="respuesta.datos" tableStyleClass="prime-table" [paginator]="true" [rows]="10"
-      [globalFilterFields]="['NOMBRES_CLIE']" [responsive]="true" [resizableColumns]="true" columnResizeMode="expand"
-      selectionMode="single" [(selection)]="seleccionado" dataKey="COD_CABC">
+        <ion-button icon-left (click)="crear()" title="IMPRIMIR"  [disabled]="!seleccionado">
+          <ion-icon slot="icon-only" name="print"></ion-icon>
+        </ion-button>
+        <ion-button icon-left (click)="ver()" title="VER COTIZACIÓN"  [disabled]="!seleccionado">
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-row class="ion-padding-top">
 
-      <ng-template pTemplate="caption" *ngIf="buscando">
-        <ion-row align-items-center>
-          <ion-col col-12 align-self-center text-center>
-            <ion-spinner name="crescent"></ion-spinner>
-          </ion-col>
-        </ion-row>
-      </ng-template>
+      <p-table #dt [value]="respuesta.datos" [paginator]="true" [rows]="10" [globalFilterFields]="['NOMBRES_CLIE']"
+        [style]="{width:'100%','overflow-x':'scroll'}" selectionMode="single" [(selection)]="seleccionado"
+        dataKey="COD_CABC">
 
-      <ng-template pTemplate="header">
-        <tr>
-          <th [style]="{'width': 'auto'}">SECUENCIAL</th>
-          <th [style]="{'width': 'auto'}">ESTADO</th>
-          <th [style]="{'width': 'auto'}">FECHA</th>
-          <th [style]="{'width': 'auto'}">CLIENTE</th>
-          <th [style]="{'width': 'auto'}">CORREO</th>
-          <th [style]="{'width': 'auto'}">TIPO</th>
-          <th [style]="{'width': 'auto'}">TOTAL</th>
-          <th [style]="{'width': 'auto'}">USUARIO</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-fila>
-        <tr [pSelectableRow]="fila">
-          <td>{{fila.COD_CABC}}</td>
-          <td>{{fila.NOMBRE_ESCO}}</td>
-          <td>{{fila.FECHA_CABC | date: "dd/MM/yyyy" }}</td>
-          <td>{{fila.NOMBRES_CLIE}}</td>
-          <td>{{fila.CORREO_CLIE}}</td>
-          <td>{{fila.NOMBRE_TICO}}</td>
-          <td>{{fila.TOTAL_CABC}}</td>
-          <td>{{fila.NOMBRE_USUA}}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </ion-row>
+        <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col style="width:8em">
+            <col style="width:14em">
+            <col style="width:8em">
+            <col style="width:22em">
+            <col style="width:20em">
+            <col style="width:18em">
+            <col style="width:18em">
+
+          </colgroup>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>SECUENCIAL</th>
+            <th>ESTADO</th>
+            <th>FECHA</th>
+            <th>CLIENTE</th>
+            <th>CORREO</th>
+            <th>TIPO</th>
+            <th>USUARIO</th>
+          </tr>
+          <tr>
+            <th>
+              <input pInputText type="text" style="width: 100%; "
+                (input)="dt.filter($event.target.value, 'COD_CABC', 'contains')">
+            </th>
+            <th>
+              <p-dropdown [options]="comboEstado" [style]="{width:'100%'}"
+                (onChange)="dt.filter($event.value, 'COD_ESCO', 'equals')"></p-dropdown>
+            </th>
+            <th></th>
+            <th>
+              <input pInputText type="text" style="width: 100%; "
+                (input)="dt.filter($event.target.value, 'NOMBRES_CLIE', 'contains')">
+            </th>
+            <th>
+              <input pInputText type="text" style="width: 100%; "
+                (input)="dt.filter($event.target.value, 'CORREO_CLIE', 'contains')">
+            </th>
+            <th>
+              <p-dropdown [options]="comboTipoCotizacion" [style]="{width:'100%'}"
+                (onChange)="dt.filter($event.value, 'COD_TICO', 'equals')"></p-dropdown>
+            </th>
+            <th>
+              <p-dropdown [options]="comboUsuario" [style]="{width:'100%'}"
+                (onChange)="dt.filter($event.value, 'COD_USUA', 'equals')"></p-dropdown>
+            </th>
+          </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-fila>
+          <tr [pSelectableRow]="fila">
+            <td>{{fila.COD_CABC}}</td>
+            <td>{{fila.NOMBRE_ESCO}}</td>
+            <td>{{fila.FECHA_CABC | date: "dd/MM/yyyy" }}</td>
+            <td>{{fila.NOMBRES_CLIE}}</td>
+            <td>{{fila.CORREO_CLIE}}</td>
+            <td>{{fila.NOMBRE_TICO}}</td>
+            <td>{{fila.NOMBRE_USUA}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ion-row>
+  </ion-card>
+
+
 </ion-content>

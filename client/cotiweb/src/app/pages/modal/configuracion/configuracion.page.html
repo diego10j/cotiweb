@@ -1,71 +1,149 @@
 <ion-header>
-  <ion-toolbar color="secondary">
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-button color="secondary" (click)="cerrar()">
         <ion-icon name="close" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>
-      Configurar Servidor
+      Cotización N° {{COD_CABC}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content >
+<ion-content class="ion-padding-horizontal">
+
+
+
+  <div *ngFor="let cab of respuesta.datos | slice:0:1; let i=index">
+
+    <ion-row>
+      <ion-col size="12" size-xl="12" size-lg="12" size-md="12" size-sm="6" size-xs="6">
+        <div class="ui-fluid">
+          <ion-row>
+            <ion-col class="p-field" size="9">
+              <ion-label position="stacked" class="text-muted">Cliente </ion-label>
+              <p-dropdown [options]="comboCliente" readonly="true"></p-dropdown>
+            </ion-col>
+            <ion-col class="p-field" size="3">
+              <ion-label position="stacked" class="text-muted">Usuario </ion-label>
+              <p-dropdown [options]="comboUsuario" readonly="true"></p-dropdown>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="p-field" size="6">
+              <ion-label position="stacked" class="text-muted">Fecha</ion-label>
+              <input type="text" value='{{cab.FECHA_CABC | date: "dd/MM/yyyy"}}' readonly="true" pInputText>
+            </ion-col>
+            <ion-col class="p-field" size="6">
+              <ion-label position="stacked" class="text-muted">Correo Electrónico</ion-label>
+              <input type="telf" [(ngModel)]="cab.CORREO_CABC" readonly="true" pInputText>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="p-field" size="6">
+              <ion-label position="stacked" class="text-muted">Teléfono</ion-label>
+              <input type="telf" [(ngModel)]="cab.TELEFONO_CABC" readonly="true" pInputText>
+            </ion-col>
+            <ion-col class="p-field" size="6">
+              <ion-label position="stacked" class="text-muted">Dirección</ion-label>
+              <input type="text" value='{{cab.DIRECCION_CABC}}' readonly="true" pInputText>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="p-field" size="3">
+              <ion-label position="stacked" class="text-muted">Tipo Cotización </ion-label>
+              <p-dropdown [options]="comboTipoCotiza" readonly="true"></p-dropdown>
+            </ion-col>
+            <ion-col class="p-field" size="3">
+              <ion-label position="stacked" class="text-muted">Estado </ion-label>
+              <p-dropdown [options]="comboEstadoCotiza" readonly="true"></p-dropdown>
+            </ion-col>
+            <ion-col class="p-field" size="3">
+              <ion-label position="stacked" class="text-muted">Validez </ion-label>
+              <p-dropdown [options]="comboValidez" readonly="true"></p-dropdown>
+            </ion-col>
+            <ion-col class="p-field" size="3">
+              <ion-label position="stacked" class="text-muted">Condición </ion-label>
+              <p-dropdown [options]="comboCondiCotiza" readonly="true"></p-dropdown>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+
+    </ion-row>
+
+  </div>
 
   <ion-row>
+    <p-table #dt [value]="respuesta.datos" [paginator]="false" [rows]="100" dataKey="COD_DECO">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Producto</th>
+          <th style="width: 8em">Cantidad</th>
+          <th style="width: 10em">Unidad</th>
+          <th style="width: 8em">Precio</th>
+          <th style="width: 4em">IVA</th>
+          <th style="width: 10em">Subtotal</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-fila>
+        <tr>
+          <td>
+            {{fila.NOMBRE_PROD}}
+          </td>
+          <td>
+            {{fila.CANTIDAD_DECO}}
+          </td>
+          <td>
+            {{fila.NOMBRE_UNID}}
+          </td>
+          <td>
+            {{fila.PRECIO_DECO}}
+          </td>
+          <td>
+            {{fila.IVA_DECO == 1 ? 'SI': 'NO'}}
+          </td>
+          <td>
+            {{fila.TOTAL_DECO | currency: 'USD'}}
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
 
-    <ion-col size="12">
-      <ion-card class="bg-white" no-margin >
+        <tr>
+          <td colspan="3"></td>
+          <td colspan="2">SUBTOTAL</td>
+          <td> {{subtotal| currency: 'USD'}}</td>
+        </tr>
+        <tr>
+          <td colspan="3"></td>
+          <td colspan="2">SUBTOTAL 0% </td>
+          <td> {{subtotal0 | currency: 'USD'}}</td>
+        </tr>
+        <tr>
+          <td colspan="3"></td>
+          <td colspan="2">IVA</td>
+          <td> {{iva | currency: 'USD'}}</td>
+        </tr>
+        <tr>
+          <td colspan="3"></td>
+          <td colspan="2">TOTAL</td>
+          <td> {{total | currency: 'USD'}}</td>
+        </tr>
 
-        <ion-card-content>
-
-          <ion-item margin-bottom>
-            <ion-label class="fw500" color="dark">Protocolo</ion-label>
-            <ion-select [(ngModel)]="protocolo">
-              <ion-select-option>http</ion-select-option>
-              <ion-select-option>https</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item margin-bottom>
-            <ion-label color="primary" stacked>
-              <ion-text color="dark" class="fw500">Servidor</ion-text>
-            </ion-label>
-            <ion-input class="ion-text-end" type="text" [(ngModel)]="servidor" placeholder="127.0.0.1"></ion-input>
-          </ion-item>
-          <ion-item margin-bottom>
-            <ion-label color="primary" stacked>
-              <ion-text color="dark" class="fw500">Puerto</ion-text>
-            </ion-label>
-            <ion-input class="ion-text-end" type="number" [(ngModel)]="puerto" placeholder="8080"></ion-input>
-          </ion-item>
-
-          <ion-item margin-bottom>
-            <ion-label color="primary" stacked>
-              <ion-text color="dark" class="fw500">Puerto File Server</ion-text>
-            </ion-label>
-            <ion-input class="ion-text-end" type="number" [(ngModel)]="puertoFile" placeholder="80"></ion-input>
-          </ion-item>
-
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
+      </ng-template>
+    </p-table>
 
   </ion-row>
-
-
 
 </ion-content>
 
 <ion-footer>
-    <ion-toolbar>
-      <ion-button slot="end" icon-left color="secondary" (click)="cerrar()">
-        Cancelar
-      </ion-button>
-      <ion-button slot="end" icon-left color="primary" (click)="guardar()">
-        Aceptar
-      </ion-button>
-    </ion-toolbar>
-  </ion-footer>
+  <ion-toolbar class="ion-padding-horizontal">
+    <ion-button slot="end" icon-left color="primary" (click)="cerrar()">
+      CERRAR
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

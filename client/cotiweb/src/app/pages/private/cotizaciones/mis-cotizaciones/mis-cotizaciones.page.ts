@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { MessageService, MenuItem } from 'primeng/api';
 import { RestResponse } from '../../../../interfaces/interfaces';
 import { RestService } from '../../../../services/rest.service';
 import { UtilitarioService } from '../../../../services/utilitario.service';
@@ -17,11 +17,18 @@ export class MisCotizacionesPage {
   public buscando = false;
   public pagina: number;
   public seleccionado: any;
+  public listaBreadcrumb: MenuItem[];
 
   constructor(private restService: RestService,
               private utilitario: UtilitarioService,
               private messageService: MessageService,
-              private alertController: AlertController) { }
+              private alertController: AlertController) { 
+
+                this.listaBreadcrumb = [
+                  { label: 'COTIZACIONES' },
+                  { label: 'Mis Cotizaciones' , routerLink: '/private/mis-cotizaciones'},
+                ];
+              }
 
   public async ionViewWillEnter() {
     this.buscando = true;
@@ -74,7 +81,7 @@ export class MisCotizacionesPage {
 
 
   public modificar(){
-    this.utilitario.abrirPagina('modificar');
+    this.utilitario.abrirPaginaPublica('private/modificar/'+this.seleccionado.COD_CABC);
   }
 
 }

@@ -12,78 +12,91 @@
   <app-nota [opciones]="listaBreadcrumb"></app-nota>
   <p-toast></p-toast>
   <form [formGroup]="form">
-  <ion-card class="bg-white" *ngIf="!buscando">
-    <ion-row align-items-center *ngIf="buscando">
-      <ion-col col-12 align-self-center text-center>
-        <ion-spinner name="crescent"></ion-spinner>
-      </ion-col>
-    </ion-row>
-    
+    <ion-card class="bg-white" *ngIf="!buscando">
+      <ion-row align-items-center *ngIf="buscando">
+        <ion-col col-12 align-self-center text-center>
+          <ion-spinner name="crescent"></ion-spinner>
+        </ion-col>
+      </ion-row>
+
       <ion-card-content>
-        
-          <ion-row>
-            <ion-col size="8" size-xl="8" size-lg="8" size-md="8" size-sm="12" size-xs="12">
-              <div class="ui-fluid">
+
+        <ion-row>
+          <ion-col size="8" size-xl="8" size-lg="8" size-md="8" size-sm="12" size-xs="12">
+            <div class="ui-fluid">
+              <ion-row>
+                <ion-col class="p-field" size="12">
+                  <ion-label position="stacked" class="text-muted">Nombre </ion-label>
+                  <input class="mayusculas" type="text" formControlName="NOMBRE_PROD" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Unidad de Medida</ion-label>
+                  <p-dropdown formControlName="COD_UNID" [options]="comboUnidad"></p-dropdown>
+                </ion-col>
+                <ion-col class="p-field" size="4">
+                  <ion-label position="stacked" class="text-muted">Código</ion-label>
+                  <br>
+                  <input class="mayusculas" type="text" formControlName="COD_AUX_PROD" pInputText>
+                </ion-col>
+                <ion-col class="p-field" size="2">
+                  <ion-label position="stacked" class="text-muted">Activo</ion-label>
+                  <br>
+                  <p-checkbox formControlName="ACTIVO_PROD" [binary]="true"></p-checkbox>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="12">
+                  <ion-label position="stacked" class="text-muted">Descripción</ion-label>
+                  <textarea pInputTextarea type="text" [rows]="7" formControlName="DESCRIPCION_PROD"></textarea>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-col>
+          <ion-col size="4" size-xl="4" size-lg="4" size-md="4" size-sm="12" size-xs="12">
+            <div class="vertical-padding">
+              <ion-grid>
                 <ion-row>
-                  <ion-col class="p-field" size="12">
-                    <ion-label position="stacked" class="text-muted">Nombre </ion-label>
-                    <input class="mayusculas" type="text" formControlName="NOMBRE_PROD" pInputText>
+                  <img src="/assets/svg/producto.svg" alt="Producto" height="256">
+                </ion-row>
+                <ion-row align-items-center class="ion-padding-top">
+                  <ion-col col-12 align-self-center text-center>
+                    <ion-button color="secondary" size="small" [disabled]="ejecutando">Seleccionar Foto</ion-button>
                   </ion-col>
                 </ion-row>
-                <ion-row>
-                  <ion-col class="p-field" size="6">
-                    <ion-label position="stacked" class="text-muted">Tipo</ion-label>
-                    <p-dropdown formControlName="COD_TIPR" [options]="comboTipo"></p-dropdown>
-                  </ion-col>
-                  <ion-col class="p-field" size="6">
-                    <ion-label position="stacked" class="text-muted">Unidad de Medida</ion-label>
-                    <p-dropdown formControlName="COD_UNID" [options]="comboUnidad"></p-dropdown>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col class="p-field" size="6">
-                    <ion-label position="stacked" class="text-muted">Código</ion-label>
-                    <br>
-                    <input class="mayusculas" type="text" formControlName="COD_AUX_PROD" pInputText>
-                  </ion-col>
-                  <ion-col class="p-field" size="6">
-                    <ion-label position="stacked" class="text-muted">Activo</ion-label>
-                    <br>
-                    <p-checkbox formControlName="ACTIVO_PROD" [binary]="true"></p-checkbox>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col class="p-field" size="12">
-                    <ion-label position="stacked" class="text-muted">Descripción</ion-label>
-                    <textarea pInputTextarea type="text" [rows]="7"
-                      formControlName="DESCRIPCION_PROD"></textarea>
-                  </ion-col>
-                </ion-row>
-              </div>
-            </ion-col>
-            <ion-col size="4" size-xl="4" size-lg="4" size-md="4" size-sm="12" size-xs="12">
-              <div class="vertical-padding">
-                <ion-grid>
-                  <ion-row>
-                    <img src="/assets/svg/producto.svg" alt="Producto" height="256">
-                  </ion-row>
-                  <ion-row align-items-center class="ion-padding-top">
-                    <ion-col col-12 align-self-center text-center>
-                      <ion-button color="secondary" size="small" [disabled]="ejecutando">Seleccionar Foto</ion-button>
-                    </ion-col>
-                  </ion-row>
-                  
-                </ion-grid>
-              </div>
-            </ion-col>
-          </ion-row>  
+
+              </ion-grid>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-toolbar>
+              <ion-title>Categorias del Producto</ion-title>
+            </ion-toolbar>
+            <div class="tresColumnas" *ngIf="form.controls.CATEGORIAS.value">
+              <ion-item formArrayName="CATEGORIAS" *ngFor="let cat of form.controls.CATEGORIAS.value; let i = index">
+                <ng-container [formGroupName]="i">
+                  {{getValorCategoria(i,'NOMBRE_TIPR')}}
+                  <ion-checkbox slot="start" formControlName="IS_CHECKED"></ion-checkbox>
+                </ng-container>
+              </ion-item>
+            </div>
+          </ion-col>
+        </ion-row>
       </ion-card-content>
-      <ion-row class="ion-padding-top">
-        <ion-button [disabled]="!form.valid || ejecutando" (click)="modificar()">
-          <ion-icon slot="icon-only" name="checkmark"></ion-icon>
-          <ion-label>GUARDAR</ion-label>
-        </ion-button>
+      <ion-row>
+        <ion-toolbar color="light" class="ion-padding-horizontal">
+
+          <ion-buttons slot="start">
+            <ion-button icon-left fill="solid" color="primary" [disabled]="!form.valid || ejecutando" (click)="modificar()">
+              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+              <ion-label>GUARDAR</ion-label>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
       </ion-row>
     </ion-card>
   </form>
-  </ion-content>
+</ion-content>

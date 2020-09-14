@@ -40,7 +40,7 @@ const routes: Routes = [
   { path: 'condicion-cotizacion', loadChildren: './cotizaciones/condicion-cotizacion/condicion-cotizacion.module#CondicionCotizacionPageModule' },
   { path: 'graficos', loadChildren: './cotizaciones/graficos/graficos.module#GraficosPageModule' },
   { path: 'formulario', loadChildren: './cotizaciones/formulario/formulario.module#FormularioPageModule' },
-  { path: 'modificar', loadChildren: './cotizaciones/modificar/modificar.module#ModificarPageModule' },
+  { path: 'modificar/:id', loadChildren: './cotizaciones/modificar/modificar.module#ModificarPageModule' },
   { path: 'crear-unidad', loadChildren: './productos/unidades/crear-unidad/crear-unidad.module#CrearUnidadPageModule' },
   { path: 'modificar-unidad/:id', loadChildren: './productos/unidades/modificar-unidad/modificar-unidad.module#ModificarUnidadPageModule' },
   { path: 'crear-tipo-cotizacion', loadChildren: './cotizaciones/tipo-cotizacion/crear-tipo-cotizacion/crear-tipo-cotizacion.module#CrearTipoCotizacionPageModule' },

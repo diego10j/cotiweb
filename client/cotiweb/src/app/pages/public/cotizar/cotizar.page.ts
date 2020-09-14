@@ -107,7 +107,7 @@ export class CotizarPage {
 
     this.form.controls.DETALLES.setValue(this.listaProductos);
     let respuesta: RestResponse = this.utilitario.getRestResponse();
-    respuesta = await this.restService.insertar('cotizacion/crear', this.form.value);
+    respuesta = await this.restService.insertar('cotizacion/crearDesdePortal', this.form.value);
     this.ejecutando = false;
     if (respuesta.error === false) {
       this.utilitario.agregarMensaje("Solicitud Enviada","Tu solicitud se guardó de manera exitosa, uno de nuestros asesores se comunicará contigo.");

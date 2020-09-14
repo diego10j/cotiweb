@@ -10,6 +10,10 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ComponentsModule } from '../../../components/components.module';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { ConfiguracionPage } from '../../modal/configuracion/configuracion.page';
+import { ConfiguracionPageModule } from '../../modal/configuracion/configuracion.module';
 
 const routes: Routes = [
   {
@@ -19,6 +23,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  entryComponents: [
+    ConfiguracionPage
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -27,6 +34,9 @@ const routes: Routes = [
     TableModule,
     CheckboxModule,
     ComponentsModule,
+    InputTextModule,
+    DropdownModule,
+    ConfiguracionPageModule,
     RouterModule.forChild(routes)
   ],
   declarations: [CotizacionesPage]
