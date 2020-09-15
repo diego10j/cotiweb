@@ -1,7 +1,11 @@
 <ion-header no-border>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button text="" defaultHref="catalogo"></ion-back-button>
+      <ion-button (click)="abrirCatalogo()">
+       <fa-layers size="2x">
+        <fa-icon [icon]="['fas', 'th']"></fa-icon>
+      </fa-layers>
+    </ion-button>  
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="abrirLista()">

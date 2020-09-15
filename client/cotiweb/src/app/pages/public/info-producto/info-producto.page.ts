@@ -69,4 +69,8 @@ export class InfoProductoPage {
     this.utilitario.abrirPaginaPublica('mi-lista');
   }
 
+  public abrirCatalogo() {
+    this.utilitario.abrirPaginaPublica('catalogo');
+  }
+
 }

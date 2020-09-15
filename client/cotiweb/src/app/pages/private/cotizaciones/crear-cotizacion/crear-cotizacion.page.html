@@ -1,0 +1,231 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Nueva Cotización
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="imprimir()" title="Crear Cliente">
+        <ion-icon name="person-add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
+  <p-toast></p-toast>
+  <form [formGroup]="form">
+    <ion-card class="bg-white">
+
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="12" size-xl="12" size-lg="12" size-md="12" size-sm="6" size-xs="6">
+            <div class="ui-fluid">
+              <ion-row>
+                <ion-col class="p-field" size="12">
+
+                  <ion-label position="stacked" class="text-muted">Cliente </ion-label>
+                  <div class="ui-inputgroup width100">
+                    <p-dropdown [options]="comboCliente" class="widthcombo" formControlName="COD_CLIE">
+                    </p-dropdown>
+                    <button pButton type="button" icon="pi pi-search" class="ui-button-success"></button>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Fecha</ion-label>
+                  <p-calendar formControlName="FECHA_CABC" [locale]="es" dateFormat="yy/mm/dd" [showIcon]="true"
+                    showButtonBar="true"></p-calendar>
+                </ion-col>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Correo Electrónico</ion-label>
+                  <input type="telf" formControlName="CORREO_CABC" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Teléfono</ion-label>
+                  <input type="telf" pInputText>
+                </ion-col>
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Dirección</ion-label>
+                  <input type="text" formControlName="DIRECCION_CABC" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="3">
+                  <ion-label position="stacked" class="text-muted">Tipo Cotización </ion-label>
+                  <p-dropdown [options]="comboTipoCotiza" formControlName="COD_TICO"></p-dropdown>
+                </ion-col>
+                <ion-col class="p-field" size="3">
+                  <ion-label position="stacked" class="text-muted">Estado </ion-label>
+                  <p-dropdown [options]="comboEstadoCotiza" formControlName="COD_ESCO"></p-dropdown>
+                </ion-col>
+                <ion-col class="p-field" size="3">
+                  <ion-label position="stacked" class="text-muted">Validez </ion-label>
+                  <p-dropdown [options]="comboValidez" formControlName="COD_VACO"></p-dropdown>
+                </ion-col>
+                <ion-col class="p-field" size="3">
+                  <ion-label position="stacked" class="text-muted">Condición </ion-label>
+                  <p-dropdown [options]="comboCondiCotiza" formControlName="COD_COCO"></p-dropdown>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-col>
+
+        </ion-row>
+      </ion-card-content>
+
+
+      <ion-card-content>
+
+        <ion-row formArrayName="DETALLES">
+          <p-table #dt [value]="form.controls.DETALLES.value" [paginator]="false" [rows]="100" [rowTrackBy]="trackByFn">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Producto</th>
+                <th style="width: 8em">Cantidad</th>
+                <th style="width: 10em">Unidad</th>
+                <th style="width: 8em">Precio</th>
+                <th style="width: 10em">IVA</th>
+                <th style="width: 10em">Subtotal</th>
+                <th style="width:4rem"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-i="rowIndex">
+
+              <tr [formGroupName]='i'>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <p-dropdown [options]="comboProductos" formControlName="COD_PROD" [style]="{'width':'100%'}"
+                        (onChange)="seleccionaProducto($event, i)" filter="true">
+                      </p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{getValorDetalle(i,'NOMBRE_PROD')}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="number" formControlName="CANTIDAD_DECO" required
+                        (ngModelChange)="calcularDetalle(i)">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{getValorDetalle(i,'CANTIDAD_DECO')}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <p-dropdown [options]="comboUnidades" formControlName="COD_UNID" [style]="{'width':'100%'}"
+                        (onChange)="seleccionaUnidadMedida($event, i)">
+                      </p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{getValorDetalle(i,'NOMBRE_UNID')}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="number" formControlName="PRECIO_DECO" required
+                        (ngModelChange)="calcularDetalle(i)">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{getValorDetalle(i,'PRECIO_DECO')}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <p-dropdown [options]="comboIVA" formControlName="IVA_DECO" [style]="{'width':'100%'}"
+                        (onChange)="calcularDetalle(i)">
+                      </p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{getValorDetalle(i,'IVA_DECO') == '1' ? 'SI': 'NO'}}
+
+
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td>
+                  {{getValorDetalle(i,'TOTAL_DECO') | currency: 'USD'}}
+                </td>
+                <td>
+                  <fa-icon class="fa-lg text-red" icon="times-circle" tappable (click)="eliminarProducto(i)"></fa-icon>
+                </td>
+              </tr>
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+
+              <tr>
+                <td colspan="4"></td>
+                <td colspan="1">SUBTOTAL</td>
+                <td colspan="2"> {{SUBTOTAL_CABC | currency: 'USD'}}</td>
+              </tr>
+              <tr>
+                <td colspan="4"></td>
+                <td colspan="1">SUBTOTAL 0% </td>
+                <td colspan="2"> {{SUBTOTAL0_CABC | currency: 'USD'}}</td>
+              </tr>
+              <tr>
+                <td colspan="4"></td>
+                <td colspan="1">IVA</td>
+                <td colspan="2"> {{IVA_CABC | currency: 'USD'}}</td>
+              </tr>
+              <tr>
+                <td colspan="4"></td>
+                <td colspan="1">TOTAL</td>
+                <td colspan="2"> {{TOTAL_CABC | currency: 'USD'}}</td>
+              </tr>
+
+            </ng-template>
+          </p-table>
+
+        </ion-row>
+
+      </ion-card-content>
+
+
+      <ion-row>
+        <ion-toolbar color="light" class="ion-padding-horizontal">
+
+          <ion-buttons slot="start">
+            <ion-button icon-left fill="solid" (click)="guardar()" color="primary">
+              <ion-icon name="checkmark"></ion-icon>
+              <ion-label>GUARDAR</ion-label>
+            </ion-button>
+          </ion-buttons>
+
+          <ion-buttons slot="end">
+            <ion-button icon-left fill="solid" color="success" (click)="insertarProducto()">
+              <ion-icon name="add"></ion-icon>
+              <ion-label>AGREGAR PRODUCTO</ion-label>
+            </ion-button>
+          </ion-buttons>
+
+        </ion-toolbar>
+
+      </ion-row>
+
+
+
+    </ion-card>
+
+  </form>
+
+
+</ion-content>

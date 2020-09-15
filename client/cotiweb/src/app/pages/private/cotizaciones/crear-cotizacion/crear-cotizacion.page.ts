@@ -1,24 +1,22 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { MessageService, SelectItem, MenuItem } from 'primeng/api';
+import { SelectItem, MenuItem, MessageService } from 'primeng/api';
+import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { RestService } from '../../../../services/rest.service';
+import { ActivatedRoute } from '@angular/router';
 import { UtilitarioService } from '../../../../services/utilitario.service';
 import { AlertController } from '@ionic/angular';
 import { RestResponse } from '../../../../interfaces/interfaces';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import { from } from 'rxjs';
-import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
-  selector: 'app-modificar',
-  templateUrl: './modificar.page.html',
-  styleUrls: ['./modificar.page.scss'],
+  selector: 'app-crear-cotizacion',
+  templateUrl: './crear-cotizacion.page.html',
+  styleUrls: ['./crear-cotizacion.page.scss'],
   providers: [MessageService],
 })
-export class ModificarPage {
+export class CrearCotizacionPage {
   public buscando = false;
   public pagina: number;
   public seleccionado: any;
-  public COD_CABC: number;
 
   //Combos
   public comboCliente: SelectItem[];
@@ -53,7 +51,7 @@ export class ModificarPage {
     this.listaBreadcrumb = [
       { label: 'COTIZACIONES' },
       { label: 'Mis Cotizaciones', routerLink: '/private/mis-cotizaciones' },
-      { label: 'Modificar Cotización' }
+      { label: 'Crear Cotización' }
     ];
 
     this.es = utilitario.getCalendarioEsp();
@@ -90,60 +88,24 @@ export class ModificarPage {
     this.form.controls.IVA_CABC.setValue(0);
     this.form.controls.TOTAL_CABC.setValue(0);
     this.form.controls.DESCUENTO_CABC.setValue(0);
-
+    const detalles = <FormArray>this.form.get('DETALLES');
+    detalles.clear();
   }
 
   public async ionViewWillEnter() {
-    this.route.params.subscribe((params: Params) => this.COD_CABC = params.id);
-    const detalles = <FormArray>this.form.get('DETALLES');
-    detalles.clear();
     this.buscando = true;
-    this.pagina = 1;
-    let respuesta: RestResponse = this.utilitario.getRestResponse();
-    respuesta = await this.consulta();
-    if (respuesta.datos) {
-    //Combo Cliente
-    const COD_CLIE = respuesta.datos[0].COD_CLIE;
-    const COD_TICO = respuesta.datos[0].COD_TICO;
-    const COD_ESCO = respuesta.datos[0].COD_ESCO;
-    const COD_USUA = respuesta.datos[0].COD_USUA;
-
-    this.comboCliente = this.utilitario.getCombo(await this.restService.getCombo('CLIENTE', 'COD_CLIE', 'NOMBRES_CLIE', 'COD_CLIE = ' + COD_CLIE), false);
-
-    this.comboTipoCotiza = this.utilitario.getCombo(await this.restService.getCombo('TIPO_COTIZACION', 'COD_TICO', 'NOMBRE_TICO', 'COD_TICO = ' + COD_TICO), false);
+    this.comboCliente = this.utilitario.getCombo(await this.restService.getCombo('CLIENTE', 'COD_CLIE', 'NOMBRES_CLIE', 'COD_CLIE = -1'), false);
+    this.comboTipoCotiza = this.utilitario.getCombo(await this.restService.getCombo('TIPO_COTIZACION', 'COD_TICO', 'NOMBRE_TICO'), false);
     this.comboCondiCotiza = this.utilitario.getCombo(await this.restService.getCombo('CONDICION_COTIZACION', 'COD_COCO', 'NOMBRE_COCO'));
-    this.comboEstadoCotiza = this.utilitario.getCombo(await this.restService.getCombo('ESTADO_COTIZACION', 'COD_ESCO', 'NOMBRE_ESCO', 'COD_ESCO = ' + COD_ESCO), false);
+    this.comboEstadoCotiza = this.utilitario.getCombo(await this.restService.getCombo('ESTADO_COTIZACION', 'COD_ESCO', 'NOMBRE_ESCO', 'COD_ESCO = 3'), false);
     this.comboValidez = this.utilitario.getCombo(await this.restService.getCombo('VALIDEZ_COTIZACION', 'COD_VACO', 'NOMBRE_VACO'));
-    this.comboUsuario = this.utilitario.getCombo(await this.restService.getCombo('USUARIO', 'COD_USUA', 'NOMBRE_USUA', 'COD_USUA = ' + COD_USUA), false);
+    this.comboUsuario = this.utilitario.getCombo(await this.restService.getCombo('USUARIO', 'COD_USUA', 'NOMBRE_USUA', 'COD_USUA = ' + this.utilitario.getVariableLocalStorage('COD_USUA')), false);
     this.comboProductos = this.utilitario.getCombo(await this.restService.getCombo('PRODUCTO', 'COD_PROD', 'NOMBRE_PROD'));
     this.comboUnidades = this.utilitario.getCombo(await this.restService.getCombo('UNIDAD_MEDIDA', 'COD_UNID', 'NOMBRE_UNID'));
     this.buscando = false;
-    this.form.patchValue(respuesta.datos[0]);
-    // this.form.controls.DETALLES.setValue(this.respuesta.datos);
-   
-      respuesta.datos.forEach(fila => {
-        detalles.push(
-          this.fb.group({
-            COD_DECO: new FormControl(fila.COD_DECO),
-            COD_PROD: new FormControl(fila.COD_PROD, Validators.required),
-            NOMBRE_PROD: new FormControl(fila.NOMBRE_PROD, Validators.required),
-            CANTIDAD_DECO: new FormControl(fila.CANTIDAD_DECO, Validators.required),
-            COD_UNID: new FormControl(fila.COD_UNID, Validators.required),
-            NOMBRE_UNID: new FormControl(fila.NOMBRE_UNID, Validators.required),
-            PRECIO_DECO: new FormControl(fila.PRECIO_DECO, Validators.required),
-            IVA_DECO: new FormControl(fila.IVA_DECO + '', Validators.required),
-            TOTAL_DECO: new FormControl(fila.TOTAL_DECO, Validators.required),
-          })
-        );
-      });
-    }
     this.calcularTotalFactura();
   }
 
-
-  private consulta(): Promise<RestResponse> {
-    return this.restService.consultar('cotizacion/buscarPorId/' + this.COD_CABC, this.pagina);
-  }
 
   public seleccionaProducto(evt, index) {
     const nombre = this.getNombreProducto(evt.value);
@@ -163,7 +125,6 @@ export class ModificarPage {
     });
   }
 
-
   public getNombreProducto(value): string {
     const obj = this.comboProductos.find(x => x.value === value);
     return obj.label;
@@ -173,6 +134,7 @@ export class ModificarPage {
     const obj = this.comboUnidades.find(x => x.value === value);
     return obj.label;
   }
+
 
   public calcularDetalle(index) {
     const detalles = <FormArray>this.form.get('DETALLES');
@@ -213,19 +175,19 @@ export class ModificarPage {
 
   public insertarProducto() {
     const detalles = <FormArray>this.form.get('DETALLES');
-    detalles.push(
-      this.fb.group({
-        COD_DECO: new FormControl(null),
-        COD_PROD: new FormControl(null),
-        NOMBRE_PROD: new FormControl(''),
-        CANTIDAD_DECO: new FormControl(0),
-        COD_UNID: new FormControl(null),
-        NOMBRE_UNID: new FormControl(''),
-        PRECIO_DECO: new FormControl(0),
-        IVA_DECO: new FormControl('1'),
-        TOTAL_DECO: new FormControl(0),
-      })
-    );
+      detalles.push(
+        this.fb.group({
+          COD_DECO: new FormControl(null),
+          COD_PROD: new FormControl(null, Validators.required),
+          NOMBRE_PROD: new FormControl('', Validators.required),
+          CANTIDAD_DECO: new FormControl(0, Validators.required),
+          COD_UNID: new FormControl(null, Validators.required),
+          NOMBRE_UNID: new FormControl('', Validators.required),
+          PRECIO_DECO: new FormControl(0, Validators.required),
+          IVA_DECO: new FormControl('1', Validators.required),
+          TOTAL_DECO: new FormControl(0, Validators.required),
+        })
+      );
   }
 
   public eliminarProducto(index) {
@@ -245,11 +207,11 @@ export class ModificarPage {
     this.form.controls.FECHA_CABC.setValue(Objeto.FECHA_CABC);
 
     let respuesta: RestResponse = this.utilitario.getRestResponse();
-    respuesta = await this.restService.insertar('cotizacion/actualizar/' + this.COD_CABC, this.form.value);
+    respuesta = await this.restService.insertar('cotizacion/crear', this.form.value);
     //console.log(this.form.value);
     this.ejecutando = false;
     if (respuesta.error === false) {
-      this.utilitario.agregarMensaje("Actualización", "Se Guardo correctamente.");
+      this.utilitario.agregarMensaje("Creación", "Se Guardo correctamente.");
       this.utilitario.limpiarListaProductos();
       this.utilitario.abrirPagina('mis-cotizaciones');
     }
@@ -258,6 +220,9 @@ export class ModificarPage {
   public getValorDetalle(index, type: string) {
     const detalles = <FormArray>this.form.get('DETALLES');
     const fila = detalles.at(index).value;
+
     return fila[type];
+
+
   }
 }
