@@ -5,6 +5,9 @@ import cotizacionCtrl from '../controllers/cotizacionCtrl';
 const userRoutes = Router();
 
 // Crear
+userRoutes.post('/crearDesdePortal', cotizacionCtrl.crearDesdePortal);
+
+// Crear
 userRoutes.post('/crear', verificaToken, cotizacionCtrl.crear);
 
 // Eliminar
@@ -28,5 +31,12 @@ userRoutes.post('/getCondicion', verificaToken, cotizacionCtrl.getCondicion);
 
 //misCotizaciones
 userRoutes.post('/misCotizaciones/:id', verificaToken, cotizacionCtrl.misCotizaciones);
+
+
+userRoutes.post('/asignarVendedor/:id', verificaToken, cotizacionCtrl.asignarVendedor);
+
+userRoutes.post('/asignarEstado/:id', verificaToken, cotizacionCtrl.asignarEstado);
+
+userRoutes.post('/getDatosCotizacion/:id', verificaToken, cotizacionCtrl.getDatosCotizacion);
 
 export default userRoutes;

@@ -9,6 +9,12 @@ import productoRoutes from './routes/producto';
 import archivoProductoRoutes from './routes/archivoProducto';
 import clienteRoutes from './routes/cliente';
 import cotizacionRoutes from './routes/cotizacion';
+
+import tipoCotizacionRoutes from './routes/tipoCotizacion';
+import estadoCotizacionRoutes from './routes/estadoCotizacion';
+import validezCotizacionRoutes from './routes/validezCotizacion';
+import condicionCotizacionRoutes from './routes/condicionCotizacion';
+
 const server = new Server();
 
 // Configurar cabeceras y cors
@@ -36,6 +42,11 @@ server.app.use('/producto', productoRoutes );
 server.app.use('/archivoProducto', archivoProductoRoutes );
 server.app.use('/cliente', clienteRoutes );
 server.app.use('/cotizacion', cotizacionRoutes );
+
+server.app.use('/tipoCotizacion', tipoCotizacionRoutes );
+server.app.use('/estadoCotizacion', estadoCotizacionRoutes );
+server.app.use('/condicionCotizacion', condicionCotizacionRoutes );
+server.app.use('/validezCotizacion', validezCotizacionRoutes );
 // Levantar express
 server.start( () => {
     console.log(`Servidor corriendo en puerto ${ server.port }`);

@@ -125,13 +125,13 @@ class UsuarioCtrl {
     }
 
 
-    public login(req: Request, res: Response) {
+      public login(req: Request, res: Response) {
         const condicion = {
             LOGIN_USUA: req.body.usuario
         };
         const CLAVE_USUA = req.body.clave;
 
-        MySQL.consultarTabla(UsuarioCtrl.tabla, condicion, (err: any, data: any[]) => {
+        MySQL.consultarTabla(UsuarioCtrl.tabla, condicion, async (err: any, data: any[]) => {
             if (err) {
                 res.status(400).json({
                     error: true,
@@ -145,6 +145,124 @@ class UsuarioCtrl {
                         COD_USUA: data[0].COD_USUA,
                         LOGIN_USUA: data[0].LOGIN_USUA
                     });
+
+
+                    ////menu
+                    const COD_PERF= data[0].COD_PERF;
+
+                    const querySistema = `SELECT * FROM perfil_opcion a inner join opcion b on a.COD_OPCI= b.COD_OPCI where b.OPC_COD_OPCI= 1 and a.COD_PERF=${COD_PERF}`;
+                    const queryProductos =  `SELECT * FROM perfil_opcion a inner join opcion b on a.COD_OPCI= b.COD_OPCI where b.OPC_COD_OPCI= 2 and a.COD_PERF=${COD_PERF}`;
+                    const queryCotizacion =  `SELECT * FROM perfil_opcion a inner join opcion b on a.COD_OPCI= b.COD_OPCI where b.OPC_COD_OPCI= 3 and a.COD_PERF=${COD_PERF}`;
+            
+                    let menuOpciones: any = [];
+            
+                    let listSistema: any = await new Promise(resolve => {
+                        MySQL.consultar(querySistema, (err: any, data: Object[]) => {
+                            if (data !== null) {
+                                const resul: any = data;
+                                resolve(resul);
+                            }
+                            else {
+                                resolve(null);
+                            }
+                        });
+                    });
+            
+            
+                    let listProductos: any = await new Promise(resolve => {
+                        MySQL.consultar(queryProductos, (err: any, data: Object[]) => {
+                            if (data !== null) {
+                                const resul: any = data;
+                                resolve(resul);
+                            }
+                            else {
+                                resolve(null);
+                            }
+                        });
+                    });
+            
+            
+                    let listCotizacion: any = await new Promise(resolve => {
+                        MySQL.consultar(queryCotizacion, (err: any, data: Object[]) => {
+                            if (data !== null) {
+                                const resul: any = data;
+                                resolve(resul);
+                            }
+                            else {
+                                resolve(null);
+                            }
+                        });
+                    });
+            
+            
+                    //Arma array de respuesta para el menú
+                    if (listSistema) {
+                        let child = [];
+                        for (let actual of listSistema) {
+                            const resul: any = actual;
+                            let aux1: any = {
+                                label: resul.NOMBRE_OPCI,
+                                icon: resul.ICONO_OPCI,
+                                path: resul.PATH_OPCI,
+                                command: null,
+                            }
+                            child.push(aux1);
+                        }
+                        let menu = {
+                            label: 'SISTEMA',
+                            icon: '',
+                            expanded: true,
+                            items: child
+                        }
+                        menuOpciones.push(menu);
+                    }
+            
+                    if (listProductos) {
+                        let child = [];
+                        for (let actual of listProductos) {
+                            const resul: any = actual;
+                            let aux1: any = {
+                                label: resul.NOMBRE_OPCI,
+                                icon: resul.ICONO_OPCI,
+                                path: resul.PATH_OPCI,
+                                command: null,
+                            }
+                            child.push(aux1);
+                        }
+                        let menu = {
+                            label: 'PRODUCTOS',
+                            icon: '',
+                            expanded: true,
+                            items: child
+                        }
+                        menuOpciones.push(menu);
+                    }
+            
+                    if (listCotizacion) {
+                        let child = [];
+                        for (let actual of listCotizacion) {
+                            const resul: any = actual;
+                            let aux1: any = {
+                                label: resul.NOMBRE_OPCI,
+                                icon: resul.ICONO_OPCI,
+                                path: resul.PATH_OPCI,
+                                command: null,
+                            }
+                            child.push(aux1);
+                        }
+                        let menu = {
+                            label: 'COTIZACIONES',
+                            icon: '',
+                            expanded: true,
+                            items: child
+                        }
+                        menuOpciones.push(menu);
+                    }
+
+
+                    ////
+
+
                     res.json({
                         error: false,
                         token: tokenUser,
@@ -156,6 +274,7 @@ class UsuarioCtrl {
                             CORREO_USUA: data[0].CORREO_USUA,
                             TELEFONO_USUA: data[0].TELEFONO_USUA,
                             AVATAR_USUA: data[0].AVATAR_USUA,
+                            MENU: menuOpciones,
                         }
                     });
                 } else {
@@ -180,6 +299,28 @@ class UsuarioCtrl {
         res.json({
             error: false,
             datos: usuario
+        });
+    }
+
+
+
+    public getVendedores(req: Request, res: Response) {
+        const query = `SELECT COD_USUA,NOMBRE_USUA,LOGIN_USUA,NOMBRE_PERF,CORREO_USUA,TELEFONO_USUA,ACTIVO_USUA 
+        FROM ${UsuarioCtrl.tabla} a 
+        INNER JOIN PERFIL b on a.COD_PERF = b.COD_PERF 
+        WHERE a.COD_PERF = 2
+        ORDER BY NOMBRE_USUA`;
+        MySQL.consultar(query, (err: any, data: Object[]) => {
+            if (err) {
+                res.status(400).json({
+                    error: true,
+                    mensaje: err
+                });
+            }
+            res.json({
+                error: false,
+                datos: data
+            });
         });
     }
 

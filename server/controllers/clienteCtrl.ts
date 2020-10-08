@@ -30,23 +30,15 @@ class ClienteCtrl {
         MySQL.buscarPorId(ClienteCtrl.tabla, id, (err: any, data: Object[]) => {
             if (err) {
                 res.status(400).json({
-                    ok: false,
-                    error: err
+                    error: true,
+                    mensaje: err
                 });
             }
-            if (data !== null) {
-                res.json({
-                    ok: true,
-                    data: data
-                });
-            }
-            else {
-                res.json({
-                    ok: true,
-                    data: null,
-                    error: 'No existen registros'
-                });
-            }
+            res.json({
+                error: false,
+                datos: data
+            });
+
         });
     }
 
@@ -104,8 +96,7 @@ class ClienteCtrl {
             CORREO_CLIE: req.body.CORREO_CLIE,
             TELEFONO_CLIE: req.body.TELEFONO_CLIE,
             DIRECCION_CLIE: req.body.DIRECCION_CLIE,
-            LONGITUD_CLIE: req.body.LONGITUD_CLIE,
-            LATITUD_CLIE: req.body.LATITUD_CLIE,
+            COORDENADAS_CLIE: req.body.COORDENADAS_CLIE
         };
         const condiciones = {
             COD_CLIE: req.params.id

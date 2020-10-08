@@ -8,15 +8,15 @@ const userRoutes = Router();
 userRoutes.post('/crear', verificaToken, unidadMedidaCtrl.crear);
 
 // Eliminar
-userRoutes.delete('/eliminar/:id', verificaToken, unidadMedidaCtrl.eliminar);
+userRoutes.post('/eliminar/:id', verificaToken, unidadMedidaCtrl.eliminar);
 
 // Actualizar
-userRoutes.put('/actualizar/:id', verificaToken, unidadMedidaCtrl.actualizar);
+userRoutes.post('/actualizar/:id', verificaToken, unidadMedidaCtrl.actualizar);
 
 //Listar
-userRoutes.get('/listar', verificaToken, unidadMedidaCtrl.listar);
+userRoutes.post('/listar', verificaToken, unidadMedidaCtrl.listar);
 
 //Buscar por Id
-userRoutes.get('/buscarPorId/:id', verificaToken, unidadMedidaCtrl.buscarPorId);
+userRoutes.post('/buscarPorId/:id', verificaToken, unidadMedidaCtrl.buscarPorId);
 
 export default userRoutes;

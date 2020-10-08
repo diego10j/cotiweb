@@ -43,15 +43,19 @@ export default class MySQL {
      */
     static consultar(sql: string, callback: Function) {
         this.instance.conexion.query(sql, (err, results: Object[], fields) => {
-            if (err) {
-                console.log("Error al ejecutar : " + err);
-                return callback(err);
-            }
-            if (results.length === 0) {
-                callback(null, null);
-            }
-            else {
-                callback(null, results);
+            try {
+                if (err) {
+                    console.log("Error al ejecutar : " + err);
+                    return callback(err);
+                }
+                if (results.length === 0) {
+                    callback(null, null);
+                }
+                else {
+                    callback(null, results);
+                }
+            } catch (error) {
+                console.error(error);
             }
         });
     }
@@ -65,15 +69,20 @@ export default class MySQL {
     static consultarTabla(tabla: string, condiciones: any, callback: Function) {
         const query = `SELECT * FROM ${tabla} WHERE ?`;
         this.instance.conexion.query(query, condiciones, (err, results: Object[], fields) => {
-            if (err) {
-                console.log("Error al consultarTabla : " + err);
-                return callback(err);
-            }
-            if (results.length === 0) {
-                callback(null, null);
-            }
-            else {
-                callback(null, results);
+
+            try {
+                if (err) {
+                    console.log("Error al consultarTabla : " + err);
+                    return callback(err);
+                }
+                if (results.length === 0) {
+                    callback(null, null);
+                }
+                else {
+                    callback(null, results);
+                }
+            } catch (error) {
+                console.error(error);
             }
         });
     }
@@ -87,11 +96,16 @@ export default class MySQL {
     static insertar(tabla: string, campos: any, callback: Function) {
         const query = `INSERT INTO ${tabla} SET ?`;
         this.instance.conexion.query(query, campos, (err, results, fields) => {
-            if (err) {
-                console.log("Error al insertar : " + err);
-                return callback(err);
+            try {
+
+                if (err) {
+                    console.log("Error al insertar : " + err);
+                    return callback(err);
+                }
+                callback(null, results.insertId);
+            } catch (error) {
+                console.error(error);
             }
-            callback(null, results.insertId);
         });
     }
 
@@ -104,11 +118,16 @@ export default class MySQL {
     static eliminar(tabla: string, condiciones: any, callback: Function) {
         const query = `DELETE  FROM ${tabla} WHERE ?`;
         this.instance.conexion.query(query, condiciones, (err, results, fields) => {
-            if (err) {
-                console.log("Error al insertar : " + err);
-                return callback(err);
+            try {
+                if (err) {
+                    console.log("Error al eliminar : " + err);
+                    return callback(err);
+                }
+                callback(null, results.affectedRows);
+            } catch (error) {
+                console.error(error);
             }
-                callback(null, results.affectedRows);            
+
         });
     }
 
@@ -123,11 +142,15 @@ export default class MySQL {
         let query = `UPDATE ${tabla} SET ? WHERE ?`;
         let data = [campos, condiciones];
         this.instance.conexion.query(query, data, (err, results, fields) => {
-            if (err) {
-                console.log("Error al insertar : " + err);
-                return callback(err);
+            try {
+                if (err) {
+                    console.log("Error al actualizar : " + err);
+                    return callback(err);
+                }
+                callback(null, results.changedRows);
+            } catch (error) {
+                console.error(error);
             }
-            callback(null, results.changedRows);
         });
     }
 
@@ -140,16 +163,21 @@ export default class MySQL {
     static buscarPorId(tabla: string, condicion: any, callback: Function) {
         const sql = `SELECT * FROM ${tabla} WHERE ?`;
         this.instance.conexion.query(sql, condicion, (err, results: Object[], fields) => {
-            if (err) {
-                console.log("Error al ejecutar : " + err);
-                return callback(err);
-            }
+            try {
+                if (err) {
+                    console.log("Error al ejecutar : " + err);
+                    return callback(err);
+                }
 
-            if (results.length === 0) {
-                callback(null, null);
-            }
-            else {
-                callback(null, results[0]);
+                if (results.length === 0) {
+                    callback(null, null);
+                }
+                else {
+                    callback(null, results[0]);
+                }
+            } catch (error) {
+                console.error(error);
+
             }
         });
     }
@@ -159,15 +187,18 @@ export default class MySQL {
      */
     private conectarDB() {
         this.conexion.connect((err: mysql.MysqlError) => {
+            try {
 
-            if (err) {
-                console.log(err.message);
-                return;
+                if (err) {
+                    console.log(err.message);
+                    return;
+                }
+
+                this.isConectado = true;
+                console.log('Base de datos MySQL online!');
+            } catch (error) {
+                console.error(error);
             }
-
-            this.isConectado = true;
-            console.log('Base de datos MySQL online!');
-
         });
     }
 

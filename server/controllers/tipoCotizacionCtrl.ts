@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 import MySQL from '../mysql/mysql';
 
 
-class UnidadMedidaCtrl {
+class TipoCotizacionCtrl {
 
-    public static tabla: string = 'UNIDAD_MEDIDA';
+    public static tabla :string='TIPO_COTIZACION';
 
     public listar(req: Request, res: Response) {
-        const query = `SELECT * FROM ${UnidadMedidaCtrl.tabla}`;
+        const query = `SELECT * FROM ${TipoCotizacionCtrl.tabla}`;
         MySQL.consultar(query, (err: any, data: Object[]) => {
             if (err) {
                 res.status(400).json({
@@ -25,9 +25,9 @@ class UnidadMedidaCtrl {
 
     public buscarPorId(req: Request, res: Response) {
         const id = {
-            COD_UNID: req.params.id
+            COD_TICO: req.params.id
         };
-        MySQL.buscarPorId(UnidadMedidaCtrl.tabla, id, (err: any, data: Object[]) => {
+        MySQL.buscarPorId(TipoCotizacionCtrl.tabla, id, (err: any, data: Object[]) => {
             if (err) {
                 res.status(400).json({
                     error: true,
@@ -45,11 +45,10 @@ class UnidadMedidaCtrl {
 
     public crear(req: Request, res: Response) {
         const campos = {
-            NOMBRE_UNID: req.body.NOMBRE_UNID,
-            SIMBOLO_UNID: req.body.SIMBOLO_UNID,
-            ACTIVO_UNID: true
+            NOMBRE_TICO: req.body.NOMBRE_TICO,
+            ACTIVO_TICO: true
         };
-        MySQL.insertar(UnidadMedidaCtrl.tabla, campos, (err: any, insertId: any) => {
+        MySQL.insertar(TipoCotizacionCtrl.tabla, campos, (err: any, insertId: any) => {
             if (err) {
                 res.status(400).json({
                     error: true,
@@ -67,9 +66,9 @@ class UnidadMedidaCtrl {
 
     public eliminar(req: Request, res: Response) {
         const condiciones = {
-            COD_UNID: req.params.id
+            COD_TICO: req.params.id
         };
-        MySQL.eliminar(UnidadMedidaCtrl.tabla, condiciones, (err: any, affectedRows: any) => {
+        MySQL.eliminar(TipoCotizacionCtrl.tabla, condiciones, (err: any, affectedRows: any) => {
             if (err) {
                 res.status(400).json({
                     error: true,
@@ -87,14 +86,13 @@ class UnidadMedidaCtrl {
 
     public actualizar(req: Request, res: Response) {
         const campos = {
-            NOMBRE_UNID: req.body.NOMBRE_UNID,
-            SIMBOLO_UNID: req.body.SIMBOLO_UNID,
-            ACTIVO_UNID: req.body.ACTIVO_UNID
+            NOMBRE_TICO: req.body.NOMBRE_TICO,
+            ACTIVO_TICO: req.body.ACTIVO_TICO,
         };
         const condiciones = {
-            COD_UNID: req.params.id
+            COD_TICO: req.params.id
         };
-        MySQL.actualizar(UnidadMedidaCtrl.tabla, campos, condiciones, (err: any, changedRows: any) => {
+        MySQL.actualizar(TipoCotizacionCtrl.tabla, campos, condiciones, (err: any, changedRows: any) => {
             if (err) {
                 res.status(400).json({
                     error: true,
@@ -111,5 +109,5 @@ class UnidadMedidaCtrl {
     }
 }
 
-const unidadMedidaCtrl = new UnidadMedidaCtrl();
-export default unidadMedidaCtrl;
+const tipoCotizacionCtrl = new TipoCotizacionCtrl();
+export default tipoCotizacionCtrl;

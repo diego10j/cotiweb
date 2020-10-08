@@ -25,4 +25,7 @@ userRoutes.post('/buscarPorId/:id', verificaToken, usuarioCtrl.buscarPorId);
 //Retorna datos del usuario que se encuentran en el token
 userRoutes.post('/verificaToken', verificaToken, usuarioCtrl.verificaToken);
 
+//getVendedores
+userRoutes.post('/getVendedores', verificaToken, usuarioCtrl.getVendedores);
+
 export default userRoutes;

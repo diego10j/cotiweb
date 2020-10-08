@@ -12,7 +12,8 @@ class TipoProductoCtrl {
             if (err) {
                 res.status(400).json({
                     error: true,
-                    mensaje: err
+                    mensaje: err.sqlMessage,
+                    detalle: err
                 });
             }
             res.json({
@@ -29,23 +30,15 @@ class TipoProductoCtrl {
         MySQL.buscarPorId(TipoProductoCtrl.tabla, id, (err: any, data: Object[]) => {
             if (err) {
                 res.status(400).json({
-                    ok: false,
-                    error: err
+                    error: true,
+                    mensaje: err.sqlMessage,
+                    detalle: err
                 });
             }
-            if (data !== null) {
-                res.json({
-                    ok: true,
-                    data: data
-                });
-            }
-            else {
-                res.json({
-                    ok: true,
-                    data: null,
-                    error: 'No existen registros'
-                });
-            }
+            res.json({
+                error: false,
+                datos: data
+            });
         });
     }
 
@@ -53,22 +46,21 @@ class TipoProductoCtrl {
     public crear(req: Request, res: Response) {
         const campos = {
             NOMBRE_TIPR: req.body.NOMBRE_TIPR,
-            DESCRIPCION_TPR: req.body.DESCRIPCION_TPR,
+            DESCRIPCION_TIPR: req.body.DESCRIPCION_TIPR,
             ACTIVO_TIPR: true
         };
         MySQL.insertar(TipoProductoCtrl.tabla, campos, (err: any, insertId: any) => {
             if (err) {
                 res.status(400).json({
-                    ok: false,
-                    error: err
+                    error: true,
+                    mensaje: err.sqlMessage,
+                    detalle: err
                 });
             }
-            else {
-                res.json({
-                    ok: true,
-                    insertId: insertId
-                });
-            }
+            res.json({
+                error: false,
+                insertId: insertId
+            });
         });
     }
 
@@ -80,16 +72,16 @@ class TipoProductoCtrl {
         MySQL.eliminar(TipoProductoCtrl.tabla, condiciones, (err: any, affectedRows: any) => {
             if (err) {
                 res.status(400).json({
-                    ok: false,
-                    error: err
+                    error: true,
+                    mensaje: err.sqlMessage,
+                    detalle: err
                 });
             }
-            else {
-                res.json({
-                    ok: true,
-                    affectedRows: affectedRows
-                });
-            }
+
+            res.json({
+                error: false,
+                affectedRows: affectedRows
+            });
         });
     }
 
@@ -105,16 +97,16 @@ class TipoProductoCtrl {
         MySQL.actualizar(TipoProductoCtrl.tabla, campos, condiciones, (err: any, changedRows: any) => {
             if (err) {
                 res.status(400).json({
-                    ok: false,
-                    error: err
+                    error: true,
+                    mensaje: err.sqlMessage,
+                    detalle: err
                 });
             }
-            else {
-                res.json({
-                    ok: true,
-                    changedRows: changedRows
-                });
-            }
+
+            res.json({
+                error: false,
+                changedRows: changedRows
+            });
         });
     }
 }

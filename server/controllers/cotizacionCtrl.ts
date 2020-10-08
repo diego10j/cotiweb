@@ -7,8 +7,8 @@ class CotizacionCtrl {
     public static tabla: string = 'CAB_COTIZACION';
 
     public listar(req: Request, res: Response) {
-        const query = `SELECT a.COD_CABC,a.SECUENCIAL_CABC,c.NOMBRE_ESCO,a.FECHA_CABC,b.NOMBRES_CLIE,b.CORREO_CLIE,b.TELEFONO_CLIE,d.NOMBRE_TICO,
-        f.NOMBRE_VACO, e.NOMBRE_COCO, a.SUBTOTAL_CABC,a.SUBTOTAL0_CABC,a.IVA_CABC,a.TOTAL_CABC,g.NOMBRE_USUA
+        const query = `SELECT a.COD_CABC,a.SECUENCIAL_CABC,c.NOMBRE_ESCO,a.FECHA_CABC,b.NOMBRES_CLIE,CORREO_CABC,b.TELEFONO_CLIE,d.NOMBRE_TICO,
+        f.NOMBRE_VACO, e.NOMBRE_COCO, a.SUBTOTAL_CABC,a.SUBTOTAL0_CABC,a.IVA_CABC,a.TOTAL_CABC,g.NOMBRE_USUA, a.COD_ESCO,a.COD_USUA
         FROM ${CotizacionCtrl.tabla}  a
         INNER join cliente b on a.COD_CLIE = b.COD_CLIE
         left join estado_cotizacion c on a.COD_ESCO = c.COD_ESCO
@@ -27,6 +27,33 @@ class CotizacionCtrl {
             res.json({
                 error: false,
                 datos: data
+            });
+        });
+    }
+
+    public getDatosCotizacion(req: Request, res: Response) {
+        const COD_CABC = req.params.id;
+        const query = `SELECT a.COD_CABC,a.SECUENCIAL_CABC,c.NOMBRE_ESCO,a.FECHA_CABC,b.NOMBRES_CLIE,CORREO_CABC,b.TELEFONO_CLIE,d.NOMBRE_TICO,
+        f.NOMBRE_VACO, e.NOMBRE_COCO, a.SUBTOTAL_CABC,a.SUBTOTAL0_CABC,a.IVA_CABC,a.TOTAL_CABC,g.NOMBRE_USUA, a.COD_ESCO,a.COD_USUA,IDENTIFICACION_CLIE,DIRECCION_CABC
+        FROM ${CotizacionCtrl.tabla}  a
+        INNER join cliente b on a.COD_CLIE = b.COD_CLIE
+        left join estado_cotizacion c on a.COD_ESCO = c.COD_ESCO
+        inner join tipo_cotizacion d on a.COD_TICO = d.COD_TICO
+        left JOIN condicion_cotizacion e on a.COD_COCO = e.COD_COCO
+        left JOIN validez_cotizacion f on a.COD_VACO = f.COD_VACO
+        left join usuario g on a.COD_USUA = g.COD_USUA
+        WHERE a.COD_CABC  = ${COD_CABC}
+        order by a.COD_CABC desc`;
+        MySQL.consultar(query, (err: any, data: Object[]) => {
+            if (err) {
+                res.status(400).json({
+                    error: true,
+                    mensaje: err
+                });
+            }
+            res.json({
+                error: false,
+                datos: data[0]
             });
         });
     }
@@ -101,7 +128,7 @@ class CotizacionCtrl {
 
     public buscarPorId(req: Request, res: Response) {
         const COD_CABC = req.params.id;
-        const query = `SELECT a.*,h.*,NOMBRE_PROD,NOMBRE_UNID
+        const query = `SELECT a.*,h.*,NOMBRE_PROD,NOMBRE_UNID,DATE_FORMAT(a.FECHA_CABC,'%Y/%m/%d') as FECHA_CABC
         FROM det_cotizacion h
         inner join cab_cotizacion a on a.COD_CABC = h.COD_CABC
         inner join producto b on h.COD_PROD=b.COD_PROD
@@ -124,7 +151,7 @@ class CotizacionCtrl {
     }
 
 
-    public async crear(req: Request, res: Response) {
+    public async crearDesdePortal(req: Request, res: Response) {
         //Insreta o actualiza el cliente
         const correo_clie: string = MySQL.escape(req.body.CORREO_CLIE);
         //Valida si el correo electrónico del cliente ya existe en la base de datos
@@ -170,7 +197,7 @@ class CotizacionCtrl {
         //console.log(cod_clie + ' cod_clie  ');
         //Inserta la cabecera de la cotizacion
         let cod_cabc = null;
-        let fecha_actual = new Date().toISOString().slice(0, 10)
+        let fecha_actual = new Date().toISOString().slice(0, 10);
         const camposCabecera = {
             COD_ESCO: 1, //ingresado
             COD_TICO: 1, //portal web
@@ -179,7 +206,7 @@ class CotizacionCtrl {
             CORREO_CABC: req.body.CORREO_CLIE,
             DIRECCION_CABC: req.body.DIRECCION_CLIE,
             FECHA_CREA: fecha_actual,
-            USUARIO_CREA: 'sa'
+            USUARIO_CREA: 'usuario',
         };
         // console.log(campos);
         cod_cabc = await new Promise(resolve => {
@@ -199,10 +226,10 @@ class CotizacionCtrl {
         for (let actual in detalles) {
             let fila: any = detalles[actual];
             const camposDetalle = {
-                COD_PROD: fila.codigo, 
-                COD_UNID: fila.codigo_unidad, 
-                CANTIDAD_DECO: fila.cantidad, 
-                COD_CABC: cod_cabc, 
+                COD_PROD: fila.codigo,
+                COD_UNID: fila.codigo_unidad,
+                CANTIDAD_DECO: fila.cantidad,
+                COD_CABC: cod_cabc,
             };
             await new Promise(resolve => {
                 MySQL.insertar('DET_COTIZACION', camposDetalle, (err: any, insertId: any) => {
@@ -245,43 +272,70 @@ class CotizacionCtrl {
         });
     }
 
-    public actualizar(req: Request, res: Response) {
+    public async actualizar(req: Request, res: Response) {
 
-        
-       
-        //Inserta la cabecera de la cotizacion
-        let cod_cabc = req.body.COD_CABC;
-        let fecha_actual = new Date().toISOString().slice(0, 10)
-        const camposCabecera = {
-            COD_ESCO: 1, //ingresado
-            COD_TICO: 1, //portal web
-            COD_CLIE: cod_clie,
-            FECHA_CABC: fecha_actual, // fecha actual           
-            CORREO_CABC: req.body.CORREO_CLIE,
-            DIRECCION_CABC: req.body.DIRECCION_CLIE,
-            FECHA_CREA: fecha_actual,
-            USUARIO_CREA: 'sa'
+        const condicion = {
+            COD_CABC: req.params.id
         };
-        // console.log(campos);
-            MySQL.insertar('CAB_COTIZACION', camposCabecera, (err: any, insertId: any) => {
+        //Elimina detalles existentes
+        await new Promise(resolve => {
+            MySQL.eliminar('DET_COTIZACION', condicion, (err: any, affectedRows: any) => {
                 if (err) {
                     res.status(400).json({
                         error: true,
-                        mensaje: 'Error al crear cabecera de la cotización: ' + err
+                        mensaje: err.sqlMessage,
+                        detalle: err
                     });
                 }
+                resolve(affectedRows);
             });
+        });
+   
+        //cabecera de la cotizacion
+        let fecha_actual = new Date().toISOString().slice(0, 10);
+        const camposCabecera = {
+            COD_ESCO: req.body.COD_ESCO,
+            COD_TICO: req.body.COD_TICO,
+            COD_CLIE: req.body.COD_CLIE,
+            COD_COCO: req.body.COD_COCO,
+            COD_VACO: req.body.COD_VACO,
+            COD_USUA: req.body.COD_USUA,
+            FECHA_CABC: req.body.FECHA_CABC,
+            CORREO_CABC: req.body.CORREO_CABC,
+            DIRECCION_CABC: req.body.DIRECCION_CABC,
+            SUBTOTAL_CABC: req.body.SUBTOTAL_CABC,
+            SUBTOTAL0_CABC: req.body.SUBTOTAL0_CABC,
+            IVA_CABC: req.body.IVA_CABC,
+            TOTAL_CABC: req.body.TOTAL_CABC,
+            ENVIADA_CABC: req.body.ENVIADA_CABC,
+            FECHA_MOD: fecha_actual,
+            USUARIO_MOD: req.body.USUARIO_MOD,
+        };
 
-        //console.log(cod_cabc + ' cod_cabc  ');
+      
+        // console.log(campos);
+        MySQL.actualizar('CAB_COTIZACION', camposCabecera, condicion, (err: any, insertId: any) => {
+            if (err) {
+                res.status(400).json({
+                    error: true,
+                    mensaje: 'Error al crear cabecera de la cotización: ' + err
+                });
+            }
+        });
+    
         //DETALLES
         let detalles = req.body.DETALLES;
+     
         for (let actual in detalles) {
             let fila: any = detalles[actual];
             const camposDetalle = {
-                COD_PROD: fila.codigo, 
-                COD_UNID: fila.codigo_unidad, 
-                CANTIDAD_DECO: fila.cantidad, 
-                COD_CABC: cod_cabc, 
+                COD_PROD: fila.COD_PROD,
+                COD_UNID: fila.COD_UNID,
+                CANTIDAD_DECO: fila.CANTIDAD_DECO,
+                PRECIO_DECO: fila.PRECIO_DECO,
+                TOTAL_DECO: fila.TOTAL_DECO,
+                IVA_DECO: fila.IVA_DECO,
+                COD_CABC: req.params.id,
             };
             await new Promise(resolve => {
                 MySQL.insertar('DET_COTIZACION', camposDetalle, (err: any, insertId: any) => {
@@ -298,19 +352,90 @@ class CotizacionCtrl {
         }
         res.json({
             error: false,
-            cod_clie: cod_clie,
-            cod_cabc: cod_cabc
+            cod_clie: 1,
+            cod_cabc: req.params.id
         });
 
     }
 
 
 
-//MIS COTIZACIONES
-public misCotizaciones(req: Request, res: Response) {
-    const COD_USUA = req.params.id;
-    const query = `SELECT a.COD_CABC,a.SECUENCIAL_CABC,c.NOMBRE_ESCO,a.FECHA_CABC,b.NOMBRES_CLIE,b.CORREO_CLIE,b.TELEFONO_CLIE,d.NOMBRE_TICO,
-    f.NOMBRE_VACO, e.NOMBRE_COCO, a.SUBTOTAL_CABC,a.SUBTOTAL0_CABC,a.IVA_CABC,a.TOTAL_CABC,g.NOMBRE_USUA
+    public async crear(req: Request, res: Response) {
+
+        //cabecera de la cotizacion
+        let fecha_actual = new Date().toISOString().slice(0, 10);
+        const camposCabecera = {
+            COD_ESCO: req.body.COD_ESCO,
+            COD_TICO: req.body.COD_TICO,
+            COD_CLIE: req.body.COD_CLIE,
+            COD_COCO: req.body.COD_COCO,
+            COD_VACO: req.body.COD_VACO,
+            COD_USUA: req.body.COD_USUA,
+            FECHA_CABC: req.body.FECHA_CABC,
+            CORREO_CABC: req.body.CORREO_CABC,
+            DIRECCION_CABC: req.body.DIRECCION_CABC,
+            SUBTOTAL_CABC: req.body.SUBTOTAL_CABC,
+            SUBTOTAL0_CABC: req.body.SUBTOTAL0_CABC,
+            IVA_CABC: req.body.IVA_CABC,
+            TOTAL_CABC: req.body.TOTAL_CABC,
+            ENVIADA_CABC: req.body.ENVIADA_CABC,
+            FECHA_CREA: fecha_actual,
+            USUARIO_CREA: req.body.USUARIO_CREA,
+        };
+        // console.log(campos);
+        let cod_cabc = await new Promise(resolve => {
+            MySQL.insertar('CAB_COTIZACION', camposCabecera, (err: any, insertId: any) => {
+                if (err) {
+                    res.status(400).json({
+                        error: true,
+                        mensaje: 'Error al crear cabecera de la cotización: ' + err
+                    });
+                }
+                resolve(insertId);
+            });
+        });
+
+        //console.log(cod_cabc + ' cod_cabc  ');
+        //DETALLES
+        let detalles = req.body.DETALLES;
+        for (let actual in detalles) {
+            let fila: any = detalles[actual];
+            const camposDetalle = {
+                COD_PROD: fila.codigo,
+                COD_UNID: fila.codigo_unidad,
+                CANTIDAD_DECO: fila.cantidad,
+                PRECIO_DECO: fila.precio,
+                TOTAL_DECO: fila.total,
+                IVA_DECO: fila.iva,
+                COD_CABC: cod_cabc,
+            };
+            await new Promise(resolve => {
+                MySQL.insertar('DET_COTIZACION', camposDetalle, (err: any, insertId: any) => {
+                    if (err) {
+                        res.status(400).json({
+                            error: true,
+                            mensaje: 'Error al crear detalle de la cotización: ' + err
+                        });
+                    }
+                    resolve(insertId);
+                });
+            });
+
+        }
+        res.json({
+            error: false,
+            cod_clie: 1,
+            cod_cabc: cod_cabc
+        });
+
+    }
+
+
+    //MIS COTIZACIONES
+    public misCotizaciones(req: Request, res: Response) {
+        const COD_USUA = req.params.id;
+        const query = `SELECT a.COD_CABC,a.SECUENCIAL_CABC,c.NOMBRE_ESCO,a.FECHA_CABC,b.NOMBRES_CLIE,CORREO_CABC,b.TELEFONO_CLIE,d.NOMBRE_TICO,
+    f.NOMBRE_VACO, e.NOMBRE_COCO, a.SUBTOTAL_CABC,a.SUBTOTAL0_CABC,a.IVA_CABC,a.TOTAL_CABC,g.NOMBRE_USUA,a.COD_ESCO 
     FROM ${CotizacionCtrl.tabla}  a
     INNER join cliente b on a.COD_CLIE = b.COD_CLIE
     left join estado_cotizacion c on a.COD_ESCO = c.COD_ESCO
@@ -320,25 +445,67 @@ public misCotizaciones(req: Request, res: Response) {
     inner join usuario g on a.COD_USUA = g.COD_USUA
     where a.COD_USUA =  ${COD_USUA}  
     order by a.COD_CABC desc`;
-    MySQL.consultar(query, (err: any, data: Object[]) => {
-        if (err) {
-            res.status(400).json({
-                error: true,
-                mensaje: err
+        MySQL.consultar(query, (err: any, data: Object[]) => {
+            if (err) {
+                res.status(400).json({
+                    error: true,
+                    mensaje: err
+                });
+            }
+            res.json({
+                error: false,
+                datos: data
             });
-        }
-        res.json({
-            error: false,
-            datos: data
         });
-    });
+    }
+
+
+    public async asignarVendedor(req: Request, res: Response) {
+        const condicion = {
+            COD_CABC: req.params.id
+        };
+        const camposCabecera = {
+            COD_USUA: req.body.COD_USUA,
+            COD_ESCO: 2,
+        };
+        // console.log(campos);
+        MySQL.actualizar('CAB_COTIZACION', camposCabecera, condicion, (err: any, changedRows: any) => {
+            if (err) {
+                res.status(400).json({
+                    error: true,
+                    mensaje: err
+                });
+            }
+            res.json({
+                error: false,
+                changedRows: changedRows
+            });
+        });
+    }
+
+    public async asignarEstado(req: Request, res: Response) {
+        const condicion = {
+            COD_CABC: req.params.id
+        };
+        const camposCabecera = {
+            COD_ESCO: req.body.COD_ESCO,
+        };
+        // console.log(campos);
+        MySQL.actualizar('CAB_COTIZACION', camposCabecera, condicion, (err: any, changedRows: any) => {
+            if (err) {
+                res.status(400).json({
+                    error: true,
+                    mensaje: err
+                });
+            }
+            res.json({
+                error: false,
+                changedRows: changedRows
+            });
+        });
+    }
+
 }
-
-
-
-}
-
-
 
 
 

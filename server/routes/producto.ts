@@ -17,9 +17,12 @@ userRoutes.post('/actualizar/:id', verificaToken, productoCtrl.actualizar);
 userRoutes.post('/listar', verificaToken, productoCtrl.listar);
 
 //Buscar por Id
-userRoutes.post('/buscarPorId/:id', verificaToken, productoCtrl.buscarPorId);
+userRoutes.post('/buscarPorId/:id', productoCtrl.buscarPorId);
 
 //getProductosPorTipo
-userRoutes.post('/getProductosPorTipo', verificaToken, productoCtrl.getProductosPorTipo);
+userRoutes.post('/getProductosPorCategoria', productoCtrl.getProductosPorCategoria);
+
+userRoutes.post('/getCategoriasProducto/:id', productoCtrl.getCategoriasProducto);
+
 
 export default userRoutes;

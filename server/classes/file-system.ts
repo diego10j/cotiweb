@@ -53,7 +53,7 @@ export default class FileSystem {
         // Si la imagen existe
         const existe = fs.existsSync(pathFoto);
         if (!existe) {
-            return p.resolve(__dirname, '../assets/svg/400x250.jpg');
+            return p.resolve(__dirname, '../uploads/productos/imagen.svg');
         }
         return pathFoto;
     }

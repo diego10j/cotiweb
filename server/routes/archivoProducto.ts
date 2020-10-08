@@ -25,7 +25,7 @@ userRoutes.get('/buscarPorId/:id', verificaToken, archivoProductoCtrl.buscarPorI
 userRoutes.post('/subirImagen', verificaToken,  archivoProductoCtrl.subirImagen);
 
 // Servicio para subir archivos
-userRoutes.post( '/upload', verificaToken , async (req: any, res: Response) => {
+userRoutes.post( '/upload',  async (req: any, res: Response) => {
     
     if ( !req.files ) {
         return res.status(400).json({
@@ -59,11 +59,11 @@ userRoutes.post( '/upload', verificaToken , async (req: any, res: Response) => {
 
 userRoutes.get('/imagen/:img', (req: any, res: Response) => {
 
-     const img    = req.params.img;
-
+    const img    = req.params.img;
     const pathFoto = fileSystem.getFotoUrl( img );
-
-    res.sendFile( pathFoto );
+    if(pathFoto){
+        res.sendFile( pathFoto );
+    } 
 
 });
 
