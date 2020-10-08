@@ -47,7 +47,9 @@
             <ion-list lines="none" class="transparent">
               <ion-item>
                 <ion-thumbnail slot="start">
-                  <img [src]="fila.IMAGEN_PROD">
+                  <div class="imagen"
+                  [style]="(fila.IMAGEN_PROD  | imagen) | domSanitizer">
+                  </div>
                 </ion-thumbnail>
                 <ion-label text-wrap>
                   <h3>{{ fila.NOMBRE_PROD }}</h3>

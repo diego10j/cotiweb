@@ -54,17 +54,15 @@
             <div class="vertical-padding">
               <ion-grid>
                 <ion-row>
-                  <img src="/assets/svg/producto.svg" alt="Producto" height="256">
+                  <div class="imagen" [style]="(nombreImagen | imagen) | domSanitizer">
+                  </div>
                 </ion-row>
                 <ion-row align-items-center class="ion-padding-top">
                   <ion-col col-12 align-self-center text-center>
-                    <ion-button color="secondary" size="small" [disabled]="ejecutando">Seleccionar Foto</ion-button>
-                    <!-- 
-                      <p-fileUpload mode="basic" url="http://192.168.1.11:3000/archivoProducto/upload" (onUpload)="onBasicUpload($event)"
-                      (onBeforeSend)="onBeforeSend($event)" accept="image/*" auto="auto" maxFileSize="5000000"chooseLabel="Cambiar" 
-                      uploadLabel="Subir" 
-                      cancelLabel="Descartar">
-                    </p-fileUpload>-->
+                    <p-fileUpload mode="basic" accept="image/*" auto="auto" maxFileSize="5000000"
+                      chooseLabel="Seleccionar Foto" uploadLabel="Seleccionar Foto" cancelLabel="Descartar"
+                      customUpload="true" (uploadHandler)="onFileUpload($event)">
+                    </p-fileUpload>
                   </ion-col>
                 </ion-row>
               </ion-grid>
@@ -76,12 +74,12 @@
             <ion-toolbar>
               <ion-title>Categorias del Producto</ion-title>
             </ion-toolbar>
-            <div class="tresColumnas" *ngIf="form.controls.CATEGORIAS.value" >
-              <ion-item  formArrayName="CATEGORIAS" *ngFor="let cat of form.controls.CATEGORIAS.value; let i = index">
+            <div class="tresColumnas" *ngIf="form.controls.CATEGORIAS.value">
+              <ion-item formArrayName="CATEGORIAS" *ngFor="let cat of form.controls.CATEGORIAS.value; let i = index">
                 <ng-container [formGroupName]="i">
                   {{getValorCategoria(i,'NOMBRE_TIPR')}}
-                <ion-checkbox slot="start" formControlName="IS_CHECKED"></ion-checkbox>
-              </ng-container>
+                  <ion-checkbox slot="start" formControlName="IS_CHECKED"></ion-checkbox>
+                </ng-container>
               </ion-item>
             </div>
           </ion-col>
@@ -99,7 +97,7 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-row>
-
+      <br/>
     </ion-card>
   </form>
 </ion-content>

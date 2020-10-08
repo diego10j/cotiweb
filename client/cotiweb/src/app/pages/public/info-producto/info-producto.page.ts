@@ -12,10 +12,11 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class InfoProductoPage {
 
   public respuesta: RestResponse = this.utilitario.getRestResponse();
+  public respuestaCategorias: RestResponse = this.utilitario.getRestResponse();
   public buscando = false;
   public pagina: number;
   public seleccionado: any;
-  public cantidad:number = 0;
+  public cantidad:number = 0.00;
   public numNotificaciones = 0;
   public producto : Producto;
   public isAgregado = false;
@@ -43,11 +44,16 @@ export class InfoProductoPage {
       codigo_unidad: this.respuesta.datos.COD_UNID,
     };
     this.isAgregado= await this.utilitario.existeProductoLista(this.producto);
+    this.respuestaCategorias = await this.consultaCategorias();
     this.buscando = false;
   }
 
   private consulta(): Promise<RestResponse> {
     return this.restService.consultar('producto/buscarPorId/' + this.seleccionado, 1);
+  }
+
+  private consultaCategorias(): Promise<RestResponse> {
+    return this.restService.consultar('producto/getCategoriasProducto/' + this.seleccionado, 1);
   }
 
   async agregarLista(){
@@ -65,6 +71,23 @@ export class InfoProductoPage {
     this.utilitario.agregarMensaje("Agregado","Se agregó el producto a tu lista.")
   }
 
+  async cotizarAhora(){
+    this.producto= {
+      codigo: this.respuesta.datos.COD_PROD,
+      nombre: this.respuesta.datos.NOMBRE_PROD,
+      cantidad: this.cantidad,
+      imagen: this.respuesta.datos.IMAGEN_PROD,
+      unidad: this.respuesta.datos.NOMBRE_UNID,
+      codigo_unidad: this.respuesta.datos.COD_UNID,
+    };
+    await this.utilitario.agregarListaProductos(this.producto);
+    this.numNotificaciones=(await this.utilitario.getListaProductos()).length;
+    this.isAgregado= await this.utilitario.existeProductoLista(this.producto);
+    this.utilitario.abrirPaginaPublica('cotizar');
+  }
+
+
+
   public abrirLista() {
     this.utilitario.abrirPaginaPublica('mi-lista');
   }
@@ -72,5 +95,7 @@ export class InfoProductoPage {
   public abrirCatalogo() {
     this.utilitario.abrirPaginaPublica('catalogo');
   }
+
+
 
 }

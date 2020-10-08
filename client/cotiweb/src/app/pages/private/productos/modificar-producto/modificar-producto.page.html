@@ -58,14 +58,17 @@
             <div class="vertical-padding">
               <ion-grid>
                 <ion-row>
-                  <img src="/assets/svg/producto.svg" alt="Producto" height="256">
+                  <div class="imagen" [style]="(nombreImagen | imagen) | domSanitizer">
+                  </div>
                 </ion-row>
                 <ion-row align-items-center class="ion-padding-top">
                   <ion-col col-12 align-self-center text-center>
-                    <ion-button color="secondary" size="small" [disabled]="ejecutando">Seleccionar Foto</ion-button>
+                    <p-fileUpload mode="basic" accept="image/*" auto="auto" maxFileSize="5000000"
+                      chooseLabel="Seleccionar Foto" uploadLabel="Seleccionar Foto" cancelLabel="Descartar"
+                      customUpload="true" (uploadHandler)="onFileUpload($event)">
+                    </p-fileUpload>
                   </ion-col>
                 </ion-row>
-
               </ion-grid>
             </div>
           </ion-col>
@@ -90,7 +93,8 @@
         <ion-toolbar color="light" class="ion-padding-horizontal">
 
           <ion-buttons slot="start">
-            <ion-button icon-left fill="solid" color="primary" [disabled]="!form.valid || ejecutando" (click)="modificar()">
+            <ion-button icon-left fill="solid" color="primary" [disabled]="!form.valid || ejecutando"
+              (click)="modificar()">
               <ion-icon slot="icon-only" name="checkmark"></ion-icon>
               <ion-label>GUARDAR</ion-label>
             </ion-button>

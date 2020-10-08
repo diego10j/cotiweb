@@ -31,12 +31,15 @@ export class MiListaPage{
   }
 
   public abrirCotizar() {
+    this.utilitario.setListaProductos(this.listaProductos);
     this.utilitario.abrirPaginaPublica('cotizar');
   }
   public abrirLista() {
+    this.utilitario.setListaProductos(this.listaProductos);
     this.utilitario.abrirPaginaPublica('mi-lista');
   }
   public abrirCatalogo() {
+    this.utilitario.setListaProductos(this.listaProductos);
     this.utilitario.abrirPaginaPublica('catalogo');
   }
 }

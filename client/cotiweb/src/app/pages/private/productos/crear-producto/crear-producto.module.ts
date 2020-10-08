@@ -13,6 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import { ComponentsModule } from '../../../../components/components.module';
 import { CrearProductoPage } from './crear-producto.page';
 import { FileUploadModule} from 'primeng/fileupload';
+import { PipesModule } from '../../../../pipes/pipes.module';
 const routes: Routes = [
   {
     path: '',
@@ -36,6 +37,7 @@ const routes: Routes = [
     FormsModule,
     ToastModule,
     FileUploadModule,
+    PipesModule,
     RouterModule.forChild(routes),
   ],
   declarations: [CrearProductoPage],

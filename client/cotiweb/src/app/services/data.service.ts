@@ -13,8 +13,8 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  getMenu(): Observable<OpcionMenu[]>{
-    return this.http.get<OpcionMenu[]>('/assets/data/menu.json');
+  getMenu(){
+    return localStorage.getItem("MENU");
   }
 
 }

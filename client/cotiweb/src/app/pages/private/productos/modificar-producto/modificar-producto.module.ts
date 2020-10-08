@@ -12,6 +12,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ToastModule } from 'primeng/toast';
 import { ComponentsModule } from '../../../../components/components.module';
 import { ModificarProductoPage } from './modificar-producto.page';
+import { FileUploadModule } from 'primeng/fileupload';
+import { PipesModule } from '../../../../pipes/pipes.module';
 
 const routes: Routes = [
   {
@@ -35,6 +37,8 @@ const routes: Routes = [
     DropdownModule,
     FormsModule,
     ToastModule,
+    FileUploadModule,
+    PipesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ModificarProductoPage]

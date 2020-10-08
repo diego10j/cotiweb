@@ -8,8 +8,12 @@
       </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding-horizontal">
-  <p-toast></p-toast>
+<ion-content>
+    <app-nota [opciones]="listaBreadcrumb"></app-nota>
+    <p-toast></p-toast>
+    <ion-card class="bg-white">
+
+   
   <ion-toolbar>
       <ion-item>
           <ion-icon name="search" slot="start"></ion-icon>
@@ -69,4 +73,5 @@
           </ng-template>
       </p-table>
   </ion-row>
+</ion-card>
 </ion-content>

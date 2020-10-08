@@ -72,7 +72,8 @@
 
                 </p-header>
                 <div class="align-middle align-items-center" style="margin-left: 30%;cursor: pointer;">
-                  <img [src]="fila.IMAGEN_PROD" width="60" height="70" (click)="abrirDetalleProducto(fila.COD_PROD)">
+                  <div class="imagen" [style]="(fila.IMAGEN_PROD | imagen) | domSanitizer" (click)="abrirDetalleProducto(fila.COD_PROD)">
+                  </div>
                 </div>
 
               </p-panel>

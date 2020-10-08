@@ -44,7 +44,7 @@
         <ion-toolbar color="light">
 
           <ion-buttons slot="start">
-            <ion-button  icon-left fill="solid" (click)="guardar()" color="primary">
+            <ion-button  icon-left fill="solid" (click)="guardar()" color="primary" [disabled]="!perfilSeleccionado"> 
               <ion-icon  name="checkmark"></ion-icon>
               <ion-label>GUARDAR</ion-label>
             </ion-button>

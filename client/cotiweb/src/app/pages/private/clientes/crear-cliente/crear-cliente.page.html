@@ -9,8 +9,12 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-card class="bg-white">
-    <form >
+
+  <app-nota [opciones]="listaBreadcrumb"></app-nota>
+  <p-toast></p-toast>
+  <form [formGroup]="form">
+    <ion-card class="bg-white">
+
       <ion-card-content>
 
         <ion-row>
@@ -19,29 +23,33 @@
               <ion-item>
                 <ion-label position="stacked">Nombres <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-input type="text" ></ion-input>
+                <ion-input type="text" formControlName="NOMBRES_CLIE" required></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Tipo Identificación </ion-label>
-                <ion-input type="text" ></ion-input>
+                <ion-input type="text" formControlName="INDENTIFICACION_CLIE"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Identificación </ion-label>
-                <ion-input type="text" ></ion-input>
+                <ion-select interface="popover" formControlName="TIPO_ID_CLIE">
+                  <ion-select-option value="C">CÉDULA</ion-select-option>
+                  <ion-select-option value="R">RUC</ion-select-option>
+                  <ion-select-option value="P">PASAPORTE</ion-select-option>
+                </ion-select>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked"> Correo electrónico <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-input type="email" ></ion-input>
+                <ion-input type="email" formControlName="CORREO_CLIE" required></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Teléfono <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-input type="telf" ></ion-input>
+                <ion-input type="telf" formControlName="TELEFONO_CLIE"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Dirección </ion-label>
-                <ion-input type="text" ></ion-input>
+                <ion-input type="text" formControlName="DIRECCION_CLIE"></ion-input>
               </ion-item>
 
             </ion-list>
@@ -49,32 +57,44 @@
           <ion-col size="6" size-xl="6" size-lg="6" size-md="6" size-sm="12" size-xs="12">
 
             <div class="vertical-padding">
-              <ion-grid>
-                <ion-row>
-                  <img src="/assets/svg/cliente.svg" alt="Avatar de usuario" height="160">
-                </ion-row>
-              </ion-grid>
-            </div>
-           
+
+              <p-panel [style]="{'text-align':'center'}">
+                <p-header>
+                  <ion-item lines="none">
+                    <ion-label>Ubicación en el mapa </ion-label>
+                    <ion-spinner name="lines-small" *ngIf="cargandoGeo"></ion-spinner>
+                    <ion-toggle slot="end" (ionChange)="getGeo()"></ion-toggle>
+                  </ion-item>
+                </p-header>
+                <!-- mapa -->
+                <div class="mapDiv">
+                  <app-mapa *ngIf="usarGeo" [coords]="ubicacion.coords" [draggable]="true"
+                    (coordenadasSeleccionada)="ubicacion.coords = $event">
+                  </app-mapa>
+                  <img *ngIf="!usarGeo" src="/assets/svg/mapa.svg" alt="Mapa" style="height: 100%; width: 100%;">
+                </div>
+  
+  
+  
+  
+              </p-panel>
+              </div>
           </ion-col>
         </ion-row>
 
-
-        
-        <ion-row class="ion-padding-top">
-          <ion-button color="medium" (click)="cancelar()">
-            <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-            <ion-label>CANCELAR</ion-label>
-          </ion-button>
-          <ion-button (click)="crear()">
-            <ion-icon slot="icon-only" name="checkmark"></ion-icon>
-            <ion-label>GUARDAR</ion-label>
-          </ion-button>
-        </ion-row>
-
       </ion-card-content>
+      <ion-row>
+        <ion-toolbar color="light" class="ion-padding-horizontal">
 
-    </form>
+          <ion-buttons slot="start">
+            <ion-button icon-left fill="solid" [disabled]="!form.valid || ejecutando" (click)="crear()" color="primary">
+              <ion-icon name="checkmark"></ion-icon>
+              <ion-label>GUARDAR</ion-label>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-row>
 
-  </ion-card>
+    </ion-card>
+  </form>
 </ion-content>

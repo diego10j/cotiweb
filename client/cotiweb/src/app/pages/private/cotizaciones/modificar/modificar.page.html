@@ -7,7 +7,7 @@
       Cotización N° {{COD_CABC}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="imprimir()" title="Imprimir">
+      <ion-button (click)="exportPdf()" title="Imprimir">
         <ion-icon name="print" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -79,7 +79,7 @@
       <ion-card-content>
 
         <ion-row formArrayName="DETALLES">
-          <p-table #dt [value]="form.controls.DETALLES.value" [paginator]="false" [rows]="100" [rowTrackBy]="trackByFn">
+          <p-table id="dt" #dt [value]="form.controls.DETALLES.value" [paginator]="false" [rows]="100" [rowTrackBy]="trackByFn">
             <ng-template pTemplate="header">
               <tr>
                 <th>Producto</th>

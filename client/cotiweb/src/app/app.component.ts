@@ -38,26 +38,18 @@ export class AppComponent {
         this.platform.ready().then(async () => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
-            const respMenu: RestResponse = await this.getMenuOpciones();
-            for (let principal of respMenu.datos){
-                for (let opcion of principal.items){
-                    opcion.command = () => { this.abrirPagina(opcion.path); }
+
+            const respMenu = JSON.parse(localStorage.getItem("MENU"));
+            if (respMenu) {
+                for (let principal of respMenu) {
+                    for (let opcion of principal.items) {
+                        opcion.command = () => { this.abrirPagina(opcion.path); }
+                    }
                 }
+                this.items = respMenu;
             }
 
-            this.items = respMenu.datos;
-
-            // await
-           // await this.authenticationService.authenticationState.subscribe((state) => {
-           //     if (state) {
-           //         this.menuCtrl.enable(true);
-           //         this.router.navigate(['private', 'home']);
-           //     } else {
-           //         this.router.navigate(['login']);
-           //     }
-           // });
-        },
-        );
+        });
     }
 
     public async logout() {
@@ -72,9 +64,7 @@ export class AppComponent {
     }
 
 
-    private getMenuOpciones(): Promise<RestResponse> {
-        return this.restService.consultar('sistema/getMenuOpcionesUsuario',1);
-      }
+   
 
 
 }
