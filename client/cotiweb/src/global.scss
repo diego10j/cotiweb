@@ -446,6 +446,14 @@
 
 .width100{
   width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+.width99{
+  width: 98.5%;
+  max-width: 98.5%;
+  min-width: 98.5%;
 }
 
 .bg-gray {

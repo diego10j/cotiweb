@@ -13,5 +13,11 @@ ion-item {
   ion-card img { width: 90px; height: 100px; }
 
 
-
-  
+  .imagen {
+    width: 70px;
+    height: 80px;
+    /* Imagen centrada y colocada de forma elegante */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

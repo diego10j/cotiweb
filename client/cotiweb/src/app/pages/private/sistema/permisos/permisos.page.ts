@@ -86,8 +86,23 @@ export class PermisosPage {
     this.marcarOpcionesPerfil();
   }
 
-  public guardar() {
+  async guardar() {
 
+  
+    const opciPerfil =[];
+    for (const catSelect of this.listaCategorias) {
+      if (catSelect.isChecked) {
+        opciPerfil.push({COD_PERF: this.perfilSeleccionado.COD_PERF, COD_OPCI: catSelect.codigo});
+      } 
+    }
+
+    let respuesta: RestResponse = this.utilitario.getRestResponse();
+    const req={DETALLES: opciPerfil};
+    respuesta = await this.restService.insertar('sistema/guardarPermisos/' + this.perfilSeleccionado.COD_PERF, req);
+  
+    if (respuesta.error === false) {
+      this.utilitario.agregarMensaje("Actualización", "Se Guardo correctamente.");
+    }
   }
 
 

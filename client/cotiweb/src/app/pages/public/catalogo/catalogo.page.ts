@@ -50,7 +50,7 @@ export class CatalogoPage {
     const parametros = {
       COD_TIPR: categoriasSeleccionadas,
     }
-    return this.restService.llamarServicioWeb('producto/getProductosPorTipo', parametros);
+    return this.restService.llamarServicioWeb('producto/getProductosPorCategoria', parametros);
   }
 
 
@@ -68,6 +68,10 @@ export class CatalogoPage {
 
   public abrirLista() {
     this.utilitario.abrirPaginaPublica('mi-lista');
+  }
+
+  public abrirCatalogo() {
+    this.utilitario.abrirPaginaPublica('catalogo');
   }
 
 }

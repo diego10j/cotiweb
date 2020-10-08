@@ -4,11 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Cotización N° {{COD_CABC}}
+      Nueva Cotización
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="exportPdf()" title="Imprimir">
-        <ion-icon name="print" slot="icon-only"></ion-icon>
+      <ion-button (click)="imprimir()" title="Crear Cliente">
+        <ion-icon name="person-add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -26,8 +26,13 @@
             <div class="ui-fluid">
               <ion-row>
                 <ion-col class="p-field" size="12">
+
                   <ion-label position="stacked" class="text-muted">Cliente </ion-label>
-                  <p-dropdown [options]="comboCliente" formControlName="COD_CLIE"></p-dropdown>
+                  <div class="ui-inputgroup width100">
+                    <p-dropdown [options]="comboCliente" class="widthcombo" formControlName="COD_CLIE">
+                    </p-dropdown>
+                    <button pButton type="button" icon="pi pi-search" class="ui-button-success"></button>
+                  </div>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -79,7 +84,7 @@
       <ion-card-content>
 
         <ion-row formArrayName="DETALLES">
-          <p-table id="dt" #dt [value]="form.controls.DETALLES.value" [paginator]="false" [rows]="100" [rowTrackBy]="trackByFn">
+          <p-table #dt [value]="form.controls.DETALLES.value" [paginator]="false" [rows]="100" [rowTrackBy]="trackByFn">
             <ng-template pTemplate="header">
               <tr>
                 <th>Producto</th>

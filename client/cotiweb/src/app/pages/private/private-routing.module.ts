@@ -52,6 +52,7 @@ const routes: Routes = [
   { path: 'estado-cotizacion', loadChildren: './cotizaciones/estado-cotizacion/estado-cotizacion.module#EstadoCotizacionPageModule' },
   { path: 'crear-estado-cotizacion', loadChildren: './cotizaciones/estado-cotizacion/crear-estado-cotizacion/crear-estado-cotizacion.module#CrearEstadoCotizacionPageModule' },
   { path: 'modificar-estado-cotizacion/:id', loadChildren: './cotizaciones/estado-cotizacion/modificar-estado-cotizacion/modificar-estado-cotizacion.module#ModificarEstadoCotizacionPageModule' },
+  { path: 'crear-cotizacion', loadChildren: './cotizaciones/crear-cotizacion/crear-cotizacion.module#CrearCotizacionPageModule' },
    ];
 @NgModule({
   declarations: [],

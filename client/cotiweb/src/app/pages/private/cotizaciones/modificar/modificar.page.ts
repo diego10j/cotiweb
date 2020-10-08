@@ -7,6 +7,8 @@ import { RestResponse } from '../../../../interfaces/interfaces';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { from } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
+import { jsPDF } from "jspdf";
+import autoTable from 'jspdf-autotable'
 
 @Component({
   selector: 'app-modificar',
@@ -96,47 +98,47 @@ export class ModificarPage {
   public async ionViewWillEnter() {
     this.route.params.subscribe((params: Params) => this.COD_CABC = params.id);
     const detalles = <FormArray>this.form.get('DETALLES');
-    detalles.controls = [];
+    detalles.clear();
     this.buscando = true;
     this.pagina = 1;
     let respuesta: RestResponse = this.utilitario.getRestResponse();
     respuesta = await this.consulta();
+    if (respuesta.datos) {
+      //Combo Cliente
+      const COD_CLIE = respuesta.datos[0].COD_CLIE;
+      const COD_TICO = respuesta.datos[0].COD_TICO;
+      const COD_ESCO = respuesta.datos[0].COD_ESCO;
+      const COD_USUA = respuesta.datos[0].COD_USUA;
 
-    //Combo Cliente
-    const COD_CLIE = respuesta.datos[0].COD_CLIE;
-    const COD_TICO = respuesta.datos[0].COD_TICO;
-    const COD_ESCO = respuesta.datos[0].COD_ESCO;
-    const COD_USUA = respuesta.datos[0].COD_USUA;
+      this.comboCliente = this.utilitario.getCombo(await this.restService.getCombo('CLIENTE', 'COD_CLIE', 'NOMBRES_CLIE', 'COD_CLIE = ' + COD_CLIE), false);
 
-    this.comboCliente = this.utilitario.getCombo(await this.restService.getCombo('CLIENTE', 'COD_CLIE', 'NOMBRES_CLIE', 'COD_CLIE = ' + COD_CLIE), false);
+      this.comboTipoCotiza = this.utilitario.getCombo(await this.restService.getCombo('TIPO_COTIZACION', 'COD_TICO', 'NOMBRE_TICO', 'COD_TICO = ' + COD_TICO), false);
+      this.comboCondiCotiza = this.utilitario.getCombo(await this.restService.getCombo('CONDICION_COTIZACION', 'COD_COCO', 'NOMBRE_COCO'));
+      this.comboEstadoCotiza = this.utilitario.getCombo(await this.restService.getCombo('ESTADO_COTIZACION', 'COD_ESCO', 'NOMBRE_ESCO', 'COD_ESCO = ' + COD_ESCO), false);
+      this.comboValidez = this.utilitario.getCombo(await this.restService.getCombo('VALIDEZ_COTIZACION', 'COD_VACO', 'NOMBRE_VACO'));
+      this.comboUsuario = this.utilitario.getCombo(await this.restService.getCombo('USUARIO', 'COD_USUA', 'NOMBRE_USUA', 'COD_USUA = ' + COD_USUA), false);
+      this.comboProductos = this.utilitario.getCombo(await this.restService.getCombo('PRODUCTO', 'COD_PROD', 'NOMBRE_PROD'));
+      this.comboUnidades = this.utilitario.getCombo(await this.restService.getCombo('UNIDAD_MEDIDA', 'COD_UNID', 'NOMBRE_UNID'));
+      this.buscando = false;
+      this.form.patchValue(respuesta.datos[0]);
+      // this.form.controls.DETALLES.setValue(this.respuesta.datos);
 
-    this.comboTipoCotiza = this.utilitario.getCombo(await this.restService.getCombo('TIPO_COTIZACION', 'COD_TICO', 'NOMBRE_TICO', 'COD_TICO = ' + COD_TICO), false);
-    this.comboCondiCotiza = this.utilitario.getCombo(await this.restService.getCombo('CONDICION_COTIZACION', 'COD_COCO', 'NOMBRE_COCO'));
-    this.comboEstadoCotiza = this.utilitario.getCombo(await this.restService.getCombo('ESTADO_COTIZACION', 'COD_ESCO', 'NOMBRE_ESCO', 'COD_ESCO = ' + COD_ESCO), false);
-    this.comboValidez = this.utilitario.getCombo(await this.restService.getCombo('VALIDEZ_COTIZACION', 'COD_VACO', 'NOMBRE_VACO'));
-    this.comboUsuario = this.utilitario.getCombo(await this.restService.getCombo('USUARIO', 'COD_USUA', 'NOMBRE_USUA', 'COD_USUA = ' + COD_USUA), false);
-    this.comboProductos = this.utilitario.getCombo(await this.restService.getCombo('PRODUCTO', 'COD_PROD', 'NOMBRE_PROD'));
-    this.comboUnidades = this.utilitario.getCombo(await this.restService.getCombo('UNIDAD_MEDIDA', 'COD_UNID', 'NOMBRE_UNID'));
-    this.buscando = false;
-    this.form.patchValue(respuesta.datos[0]);
-    // this.form.controls.DETALLES.setValue(this.respuesta.datos);
-
-
-    respuesta.datos.forEach(fila => {
-      detalles.push(
-        this.fb.group({
-          COD_DECO: new FormControl(fila.COD_DECO),
-          COD_PROD: new FormControl(fila.COD_PROD, Validators.required),
-          NOMBRE_PROD: new FormControl(fila.NOMBRE_PROD, Validators.required),
-          CANTIDAD_DECO: new FormControl(fila.CANTIDAD_DECO, Validators.required),
-          COD_UNID: new FormControl(fila.COD_UNID, Validators.required),
-          NOMBRE_UNID: new FormControl(fila.NOMBRE_UNID, Validators.required),
-          PRECIO_DECO: new FormControl(fila.PRECIO_DECO, Validators.required),
-          IVA_DECO: new FormControl(fila.IVA_DECO + '', Validators.required),
-          TOTAL_DECO: new FormControl(fila.TOTAL_DECO, Validators.required),
-        })
-      );
-    });
+      respuesta.datos.forEach(fila => {
+        detalles.push(
+          this.fb.group({
+            COD_DECO: new FormControl(fila.COD_DECO),
+            COD_PROD: new FormControl(fila.COD_PROD, Validators.required),
+            NOMBRE_PROD: new FormControl(fila.NOMBRE_PROD, Validators.required),
+            CANTIDAD_DECO: new FormControl(fila.CANTIDAD_DECO, Validators.required),
+            COD_UNID: new FormControl(fila.COD_UNID, Validators.required),
+            NOMBRE_UNID: new FormControl(fila.NOMBRE_UNID, Validators.required),
+            PRECIO_DECO: new FormControl(fila.PRECIO_DECO, Validators.required),
+            IVA_DECO: new FormControl(fila.IVA_DECO + '', Validators.required),
+            TOTAL_DECO: new FormControl(fila.TOTAL_DECO, Validators.required),
+          })
+        );
+      });
+    }
     this.calcularTotalFactura();
   }
 
@@ -148,16 +150,21 @@ export class ModificarPage {
   public seleccionaProducto(evt, index) {
     const nombre = this.getNombreProducto(evt.value);
     const detalles = <FormArray>this.form.get('DETALLES');
-    const fila = detalles.at(index).value;
-    fila.NOMBRE_PROD = nombre;
+    const fila = detalles.at(index);
+    fila.patchValue({
+      NOMBRE_PROD: nombre,
+    });
   }
 
   public seleccionaUnidadMedida(evt, index) {
     const nombre = this.getNombreUnidadMedida(evt.value);
     const detalles = <FormArray>this.form.get('DETALLES');
-    const fila = detalles.at(index).value;
-    fila.NOMBRE_UNID = nombre;
+    const fila = detalles.at(index);
+    fila.patchValue({
+      NOMBRE_UNID: nombre,
+    });
   }
+
 
   public getNombreProducto(value): string {
     const obj = this.comboProductos.find(x => x.value === value);
@@ -169,14 +176,15 @@ export class ModificarPage {
     return obj.label;
   }
 
-
   public calcularDetalle(index) {
     const detalles = <FormArray>this.form.get('DETALLES');
-    var fila: any = detalles.at(index).value;
-    let cantidad: number = fila.CANTIDAD_DECO;
-    let precio: number = fila.PRECIO_DECO;
+    var fila: any = detalles.at(index);
+    let cantidad: number = fila.value.CANTIDAD_DECO;
+    let precio: number = fila.value.PRECIO_DECO;
     let total: number = cantidad * precio;
-    fila.TOTAL_DECO = total;
+    fila.patchValue({
+      TOTAL_DECO: total
+    });
     this.calcularTotalFactura();
   }
 
@@ -209,18 +217,17 @@ export class ModificarPage {
     const detalles = <FormArray>this.form.get('DETALLES');
     detalles.push(
       this.fb.group({
-        COD_DECO: null,
-        COD_PROD: null,
-        NOMBRE_PROD: '',
-        CANTIDAD_DECO: 0,
-        COD_UNID: null,
-        NOMBRE_UNID: '',
-        PRECIO_DECO: 0,
-        IVA_DECO: '1',
-        TOTAL_DECO: 0,
+        COD_DECO: new FormControl(null),
+        COD_PROD: new FormControl(null),
+        NOMBRE_PROD: new FormControl(''),
+        CANTIDAD_DECO: new FormControl(0),
+        COD_UNID: new FormControl(null),
+        NOMBRE_UNID: new FormControl(''),
+        PRECIO_DECO: new FormControl(0),
+        IVA_DECO: new FormControl('1'),
+        TOTAL_DECO: new FormControl(0),
       })
     );
-
   }
 
   public eliminarProducto(index) {
@@ -250,9 +257,142 @@ export class ModificarPage {
     }
   }
 
+  async exportPdf() {
+    //Datos Empresa
+    const respEmpresa = await this.restService.consultar('sistema/getDatosEmpresa', 1);
+    const RESTAPI = this.utilitario.getRestApi();
+    const logo = `${RESTAPI}/archivoProducto/imagen/${respEmpresa.datos.LOGO_EMPR}`;
+    const detalles = <FormArray>this.form.get('DETALLES');
+    //Datos Cotizacion
+    const respCoti = await this.restService.consultar('cotizacion/getDatosCotizacion/'+ this.COD_CABC, 1);
+
+    var keys = [
+      "PRODUCTO",
+      "CANTIDAD",
+      "UNIDAD",
+      "PRECIO",
+      "IVA",
+      "TOTAL"
+    ];
+    var result = [];
+    for (var i = 0; i < keys.length; i += 1) {
+      result.push({
+        id: keys[i],
+        name: keys[i],
+        prompt: keys[i],
+        width: 38,
+        align: "center",
+        padding: 0,
+      });
+    };
+    result[0].width = 91;
+    result[4].width = 20;
+
+
+    var result1 = [];
+
+    for (let fila of detalles.value) {
+      var data = {
+        PRODUCTO: fila.NOMBRE_PROD,
+        CANTIDAD: fila.CANTIDAD_DECO.toFixed(3) + '',
+        UNIDAD: fila.NOMBRE_UNID,
+        PRECIO: fila.PRECIO_DECO.toFixed(3) + '',
+        IVA: fila.IVA_DECO === '0' ? 'NO': 'SI',
+        TOTAL: fila.TOTAL_DECO.toFixed(2) + '',
+      };
+      result1.push(Object.assign({}, data));
+    }
+
+
+    const doc = new jsPDF();
+
+    doc.rect(7, 5, 197, 40);
+
+    doc.addImage(logo, "JPEG", 15, 6, 40, 37);
+    doc.setFont("courier", "bold");
+    doc.setFontSize(16);
+    doc.text(respEmpresa.datos.NOMBRE_EMPR, doc.internal.pageSize.getWidth() / 2, 12, { align: "center" });
+
+    //doc.setTextColor(100);
+    doc.setFontSize(11);
+    doc.text('RUC:', 60, 18);
+    doc.text('DIRECCIÓN:', 60, 26);
+    doc.text('TELÉFONO:', 60, 34);
+    doc.text('CORREO ELECTRÓNICO:', 60, 42);
+
+    //
+    doc.rect(7, 47, 197, 40);
+    doc.text('FECHA:', 10, 55);
+    doc.text('IDENTIFICACION:', 110, 55);
+    doc.text('SOLICITANTE:', 10, 62);
+    doc.text('CORREO:', 10, 69);
+    doc.text('TELEFONO:', 110, 69);
+    doc.text('DIRECCIÓN:', 10, 76);
+    doc.text('VENDEDOR:', 10, 83);
+    doc.text('VALIDEZ:', 110, 83);
+
+    doc.setTextColor("black");
+
+    doc.setFont("courier", "normal");
+    doc.text(respEmpresa.datos.RUC_EMPR, 75, 18);
+    doc.text(respEmpresa.datos.DIRECCION_EMPR, 89, 26);
+    doc.text(respEmpresa.datos.TELEFONO_EMPR, 85, 34);
+    doc.text(respEmpresa.datos.CORREO_EMPR, 110, 42);
+
+
+    doc.text(this.utilitario.getFormatoFecha(respCoti.datos.FECHA_CABC), 35, 55);
+    if(respCoti.datos.IDENTIFICACION_CLIE){
+      doc.text(respCoti.datos.IDENTIFICACION_CLIE, 147, 55);
+    }
+    doc.text(respCoti.datos.NOMBRES_CLIE, 41, 62);
+    doc.text(respCoti.datos.CORREO_CABC, 30, 69);
+    if(respCoti.datos.TELEFONO_CLIE){
+      doc.text(respCoti.datos.TELEFONO_CLIE, 140, 69);
+    }
+    if(respCoti.datos.DIRECCION_CABC){
+      doc.text(respCoti.datos.DIRECCION_CABC, 40, 76);
+    }
+    if(respCoti.datos.NOMBRE_USUA){
+      doc.text(respCoti.datos.NOMBRE_USUA, 40, 83);
+    }
+    if(respCoti.datos.NOMBRE_VACO){
+      doc.text(respCoti.datos.NOMBRE_VACO, 140, 83);
+    }
+
+    doc.setLineWidth(0.1);
+    doc.setDrawColor(0, 0, 0);
+
+
+    doc.table(7, 89, result1, result, {fontSize : 9});
+
+    const auxY= 89 + ((result1.length + 1) * 12);
+   
+    doc.setFont("courier", "bold");
+    doc.setFontSize(9);
+    doc.text('SUBTOTAL:', 145, auxY);
+    doc.text('SUBTOTAL 0%:', 145, (auxY+8));
+    doc.text('IVA:', 145, (auxY+16));
+    doc.text('TOTAL:', 145, (auxY+24));
+
+
+    if(respCoti.datos.SUBTOTAL_CABC){
+      doc.text(respCoti.datos.SUBTOTAL_CABC.toFixed(2)+ '', 180, auxY);
+      doc.text(respCoti.datos.SUBTOTAL0_CABC.toFixed(2)+ '', 180, (auxY+8));
+      doc.text(respCoti.datos.IVA_CABC.toFixed(2)+ '', 180, (auxY+16));
+      doc.text(respCoti.datos.TOTAL_CABC.toFixed(2)+ '', 180, (auxY+24));
+    }
+
+    
+    doc.save("a4.pdf");
+
+  }
+
   public getValorDetalle(index, type: string) {
     const detalles = <FormArray>this.form.get('DETALLES');
     const fila = detalles.at(index).value;
     return fila[type];
   }
+
+
+
 }

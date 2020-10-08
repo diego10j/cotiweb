@@ -14,7 +14,7 @@
   <ion-card class="bg-white">
     <ion-toolbar color="light">
       <ion-buttons slot="start">
-        <ion-button icon-left color="tertiary" (click)="crear()" fill="solid" [disabled]="!seleccionado">
+        <ion-button icon-left color="tertiary" (click)="abrirCambiarVendedor()" fill="solid" [disabled]="!seleccionado">
           <ion-icon slot="start" name="person-add"></ion-icon>
           <ion-label>
             ASIGNAR VENDEDOR
@@ -24,6 +24,12 @@
           <ion-icon slot="start" name="refresh"></ion-icon>
           <ion-label>
             CAMBIAR DE ESTADO
+          </ion-label>
+        </ion-button>
+        <ion-button  icon-left color="success" (click)="confirmarAutorizar()" fill="solid" [disabled]="!seleccionado">
+          <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+          <ion-label>
+            AUTORIZAR
           </ion-label>
         </ion-button>
       </ion-buttons>

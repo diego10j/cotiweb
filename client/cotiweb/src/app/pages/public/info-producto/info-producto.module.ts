@@ -18,6 +18,7 @@ import { PanelModule } from 'primeng/panel';
 import {SpinnerModule} from 'primeng/spinner';
 import {ToolbarModule} from 'primeng/toolbar';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PipesModule } from '../../../pipes/pipes.module';
 const routes: Routes = [
   {
     path: '',
@@ -46,6 +47,7 @@ const routes: Routes = [
     SpinnerModule,
     ToolbarModule,
     FontAwesomeModule,
+    PipesModule,
     RouterModule.forChild(routes),
   ],
   declarations: [InfoProductoPage]

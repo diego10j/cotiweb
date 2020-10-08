@@ -116,7 +116,9 @@ export class CotizarPage {
     }
   }
 
-
+  public abrirCatalogo() {
+    this.utilitario.abrirPaginaPublica('catalogo');
+  }
 
 
 }

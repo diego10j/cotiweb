@@ -11,6 +11,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {PaginatorModule} from 'primeng/paginator';
+import { PipesModule } from '../../../pipes/pipes.module';
 const routes: Routes = [
   {
     path: '',
@@ -29,6 +30,7 @@ const routes: Routes = [
     DialogModule,
     InputTextModule,
     FontAwesomeModule,
+    PipesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [CatalogoPage]

@@ -64,6 +64,7 @@ export class AuthenticationService {
             this.utilitario.crearVariableLocalStorage('CORREO_USUA', respuesta.datos.CORREO_USUA);
             this.utilitario.crearVariableLocalStorage('TELEFONO_USUA', respuesta.datos.TELEFONO_USUA);
             this.utilitario.crearVariableLocalStorage('AVATAR_USUA', respuesta.datos.AVATAR_USUA);
+            this.utilitario.crearVariableLocalStorage('MENU', JSON.stringify(respuesta.datos.MENU));
           });
         }
         resolve(respuesta);

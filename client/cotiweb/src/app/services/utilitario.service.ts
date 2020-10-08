@@ -298,6 +298,10 @@ export class UtilitarioService {
   }
 
 
+  public setListaProductos(lista: Producto[]) {
+      this.storage.set('lista', lista);
+  }
+
   async existeProductoLista(producto: Producto) {
     let lista: Producto[] = [];
     const listaGuardada: Producto[] = await this.storage.get('lista');

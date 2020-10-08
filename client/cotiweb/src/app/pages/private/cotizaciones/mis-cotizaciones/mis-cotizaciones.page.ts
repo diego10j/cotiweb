@@ -43,7 +43,7 @@ export class MisCotizacionesPage {
   }
 
   public crear() {
-    this.utilitario.abrirPagina('crear-perfil');
+    this.utilitario.abrirPagina('crear-cotizacion');
   }
 
   public async eliminar(event) {
@@ -83,5 +83,7 @@ export class MisCotizacionesPage {
   public modificar(){
     this.utilitario.abrirPaginaPublica('private/modificar/'+this.seleccionado.COD_CABC);
   }
+
+
 
 }

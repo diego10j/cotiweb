@@ -5,6 +5,7 @@ import { MessageService, SelectItem, MenuItem } from 'primeng/api';
 import { RestResponse } from '../../../../interfaces/interfaces';
 import { RestService } from '../../../../services/rest.service';
 import { UtilitarioService } from '../../../../services/utilitario.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-modificar-producto',
@@ -23,10 +24,11 @@ export class ModificarProductoPage {
   public comboUnidad: SelectItem[];
   public listaBreadcrumb: MenuItem[];
   public listaCategorias: any;
+  public nombreImagen='imagen.svg'; 
 
   constructor(private route: ActivatedRoute, private restService: RestService,
     private utilitario: UtilitarioService, private messageService: MessageService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder, private http: HttpClient) {
     this.listaBreadcrumb = [
       { label: 'PRODUCTOS' },
       { label: 'Productos', routerLink: '/private/productos' },
@@ -38,6 +40,7 @@ export class ModificarProductoPage {
       DESCRIPCION_PROD: new FormControl(''),
       ACTIVO_PROD: new FormControl('', Validators.required),
       COD_AUX_PROD: new FormControl(''),
+      IMAGEN_PROD: new FormControl(''),
     });
     this.form.addControl('CATEGORIAS', new FormArray([]));
   }
@@ -50,10 +53,11 @@ export class ModificarProductoPage {
     const parametros = {
       COD_PROD: this.seleccionado,
     };
-    this.listaCategorias = await this.restService.llamarServicioWeb('producto/getCategoriasProducto', parametros);
+    this.listaCategorias = await this.restService.llamarServicioWeb('producto/getCategoriasProducto/'+this.seleccionado, parametros);
     this.comboTipo = this.utilitario.getCombo(await this.restService.getCombo('TIPO_PRODUCTO', 'COD_TIPR', 'NOMBRE_TIPR'));
     this.comboUnidad = this.utilitario.getCombo(await this.restService.getCombo('UNIDAD_MEDIDA', 'COD_UNID', 'NOMBRE_UNID'));
     this.respuesta = await this.consulta();
+    this.nombreImagen=this.respuesta.datos.IMAGEN_PROD;
     const comboCategorias = this.utilitario.getCombo(await this.restService.getCombo('TIPO_PRODUCTO', 'COD_TIPR', 'NOMBRE_TIPR'));
     this.buscando = false;
     this.form.patchValue(this.respuesta.datos);
@@ -78,6 +82,7 @@ export class ModificarProductoPage {
 
   public async modificar() {
     this.ejecutando = true;
+    this.form.controls.IMAGEN_PROD.setValue(this.nombreImagen);
     this.respuesta = await this.restService.actualizar('producto/actualizar/' + this.seleccionado, this.form.value);
     this.ejecutando = false;
     if (this.respuesta.error === false) {
@@ -104,5 +109,15 @@ export class ModificarProductoPage {
     return fila[type];
   }
 
+  public onFileUpload(data: { files: File }): void {
+    const formData: FormData = new FormData();
+    const file = data.files[0];
+    const RESTAPI = this.utilitario.getRestApi();
+    formData.append('image', file, file.name);
+    this.http.post<any>(RESTAPI+`/archivoProducto/upload`, formData)
+      .subscribe(resp => {
+        this.nombreImagen=resp.nombreImagen;
+      });
+  }
 
 }

@@ -15,6 +15,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { FileUploadModule } from 'primeng/fileupload';
+import { PipesModule } from '../../../../pipes/pipes.module';
 
 const routes: Routes = [
   {
@@ -39,6 +40,7 @@ const routes: Routes = [
     FormsModule,
     ToastModule,
     FileUploadModule,
+    PipesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [EmpresaPage]

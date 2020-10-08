@@ -7,6 +7,7 @@ import { ProductosPage } from './productos.page';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ComponentsModule } from '../../../components/components.module';
+import { PipesModule } from '../../../pipes/pipes.module';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
     TableModule,
     ToastModule,
     ComponentsModule,
+    PipesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ProductosPage]

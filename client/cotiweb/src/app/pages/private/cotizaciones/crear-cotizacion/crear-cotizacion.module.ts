@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ModificarClientePage } from './modificar-cliente.page';
+import { CrearCotizacionPage } from './crear-cotizacion.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ButtonModule } from 'primeng/button';
 import { ComponentsModule } from '../../../../components/components.module';
@@ -14,11 +14,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
 
 const routes: Routes = [
   {
     path: '',
-    component: ModificarClientePage
+    component: CrearCotizacionPage
   }
 ];
 
@@ -38,8 +39,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     ToastModule,
+    CalendarModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ModificarClientePage]
+  declarations: [CrearCotizacionPage]
 })
-export class ModificarClientePageModule {}
+export class CrearCotizacionPageModule {}

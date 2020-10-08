@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { MessageService, MenuItem } from 'primeng/api';
 import { RestResponse } from '../../../interfaces/interfaces';
 import { RestService } from '../../../services/rest.service';
 import { UtilitarioService } from '../../../services/utilitario.service';
@@ -16,11 +16,17 @@ export class ClientesPage {
   public respuesta: RestResponse = this.utilitario.getRestResponse();
   public buscando = false;
   public pagina: number;
+  public listaBreadcrumb: MenuItem[];
 
   constructor(private restService: RestService,
               private utilitario: UtilitarioService,
               private messageService: MessageService,
-              private alertController: AlertController) { }
+              private alertController: AlertController) { 
+                this.listaBreadcrumb = [
+                  { label: 'COTIZACIONES' },
+                  { label: 'Clientes', routerLink: '/private/clientes' }
+                ];
+              }
 
   public async ionViewWillEnter() {
     this.buscando = true;
@@ -38,15 +44,12 @@ export class ClientesPage {
   }
 
   public modificar(event) {
-    const parametros = {
-      seleccionado: event.COD_USUA,
-    };
-    this.utilitario.abrirPagina('modificar-cliente', parametros);
+    this.utilitario.abrirPaginaPublica('private/modificar-cliente//'+event.COD_CLIE);
   }
 
   public async eliminar(event) {
     const parametros = {
-      seleccionado: event.COD_USUA,
+      seleccionado: event.COD_CLIE,
     };
     this.buscando = true;
     const resp : RestResponse = await this.restService.eliminar('cliente/eliminar/' + parametros.seleccionado);
@@ -76,5 +79,9 @@ export class ClientesPage {
     });
     await alert.present();
   }
+
+
+
+  
 
 }

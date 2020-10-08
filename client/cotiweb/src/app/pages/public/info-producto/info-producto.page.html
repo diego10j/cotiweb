@@ -1,7 +1,11 @@
 <ion-header no-border>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button text="" defaultHref="catalogo"></ion-back-button>
+      <ion-button (click)="abrirCatalogo()">
+        <fa-layers size="2x">
+          <fa-icon [icon]="['fas', 'th']"></fa-icon>
+        </fa-layers>
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="abrirLista()">
@@ -17,7 +21,7 @@
 </ion-header>
 
 
-<ion-content class="ion-padding-horizontal">
+<ion-content class="ion-padding-top">
 
 
   <ion-row align-items-center *ngIf="buscando">
@@ -27,71 +31,121 @@
   </ion-row>
 
 
-  <ion-row class="ion-padding-top" *ngIf="respuesta.datos">
+  <ion-row class="ion-padding-horizontal" *ngIf="respuesta.datos">
 
-    <ion-card class="bg-white">
+    <ion-card class="bg-white width99">
 
       <ion-card-content>
 
 
         <ion-row>
           <ion-col size-lg="4" size-md="4" size-sm="12" size="12">
-            <img [src]="respuesta.datos.IMAGEN_PROD">
+            <div class="imagen" [style]="(respuesta.datos.IMAGEN_PROD | imagen) | domSanitizer">
+            </div>
+
           </ion-col>
           <ion-col size-lg="8" size-md="8" size-sm="12" size="12">
+            <ion-row>
 
-            <ion-list lines="none">
+              <ion-col size-lg="6" size-md="6" size-sm="12" size="12">
+                <ion-list lines="none">
 
-              <ion-toolbar>
-                <ion-title class="ion-text-wrap">{{respuesta.datos.NOMBRE_PROD}}</ion-title>
-              </ion-toolbar>
+                  <ion-toolbar>
+                    <ion-title class="ion-text-wrap">{{respuesta.datos.NOMBRE_PROD}}</ion-title>
+                  </ion-toolbar>
 
-              <ion-item-group>
+                  <ion-item-divider>
+                    <ion-label>Categorías</ion-label>
+                  </ion-item-divider>
 
-                  <p-toolbar>
-                    <ion-row>
-                      <ion-col size="6">
-                        <p>Cantidad:</p>
-                        
-                        
-                        <ion-row class="ion-align-items-center ion-align-self-center ">
-                          <p-spinner class="ion-padding-top"  [(ngModel)]="cantidad" size="5" [min]="0.100"></p-spinner>
-                          <ion-label class="ion-padding-top ion-padding-horizontal">{{respuesta.datos.NOMBRE_UNID}}</ion-label>
-                        </ion-row>
-                      </ion-col>
-                      <ion-col size="6">
-                        
-                          <ion-button size="small" [disabled]="cantidad<=0"  expand="full" color="primary" >¡Cotizar ahora!</ion-button>
-               
-                          <ion-button *ngIf="!isAgregado"  [disabled]="cantidad<=0"  size="small"  expand="full" color="light" class="ion-margin-top" (click)="agregarLista()">Agregar a la Lista</ion-button>
+                  <p>
+                    <ion-chip color="tertiary" *ngFor="let cat of respuestaCategorias.datos">
+                      <ion-label>{{cat.NOMBRE_TIPR}}</ion-label>
+                    </ion-chip>
+                  </p>
+
+                  <ion-item-divider>
+                    <ion-label>Cantidad mínima de Venta</ion-label>
+                  </ion-item-divider>
+
+                  <div class="ui-g-12 ui-md-12">
+                    <div class="ui-inputgroup">
+                      <input type="text" size="8" [value]="respuesta.datos.CANT_MIN_PROD | number:'1.3-3'" pInputText readonly="true" disabled="true">
+                      <span class="ui-inputgroup-addon">{{respuesta.datos.NOMBRE_UNID}}</span>
+                    </div>
+                  </div>
+
+                </ion-list>
+              </ion-col>
+
+              <ion-col size-lg="6" size-md="6" size-sm="12" size="12">
+
+                <p-toolbar>
+                  <ion-row>
+                    <ion-col size="12">
+                      <p>Cantidad a cotizar:</p>
 
 
-                          <ion-button *ngIf="isAgregado" size="small"  expand="full" color="success" disabled="true" class="ion-margin-top">
-                            <ion-label>
-                              AGREGADO A LA LISTA
-                            </ion-label>
-                            <ion-icon name="checkmark" slot="start"></ion-icon>
-                          </ion-button>
+                      <ion-row class="ion-align-items-center ion-align-self-center ">
+                        <p-spinner class="ion-padding-top" [(ngModel)]="cantidad" size="5" 
+                        [min]="respuesta.datos.CANT_MIN_PROD" thosandSeparator="," 
+                        decimalSeparator="." [step]="respuesta.datos.CANT_MIN_PROD" 
+                        ></p-spinner>
+                        <ion-label class="ion-padding-top ion-padding-horizontal">{{respuesta.datos.NOMBRE_UNID}}
+                        </ion-label>
+                      </ion-row>
+                    </ion-col>
+                    <ion-col size="12">
 
-                      </ion-col>
-                    </ion-row>
-                  </p-toolbar>
+                      <ion-button *ngIf="!isAgregado" [disabled]="cantidad<=0" size="small" expand="full"
+                        color="tertiary" class="ion-margin-top" (click)="agregarLista()">Agregar a la Lista</ion-button>
+
+                      <ion-button size="small" [disabled]="cantidad<=0" class="ion-margin-top" expand="full"
+                        color="primary" (click)="cotizarAhora()">¡Cotizar ahora!</ion-button>
+
+                      <ion-button *ngIf="isAgregado" size="small" expand="full" color="success" disabled="true"
+                        class="ion-margin-top" >
+                        <ion-label>
+                          AGREGADO A LA LISTA
+                        </ion-label>
+                        <ion-icon name="checkmark" slot="start"></ion-icon>
+                      </ion-button>
+
+                    </ion-col>
+                  </ion-row>
+                </p-toolbar>
+
+              </ion-col>
+
+
+            </ion-row>
+
+            <ion-row>
+
+              <ion-item-divider>
+                <ion-label>Descripción</ion-label>
+              </ion-item-divider>
+
+              <ion-item lines="none">
+                <ion-label class="ion-text-wrap">{{respuesta.datos.DESCRIPCION_PROD}}</ion-label>
+              </ion-item>
 
 
 
-                <ion-item-divider>
-                  <ion-label>Descripción</ion-label>
-                </ion-item-divider>
+            </ion-row>
 
-                <ion-item lines="none">
-                  <ion-label class="ion-text-wrap">{{respuesta.datos.DESCRIPCION_PROD}}</ion-label>
-                </ion-item>
 
-              </ion-item-group>
-            </ion-list>
 
           </ion-col>
+
+
+
+
         </ion-row>
+
+
+
+
       </ion-card-content>
     </ion-card>
 

@@ -1,7 +1,11 @@
 <ion-header no-border>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button text="" defaultHref="catalogo"></ion-back-button>
+      <ion-button (click)="abrirCatalogo()">
+       <fa-layers size="2x">
+        <fa-icon [icon]="['fas', 'th']"></fa-icon>
+      </fa-layers>
+    </ion-button>  
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="abrirLista()">
@@ -16,7 +20,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
 
 
   <ion-card class="bg-white">
@@ -24,14 +28,6 @@
 
 
     <ion-toolbar color="light">
-
-      <ion-buttons slot="start">
-        <ion-button (click)="abrirCatalogo()">
-          CATÁLOGO
-          <ion-icon slot="start" name="apps"></ion-icon>
-        </ion-button>
-      </ion-buttons>    
-
       <ion-buttons slot="end">
         <ion-button class="animated flash" fill="solid" color="success" (click)="abrirCotizar()">
           COTIZAR
@@ -51,7 +47,9 @@
       <ion-list lines="full" class="transparent">
         <ion-item *ngFor="let fila of listaProductos">
           <ion-thumbnail slot="start">
-            <img [src]="fila.imagen">
+            <div class="imagen"
+            [style]="(fila.imagen  | imagen) | domSanitizer">
+            </div>
           </ion-thumbnail>
           <ion-label text-wrap>
             {{ fila.nombre }}
@@ -64,11 +62,15 @@
               <span class="text-muted text-10pt">Cantidad: </span>
             </ion-col>
             <ion-col>
-              <input  size="5" type="number" [(ngModel)]="fila.cantidad" pInputText>
+              <div class="ui-g-12 ui-md-12">
+                <div class="ui-inputgroup text-10pt">
+                  <input type="numer" size="10" class="text-12pt"  [(ngModel)]="fila.cantidad" pInputText>
+                  <span class="ui-inputgroup-addon text-10pt ">{{fila.unidad}}</span>
+                </div>
+              </div>
+
             </ion-col>
-            <ion-col>
-              <span class="text-muted text-10pt"> {{ fila.unidad }}</span>
-            </ion-col>
+          
             <ion-col>
               <button style="margin-left: 12px;" icon="pi pi-times" pButton (click)="eliminarProducto(fila)" type="button"
               class="ui-button-danger" title="Eliminar"></button>
