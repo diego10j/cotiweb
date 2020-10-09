@@ -88,7 +88,7 @@ class TipoProductoCtrl {
     public actualizar(req: Request, res: Response) {
         const campos = {
             NOMBRE_TIPR: req.body.NOMBRE_TIPR,
-            DESCRIPCION_TPR: req.body.DESCRIPCION_TIPR,
+            DESCRIPCION_TIPR: req.body.DESCRIPCION_TIPR,
             ACTIVO_TIPR: req.body.ACTIVO_TIPR,
         };
         const condiciones = {
