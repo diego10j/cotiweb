@@ -19,6 +19,7 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { ComponentsModule } from './components/components.module';
 
 
 @NgModule({
@@ -33,7 +34,7 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
     PipesModule,
     HttpClientModule,
     FontAwesomeModule,
-    PanelMenuModule,
+    ComponentsModule,
   ],
   providers: [
     StatusBar,

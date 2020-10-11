@@ -56,12 +56,10 @@
             </ion-col>
           </ion-row>
         </div>
-        <p-dataView #dt [value]="respuesta.datos" paginator="true" rows="10" paginatorPosition="both" layout="grid"
-          filterBy="NOMBRE_PROD"  [rowsPerPageOptions]="[10,20,30]" emptyMessage="No existen productos"
-          paginatorPosition="bottom" 
+        <p-dataView #dt [value]="respuesta.datos" [rows]="20" paginatorPosition="both" layout="grid"
+          filterBy="NOMBRE_PROD"  [rowsPerPageOptions]="[20,50,80]" emptyMessage="No existen productos"
+          paginatorPosition="bottom"  [paginator]="true"
           showCurrentPageReport="true" pageLinks="5" alwaysShowPaginator="true" >
-
-
 
           <ng-template let-fila pTemplate="gridItem">
             <ion-col size="12" size-xl="3" size-lg="4" size-md="6" size-sm="6" size-xs="12">

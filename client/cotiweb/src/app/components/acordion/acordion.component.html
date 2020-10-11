@@ -1,26 +1,10 @@
-
-<ion-list  lines="inset">
-<ion-item (click)="toggleAccordion()" type="button">
-  <ion-icon name="archive" slot="start"></ion-icon>
-  <ion-label text-wrap>
-    {{ name }}
-  </ion-label>
-  <ion-icon *ngIf="isMenuOpen"  slot="end" name="arrow-dropup"></ion-icon>
-  <ion-icon *ngIf="!isMenuOpen"  slot="end" name="arrow-dropdown"></ion-icon>
- </ion-item>
-<div [ngClass]="this.isMenuOpen ? 'active' : 'inactive'">
-  <!-- 
-  <section class="image-wrapper">
-    <img [src]="image">
-  </section>--> 
-  <ion-item type="button" lines="inset">
-    <ion-icon name="mail" slot="start"></ion-icon>
-    <ion-label text-wrap>Inbox</ion-label>
-  </ion-item>
-  <ion-item type="button" lines="inset">
-    <ion-icon name="paper-plane" slot="start"></ion-icon>
-    <ion-label text-wrap>Outbox</ion-label>
-  </ion-item>
-</div>
-</ion-list>
-
+<ion-menu side="start" content-id="main-content" (ionDidOpen)="cargarmenu()" (click)="cargarmenu()"  >
+  <ion-header>
+    <ion-toolbar translucent>
+      <ion-title (click)="abrirPagina('inicio')" >CotiWeb</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>    
+  </ion-content>
+</ion-menu>

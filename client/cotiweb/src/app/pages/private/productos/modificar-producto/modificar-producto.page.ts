@@ -41,6 +41,7 @@ export class ModificarProductoPage {
       ACTIVO_PROD: new FormControl('', Validators.required),
       COD_AUX_PROD: new FormControl(''),
       IMAGEN_PROD: new FormControl(''),
+      CANT_MIN_PROD: new FormControl(''),
     });
     this.form.addControl('CATEGORIAS', new FormArray([]));
   }

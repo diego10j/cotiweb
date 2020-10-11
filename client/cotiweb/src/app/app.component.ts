@@ -38,33 +38,7 @@ export class AppComponent {
         this.platform.ready().then(async () => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
-
-            const respMenu = JSON.parse(localStorage.getItem("MENU"));
-            if (respMenu) {
-                for (let principal of respMenu) {
-                    for (let opcion of principal.items) {
-                        opcion.command = () => { this.abrirPagina(opcion.path); }
-                    }
-                }
-                this.items = respMenu;
-            }
-
         });
     }
-
-    public async logout() {
-        this.menuCtrl.enable(false);
-        await this.authenticationService.logout();
-    }
-
-
-    public abrirPagina(ruta) {
-        this.utilitario.abrirPagina(ruta);
-        this.menuCtrl.close();
-    }
-
-
-   
-
 
 }
