@@ -1,17 +1,9 @@
 <ion-app>
-  <ion-menu side="start" content-id="main-content"  >
-    <ion-header>
-      <ion-toolbar translucent>
-        <ion-title (click)="abrirPagina('inicio')" >CotiWeb</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>    
-    </ion-content>
-  </ion-menu>
-
+ 
+  <app-acordion></app-acordion>
   <div class="ion-page" id="main-content">
-    <ion-router-outlet main></ion-router-outlet>
+    <ion-router-outlet main>
+    </ion-router-outlet>
   </div>
 
 </ion-app>

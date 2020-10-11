@@ -1,4 +1,8 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { MenuController } from '@ionic/angular';
+import { MenuItem } from 'primeng/api';
+import { AuthenticationService } from '../../services/authentication.service';
+import { UtilitarioService } from '../../services/utilitario.service';
 
 @Component({
   selector: 'app-acordion',
@@ -7,90 +11,46 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 })
 export class AcordionComponent implements OnInit {
 
-  
+  public items: MenuItem[];
 
-  /**
-   * The name of the technology that will be displayed as the title for the accordion header
-   * @public
-   * @property name
-   * @type {string}
-   */
-  @Input()
-  name : string;
+    constructor(
 
+        private authenticationService: AuthenticationService,
+        public utilitario: UtilitarioService,
+        private menuCtrl: MenuController) {
 
-  /**
-   * The description of the technology that will be displayed within the accordion body (when activated
-   * by the user)
-   * @public
-   * @property description
-   * @type {string}
-   */
-  @Input()
-  description : string;
+    }
 
+    public ngOnInit() {
 
-  /**
-   * The official logo identifying the technology that will be displayed within the accordion body (when activated
-   * by the user)
-   * @public
-   * @property image
-   * @type {string}
-   */
-  @Input()
-  image : string;
+      this.cargarmenu();
+    }
 
+  public abrirPagina(ruta) {
+    this.utilitario.abrirPagina(ruta);
+    this.menuCtrl.close();
+}
 
-  /**
-   * The change event that will be broadcast to the parent component when the user interacts with the component's
-   * <ion-button> element
-   * @public
-   * @property change
-   * @type {EventEmitter}
-   */
-  @Output()
-  change : EventEmitter<string> = new EventEmitter<string>();
+public async logout() {
+  this.menuCtrl.enable(false);
+  await this.authenticationService.logout();
+}
 
-
-  /**
-   * Determines and stores the accordion state (I.e. opened or closed)
-   * @public
-   * @property isMenuOpen
-   * @type {boolean}
-   */
-  public isMenuOpen : boolean = false;
-
-
-
-  constructor() { }
-
-
-
-  ngOnInit() {
+public cargarmenu(){
+  if(JSON.parse(localStorage.getItem('MENU'))){
+    this.items=[];
+    const respMenu = JSON.parse(localStorage.getItem('MENU'));
+   // console.log(respMenu);
+    if (respMenu) {
+        for (const principal of respMenu) {
+            for (const opcion of principal.items) {
+                opcion.command = () => { this.abrirPagina(opcion.path); };
+            }
+        }
+        this.items = respMenu;
+    }
   }
+ 
+}
 
-
-
-  /**
-   * Allows the accordion state to be toggled (I.e. opened/closed)
-   * @public
-   * @method toggleAccordion
-   * @returns {none}
-   */
-  public toggleAccordion() : void
-  {
-      this.isMenuOpen = !this.isMenuOpen;
-  }
-
-
-  /**
-   * Allows the value for the <ion-button> element to be broadcast to the parent component
-   * @public
-   * @method broadcastName
-   * @returns {none}
-   */
-  public broadcastName(name : string) : void
-  {
-     this.change.emit(name);
-  }
 }

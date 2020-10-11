@@ -31,21 +31,32 @@
                 </ion-col>
               </ion-row>
               <ion-row>
+
                 <ion-col class="p-field" size="6">
-                  <ion-label position="stacked" class="text-muted">Unidad de Medida</ion-label>
+                  <ion-label position="stacked" class="text-muted">Unidad</ion-label>
                   <p-dropdown formControlName="COD_UNID" [options]="comboUnidad"></p-dropdown>
                 </ion-col>
-                <ion-col class="p-field" size="4">
+
+                <ion-col class="p-field" size="6">
+                  <ion-label position="stacked" class="text-muted">Cantidad mínima de venta</ion-label>
+                  <br>
+                  <input type="number" formControlName="CANT_MIN_PROD" pInputText>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="p-field" size="6">
                   <ion-label position="stacked" class="text-muted">Código</ion-label>
                   <br>
-                  <input class="mayusculas" type="text" formControlName="COD_AUX_PROD" pInputText>
+                  <input type="text" formControlName="COD_AUX_PROD" pInputText>
                 </ion-col>
-                <ion-col class="p-field" size="2">
+
+                <ion-col class="p-field" size="6">
                   <ion-label position="stacked" class="text-muted">Activo</ion-label>
                   <br>
                   <p-checkbox formControlName="ACTIVO_PROD" [binary]="true"></p-checkbox>
                 </ion-col>
               </ion-row>
+
               <ion-row>
                 <ion-col class="p-field" size="12">
                   <ion-label position="stacked" class="text-muted">Descripción</ion-label>

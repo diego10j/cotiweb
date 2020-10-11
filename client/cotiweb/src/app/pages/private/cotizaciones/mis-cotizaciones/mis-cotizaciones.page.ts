@@ -85,5 +85,43 @@ export class MisCotizacionesPage {
   }
 
 
+  async  solicitarAprobacion(){
+    if(this.seleccionado.COD_ESCO !== 1){
+      this.messageService.add({ severity: 'error', summary: '', detail: 'Solo se puede solictar aprobación las cotizaciones en estado INGRESADO' });
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar!',
+      message: 'Está seguro de solicitar la Aprobación la Cotización seleccionada?',
+      buttons: [
+        {
+          text: 'CANCELAR',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'ACEPTAR',
+          handler: async () => {
+            
+
+              const campos = { COD_ESCO: 3 };
+              const resp = await this.restService.actualizar('cotizacion/asignarEstado/' + this.seleccionado.COD_CABC, campos);
+              if (resp.error === false) {
+                this.respuesta = await this.consulta();
+                this.seleccionado=null;
+                this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });
+              }
+            
+
+
+
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
 
 }

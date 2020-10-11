@@ -10,6 +10,7 @@ import { ResultadoVacioComponent } from './resultado-vacio/resultado-vacio.compo
 import { AcordionComponent } from './acordion/acordion.component';
 import {DropdownModule} from 'primeng/dropdown';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     IonicModule,
     DropdownModule,
     BreadcrumbModule,
+    PanelMenuModule,
   ]
 })
 export class ComponentsModule { }

@@ -41,7 +41,7 @@ export class CotizarPage {
 
     this.form = this.fb.group({
       TIPO_ID_CLIE: new FormControl(''),
-      INDENTIFICACION_CLIE: new FormControl(''),
+      IDENTIFICACION_CLIE: new FormControl(''),
       NOMBRES_CLIE: new FormControl('', Validators.required),
       CORREO_CLIE: new FormControl('', Validators.compose([Validators.required, Validators.email])),
       TELEFONO_CLIE: new FormControl('', Validators.required),
