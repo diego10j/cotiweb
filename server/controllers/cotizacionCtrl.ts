@@ -548,7 +548,7 @@ class CotizacionCtrl {
             from: 'sigafi@produquimic.com.ec', // sender address
             to: "diego10j.89@hotmail.com", // list of receivers
             subject: "COTIZACIÓN", // Subject line
-            text: "Hello world?", // plain text body
+          //  text: "Hello world?", // plain text body
             html: mensaje, // html body
         });
 
