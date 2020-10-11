@@ -128,11 +128,12 @@ class CotizacionCtrl {
 
     public buscarPorId(req: Request, res: Response) {
         const COD_CABC = req.params.id;
-        const query = `SELECT a.*,h.*,NOMBRE_PROD,NOMBRE_UNID,DATE_FORMAT(a.FECHA_CABC,'%Y/%m/%d') as FECHA_CABC
+        const query = `SELECT a.*,h.*,NOMBRE_PROD,NOMBRE_UNID,DATE_FORMAT(a.FECHA_CABC,'%Y/%m/%d') as FECHA_CABC, TELEFONO_CLIE
         FROM det_cotizacion h
         inner join cab_cotizacion a on a.COD_CABC = h.COD_CABC
         inner join producto b on h.COD_PROD=b.COD_PROD
         inner join unidad_medida c on h.COD_UNID = c.COD_UNID
+        INNER join cliente d on a.COD_CLIE = d.COD_CLIE
         WHERE a.COD_CABC = ${COD_CABC}
         order by a.SECUENCIAL_CABC
         `;
