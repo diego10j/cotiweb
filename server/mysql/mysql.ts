@@ -17,9 +17,13 @@ export default class MySQL {
         });
 
         this.conectarDB();
-
+     
+        this.conexion.on('error', function(err) {
+            this.conectarDB();
+          });
     }
 
+    
     /**Singleton
      */
     public static get instance() {
@@ -200,6 +204,8 @@ export default class MySQL {
                 console.error(error);
             }
         });
+
+        
     }
 
 
