@@ -116,7 +116,31 @@ class ClienteCtrl {
 
         });
     }
+
+    public buscarCliente(req: Request, res: Response) {
+
+        const NOMBRE =req.body.NOMBRE;
+
+        const query = `SELECT * FROM ${ClienteCtrl.tabla} a WHERE  UPPER(NOMBRES_CLIE) LIKE UPPER("%${NOMBRE}%")
+        ORDER BY NOMBRES_CLIE`; 
+        MySQL.consultar(query, (err: any, data: Object[]) => {
+            if (err) {
+                res.status(400).json({
+                    error: true,
+                    mensaje: err
+                });
+            }
+            res.json({
+                error: false,
+                datos: data
+            });
+        });
+    }
+
 }
+
+
+
 
 const clienteCtrl = new ClienteCtrl();
 export default clienteCtrl;

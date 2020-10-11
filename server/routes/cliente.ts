@@ -19,4 +19,7 @@ userRoutes.post('/listar', verificaToken, clienteCtrl.listar);
 //Buscar por Id
 userRoutes.post('/buscarPorId/:id', verificaToken, clienteCtrl.buscarPorId);
 
+//Buscar por nombre
+userRoutes.post('/buscarCliente', verificaToken, clienteCtrl.buscarCliente);
+
 export default userRoutes;

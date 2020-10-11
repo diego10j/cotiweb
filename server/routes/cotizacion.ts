@@ -39,4 +39,7 @@ userRoutes.post('/asignarEstado/:id', verificaToken, cotizacionCtrl.asignarEstad
 
 userRoutes.post('/getDatosCotizacion/:id', verificaToken, cotizacionCtrl.getDatosCotizacion);
 
+
+userRoutes.post('/enviarMail', cotizacionCtrl.enviarMail);
+
 export default userRoutes;
