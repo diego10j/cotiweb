@@ -254,7 +254,7 @@ export class ModificarPage {
     const Objeto = this.form.value;
     //formato fecha para bd
     this.form.controls.FECHA_CABC.setValue(Objeto.FECHA_CABC);
-
+    this.form.controls.COD_ESCO.setValue('3'); //3 = ELABORADO
     let respuesta: RestResponse = this.utilitario.getRestResponse();
     respuesta = await this.restService.insertar('cotizacion/actualizar/' + this.COD_CABC, this.form.value);
     //console.log(this.form.value);
