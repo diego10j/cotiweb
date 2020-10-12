@@ -128,11 +128,12 @@ class CotizacionCtrl {
 
     public buscarPorId(req: Request, res: Response) {
         const COD_CABC = req.params.id;
-        const query = `SELECT a.*,h.*,NOMBRE_PROD,NOMBRE_UNID,DATE_FORMAT(a.FECHA_CABC,'%Y/%m/%d') as FECHA_CABC
+        const query = `SELECT a.*,h.*,NOMBRE_PROD,NOMBRE_UNID,DATE_FORMAT(a.FECHA_CABC,'%Y/%m/%d') as FECHA_CABC, TELEFONO_CLIE
         FROM det_cotizacion h
         inner join cab_cotizacion a on a.COD_CABC = h.COD_CABC
         inner join producto b on h.COD_PROD=b.COD_PROD
         inner join unidad_medida c on h.COD_UNID = c.COD_UNID
+        INNER join cliente d on a.COD_CLIE = d.COD_CLIE
         WHERE a.COD_CABC = ${COD_CABC}
         order by a.SECUENCIAL_CABC
         `;
@@ -229,6 +230,7 @@ class CotizacionCtrl {
                 COD_PROD: fila.codigo,
                 COD_UNID: fila.codigo_unidad,
                 CANTIDAD_DECO: fila.cantidad,
+                IVA_DECO: 1,
                 COD_CABC: cod_cabc,
             };
             await new Promise(resolve => {
@@ -290,7 +292,7 @@ class CotizacionCtrl {
                 resolve(affectedRows);
             });
         });
-   
+
         //cabecera de la cotizacion
         let fecha_actual = new Date().toISOString().slice(0, 10);
         const camposCabecera = {
@@ -300,7 +302,7 @@ class CotizacionCtrl {
             COD_COCO: req.body.COD_COCO,
             COD_VACO: req.body.COD_VACO,
             COD_USUA: req.body.COD_USUA,
-            FECHA_CABC: req.body.FECHA_CABC,
+            FECHA_CABC: fecha_actual,
             CORREO_CABC: req.body.CORREO_CABC,
             DIRECCION_CABC: req.body.DIRECCION_CABC,
             SUBTOTAL_CABC: req.body.SUBTOTAL_CABC,
@@ -312,7 +314,7 @@ class CotizacionCtrl {
             USUARIO_MOD: req.body.USUARIO_MOD,
         };
 
-      
+
         // console.log(campos);
         MySQL.actualizar('CAB_COTIZACION', camposCabecera, condicion, (err: any, insertId: any) => {
             if (err) {
@@ -322,10 +324,10 @@ class CotizacionCtrl {
                 });
             }
         });
-    
+
         //DETALLES
         let detalles = req.body.DETALLES;
-     
+
         for (let actual in detalles) {
             let fila: any = detalles[actual];
             const camposDetalle = {
@@ -371,7 +373,7 @@ class CotizacionCtrl {
             COD_COCO: req.body.COD_COCO,
             COD_VACO: req.body.COD_VACO,
             COD_USUA: req.body.COD_USUA,
-            FECHA_CABC: req.body.FECHA_CABC,
+            FECHA_CABC: fecha_actual,
             CORREO_CABC: req.body.CORREO_CABC,
             DIRECCION_CABC: req.body.DIRECCION_CABC,
             SUBTOTAL_CABC: req.body.SUBTOTAL_CABC,
@@ -401,12 +403,12 @@ class CotizacionCtrl {
         for (let actual in detalles) {
             let fila: any = detalles[actual];
             const camposDetalle = {
-                COD_PROD: fila.codigo,
-                COD_UNID: fila.codigo_unidad,
-                CANTIDAD_DECO: fila.cantidad,
-                PRECIO_DECO: fila.precio,
-                TOTAL_DECO: fila.total,
-                IVA_DECO: fila.iva,
+                COD_PROD: fila.COD_PROD,
+                COD_UNID: fila.COD_UNID,
+                CANTIDAD_DECO: fila.CANTIDAD_DECO,
+                PRECIO_DECO: fila.PRECIO_DECO,
+                TOTAL_DECO: fila.TOTAL_DECO,
+                IVA_DECO: fila.IVA_DECO,
                 COD_CABC: cod_cabc,
             };
             await new Promise(resolve => {
@@ -504,6 +506,66 @@ class CotizacionCtrl {
             });
         });
     }
+
+
+    async enviarMail(req: Request, res: Response) {
+        var nodemailer = require('nodemailer');
+
+        // Generate test SMTP service account from ethereal.email
+        // Only needed if you don't have a real mail account for testing
+        let testAccount = await nodemailer.createTestAccount();
+
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: "mail.produquimic.com.ec",
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: 'sigafi@produquimic.com.ec', // generated ethereal user
+                pass: 'Arleth2016', // generated ethereal password
+            },
+        });
+
+
+        let mensaje = "<html>"
+        + "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />"
+        + "<body style='font-family: sans-serif;margin: 0;padding: 0;font-size: 13px;overflow: hidden;'>"
+        + "<div>"
+        + "	<div align=\"right\" style=\"background: #0eb3a8;width: 98%;color: white;padding-right:35px;height:33px;font-size:20px;\"> <div style=\"height:33px;vertical-align:middle;display: table-cell;\"> Sistema de Cotizaciones</div></div>"
+        + "	<br/>"
+        + "	<div style=\"padding-left:15px\"> "
+        + "	<p>Estimado(a) DIEGO FERNANDO JACOME </p>"
+        + "	<p> Se encuentra adjunta la cotización solicitada.</p>"
+        + "	<p>"	
+        + "	<br/>\n"
+        + "	</div>\n"
+        + "</div>\n"
+        + "</body>\n"
+       + "</html>";
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: 'sigafi@produquimic.com.ec', // sender address
+            to: "diego10j.89@hotmail.com", // list of receivers
+            subject: "COTIZACIÓN", // Subject line
+          //  text: "Hello world?", // plain text body
+            html: mensaje, // html body
+        });
+
+        //console.log("Message sent: %s", info.messageId);
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+        // Preview only available when sending through an Ethereal account
+       // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou..
+
+        res.json({
+            error: false,
+            mensaje: 'Correo enviado exitosamente'
+        });
+
+    }
+
 
 }
 
