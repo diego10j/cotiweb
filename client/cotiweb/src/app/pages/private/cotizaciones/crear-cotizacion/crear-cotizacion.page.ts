@@ -4,8 +4,9 @@ import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@ang
 import { RestService } from '../../../../services/rest.service';
 import { ActivatedRoute } from '@angular/router';
 import { UtilitarioService } from '../../../../services/utilitario.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { RestResponse } from '../../../../interfaces/interfaces';
+import { BuscarClientePage } from '../../../modal/buscar-cliente/buscar-cliente.page';
 
 @Component({
   selector: 'app-crear-cotizacion',
@@ -45,6 +46,7 @@ export class CrearCotizacionPage {
 
   constructor(private restService: RestService, private route: ActivatedRoute,
     private utilitario: UtilitarioService,
+    private modalCtrl: ModalController,
     private messageService: MessageService, private cdRef: ChangeDetectorRef,
     private alertController: AlertController, private fb: FormBuilder) {
 
@@ -74,12 +76,13 @@ export class CrearCotizacionPage {
       COD_ESCO: new FormControl('', Validators.required),
       COD_TICO: new FormControl('', Validators.required),
       COD_USUA: new FormControl(''),
-      USUARIO_MOD: new FormControl(''),
+      TELEFONO_CLIE: new FormControl(''),
+      USUARIO_CREA: new FormControl(''),
     });
     this.form.addControl('DETALLES', new FormArray([]));
 
     //Valores por defecto
-    this.form.controls.USUARIO_MOD.setValue(this.utilitario.getVariableLocalStorage('LOGIN_USUA'));
+    this.form.controls.USUARIO_CREA.setValue(this.utilitario.getVariableLocalStorage('LOGIN_USUA'));
     this.form.controls.COD_USUA.setValue(this.utilitario.getVariableLocalStorage('COD_USUA'));
     this.form.controls.ENVIADA_CABC.setValue(false);
     this.form.controls.COD_ESCO.setValue('3'); //3 = ELABORADO
@@ -204,8 +207,7 @@ export class CrearCotizacionPage {
     this.ejecutando = true;
     const Objeto = this.form.value;
     //formato fecha para bd
-    this.form.controls.FECHA_CABC.setValue(Objeto.FECHA_CABC);
-
+   // this.form.controls.FECHA_CABC.setValue(this.form.controls.FECHA_CABC.value.toISOString().slice(0, 10));
     let respuesta: RestResponse = this.utilitario.getRestResponse();
     respuesta = await this.restService.insertar('cotizacion/crear', this.form.value);
     //console.log(this.form.value);
@@ -220,9 +222,30 @@ export class CrearCotizacionPage {
   public getValorDetalle(index, type: string) {
     const detalles = <FormArray>this.form.get('DETALLES');
     const fila = detalles.at(index).value;
-
     return fila[type];
-
-
   }
+
+  async abrirBuscarCliente() {
+    const modal = await this.modalCtrl.create({
+      component: BuscarClientePage,
+      backdropDismiss: false
+    });
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (this.utilitario.isDefined(data)) {
+      this.seleccionado = data.seleccionado;
+      this.comboCliente = this.utilitario.getCombo(await this.restService.getCombo('CLIENTE', 'COD_CLIE', 'NOMBRES_CLIE', 'COD_CLIE ='+data.seleccionado.COD_CLIE), false);
+      this.form.controls.COD_CLIE.setValue(data.seleccionado.COD_CLIE);
+      this.form.controls.DIRECCION_CABC.setValue(data.seleccionado.DIRECCION_CLIE);
+      this.form.controls.CORREO_CABC.setValue(data.seleccionado.CORREO_CLIE);
+      this.form.controls.TELEFONO_CLIE.setValue(data.seleccionado.TELEFONO_CLIE);
+
+    }
+  }
+
+  public abrirCrear(){
+    this.utilitario.abrirPagina('crear-cliente');
+  }
+
+
 }

@@ -42,6 +42,7 @@ export class ModificarPage {
   public IVA_CABC: number;
   public TOTAL_CABC: number;
   public listaBreadcrumb: MenuItem[];
+  public permiteModificar= false;
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
@@ -78,6 +79,7 @@ export class ModificarPage {
       COD_ESCO: new FormControl('', Validators.required),
       COD_TICO: new FormControl('', Validators.required),
       COD_USUA: new FormControl(''),
+      TELEFONO_CLIE: new FormControl(''),
       USUARIO_MOD: new FormControl(''),
     });
     this.form.addControl('DETALLES', new FormArray([]));
@@ -104,6 +106,13 @@ export class ModificarPage {
     let respuesta: RestResponse = this.utilitario.getRestResponse();
     respuesta = await this.consulta();
     if (respuesta.datos) {
+      //activar boton modificar
+      //console.log(respuesta.datos[0].COD_ESCO);
+      if (respuesta.datos[0].COD_ESCO === 1 || respuesta.datos[0].COD_ESCO === 2 || respuesta.datos[0].COD_ESCO === 3 || respuesta.datos[0].COD_ESCO === 5) {
+        this.permiteModificar= true;
+      }
+
+
       //Combo Cliente
       const COD_CLIE = respuesta.datos[0].COD_CLIE;
       const COD_TICO = respuesta.datos[0].COD_TICO;
@@ -315,6 +324,9 @@ export class ModificarPage {
 
     //doc.setTextColor(100);
     doc.setFontSize(11);
+
+    doc.text('PROFORMA N.:', 10, 42);
+
     doc.text('RUC:', 60, 18);
     doc.text('DIRECCIÓN:', 60, 26);
     doc.text('TELÉFONO:', 60, 34);
@@ -382,7 +394,9 @@ export class ModificarPage {
       doc.text(respCoti.datos.TOTAL_CABC.toFixed(2)+ '', 180, (auxY+24));
     }
 
-    
+    doc.setTextColor("red");
+    doc.setFontSize(12);
+    doc.text('000'+this.COD_CABC, 40, 42);
     doc.save("a4.pdf");
 
   }

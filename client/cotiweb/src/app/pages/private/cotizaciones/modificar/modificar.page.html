@@ -7,7 +7,7 @@
       Cotización N° {{COD_CABC}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="exportPdf()" title="Imprimir">
+      <ion-button (click)="exportPdf()" title="Imprimir" *ngIf="!permiteModificar">
         <ion-icon name="print" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -44,7 +44,7 @@
               <ion-row>
                 <ion-col class="p-field" size="6">
                   <ion-label position="stacked" class="text-muted">Teléfono</ion-label>
-                  <input type="telf" pInputText>
+                  <input type="telf" formControlName="TELEFONO_CLIE" pInputText>
                 </ion-col>
                 <ion-col class="p-field" size="6">
                   <ion-label position="stacked" class="text-muted">Dirección</ion-label>
@@ -148,7 +148,7 @@
                       </p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
-                      {{getValorDetalle(i,'IVA_DECO') == '1' ? 'SI': 'NO'}}
+                      {{getValorDetalle(i,'IVA_DECO') === '1' ? 'SI': 'NO'}}
 
 
                     </ng-template>
@@ -158,7 +158,7 @@
                   {{getValorDetalle(i,'TOTAL_DECO') | currency: 'USD'}}
                 </td>
                 <td>
-                  <fa-icon class="fa-lg text-red" icon="times-circle" tappable (click)="eliminarProducto(i)"></fa-icon>
+                  <fa-icon class="fa-lg text-red" icon="times-circle" tappable (click)="eliminarProducto(i)" *ngIf="permiteModificar"></fa-icon>
                 </td>
               </tr>
 
@@ -199,14 +199,14 @@
         <ion-toolbar color="light" class="ion-padding-horizontal">
 
           <ion-buttons slot="start">
-            <ion-button icon-left fill="solid" (click)="guardar()" color="primary">
+            <ion-button icon-left fill="solid" (click)="guardar()" color="primary" *ngIf="permiteModificar" >
               <ion-icon name="checkmark"></ion-icon>
               <ion-label>GUARDAR</ion-label>
             </ion-button>
           </ion-buttons>
 
           <ion-buttons slot="end">
-            <ion-button icon-left fill="solid" color="success" (click)="insertarProducto()">
+            <ion-button icon-left fill="solid" color="success" (click)="insertarProducto()" *ngIf="permiteModificar" >
               <ion-icon name="add"></ion-icon>
               <ion-label>AGREGAR PRODUCTO</ion-label>
             </ion-button>

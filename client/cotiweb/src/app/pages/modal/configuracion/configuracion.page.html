@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="tertiary">
+  <ion-toolbar color="light">
     <ion-buttons slot="start">
       <ion-button color="secondary" (click)="cerrar()">
         <ion-icon name="close" color="light"></ion-icon>
@@ -10,7 +10,7 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
+<p-toast></p-toast>
 
 <ion-content class="ion-padding-horizontal">
 
@@ -44,7 +44,7 @@
           <ion-row>
             <ion-col class="p-field" size="6">
               <ion-label position="stacked" class="text-muted">Teléfono</ion-label>
-              <input type="telf" [(ngModel)]="cab.TELEFONO_CABC" readonly="true" pInputText>
+              <input type="telf" [(ngModel)]="cab.TELEFONO_CLIE" readonly="true" pInputText>
             </ion-col>
             <ion-col class="p-field" size="6">
               <ion-label position="stacked" class="text-muted">Dirección</ion-label>
@@ -142,7 +142,21 @@
 
 <ion-footer>
   <ion-toolbar class="ion-padding-horizontal">
-    <ion-button slot="end" icon-left color="primary" (click)="cerrar()">
+
+    <ion-button slot="start" icon-left color="danger" (click)="confirmarNoAprobar()" *ngIf="estadoPorAbrobar" >
+      NO APROBAR
+    </ion-button>
+
+    <ion-button slot="start" icon-left color="success" (click)="confirmarAprobar()" *ngIf="estadoPorAbrobar">
+      APROBAR 
+    </ion-button>
+
+    <ion-button slot="start" icon-left color="success" (click)="confirmarConcretar()" *ngIf="estadoPorConcretar">
+      CONCRETADA 
+    </ion-button>
+
+
+    <ion-button slot="end" icon-left color="medium" (click)="cerrar()">
       CERRAR
     </ion-button>
   </ion-toolbar>

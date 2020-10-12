@@ -18,7 +18,7 @@
         <ion-button icon-left color="tertiary" (click)="modificar()" fill="solid" [disabled]="!seleccionado">
           <ion-icon slot="start" name="create"></ion-icon>
           <ion-label>
-            MODIFICAR COTIZACIÓN
+            VER COTIZACIÓN
           </ion-label>
         </ion-button>
         <ion-button icon-left color="dark" (click)="solicitarAprobacion()" fill="solid" [disabled]="!seleccionado">
@@ -79,7 +79,7 @@
             </td>
             <td>{{fila.FECHA_CABC | date: "dd/MM/yyyy" }}</td>
             <td>{{fila.NOMBRES_CLIE}}</td>
-            <td>{{fila.CORREO_CLIE}}</td>
+            <td>{{fila.CORREO_CABC}}</td>
             <td>{{fila.NOMBRE_TICO}}</td>
             <td>{{fila.TOTAL_CABC }} </td>
           </tr>

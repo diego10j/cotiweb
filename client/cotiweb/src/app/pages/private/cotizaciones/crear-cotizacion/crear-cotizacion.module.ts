@@ -15,6 +15,8 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
+import { BuscarClientePageModule } from '../../../modal/buscar-cliente/buscar-cliente.module';
+import { BuscarClientePage } from '../../../modal/buscar-cliente/buscar-cliente.page';
 
 const routes: Routes = [
   {
@@ -24,6 +26,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  entryComponents: [
+    BuscarClientePage
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -40,6 +45,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     ToastModule,
     CalendarModule,
+    BuscarClientePageModule,
     RouterModule.forChild(routes)
   ],
   declarations: [CrearCotizacionPage]

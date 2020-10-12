@@ -86,8 +86,8 @@ export class MisCotizacionesPage {
 
 
   async  solicitarAprobacion(){
-    if(this.seleccionado.COD_ESCO !== 1){
-      this.messageService.add({ severity: 'error', summary: '', detail: 'Solo se puede solictar aprobación las cotizaciones en estado INGRESADO' });
+    if(this.seleccionado.COD_ESCO !== 3){
+      this.messageService.add({ severity: 'error', summary: '', detail: 'Solo se puede solictar aprobación las cotizaciones en estado ELABORADO' });
       return;
     }
 
@@ -104,7 +104,7 @@ export class MisCotizacionesPage {
           handler: async () => {
             
 
-              const campos = { COD_ESCO: 3 };
+              const campos = { COD_ESCO: 7 }; //POR AUTORIZAR
               const resp = await this.restService.actualizar('cotizacion/asignarEstado/' + this.seleccionado.COD_CABC, campos);
               if (resp.error === false) {
                 this.respuesta = await this.consulta();

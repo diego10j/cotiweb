@@ -6,6 +6,7 @@ import { UtilitarioService } from '../../../services/utilitario.service';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ConfiguracionPage } from '../../modal/configuracion/configuracion.page';
 
+
 @Component({
   selector: 'app-cotizaciones',
   templateUrl: './cotizaciones.page.html',
@@ -59,10 +60,13 @@ export class CotizacionesPage {
       cssClass: 'my-custom-modal-css',
       componentProps: {
         COD_CABC: await this.seleccionado.COD_CABC
-
       }
     });
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    //console.log(data);
+    //console.log('xxxxxx');
+    this.respuesta = await this.consulta();
 
 
   }
@@ -103,12 +107,12 @@ export class CotizacionesPage {
         {
           text: 'ACEPTAR',
           handler: async data => {
-            if(data){
+            if (data) {
               const campos = { COD_ESCO: data };
               const resp = await this.restService.actualizar('cotizacion/asignarEstado/' + this.seleccionado.COD_CABC, campos);
               if (resp.error === false) {
                 this.respuesta = await this.consulta();
-                this.seleccionado=null;
+                this.seleccionado = null;
                 this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });
               }
             }
@@ -134,7 +138,7 @@ export class CotizacionesPage {
       vendedores.push({
         type: 'radio',
         label: fila.NOMBRE_USUA,
-        value: fila.COD_USUA ,
+        value: fila.COD_USUA,
         checked: this.seleccionado.COD_USUA === fila.COD_USUA,
       });
     }
@@ -153,12 +157,12 @@ export class CotizacionesPage {
         {
           text: 'ACEPTAR',
           handler: async data => {
-            if(data){
+            if (data) {
               const campos = { COD_USUA: data };
               const resp = await this.restService.actualizar('cotizacion/asignarVendedor/' + this.seleccionado.COD_CABC, campos);
               if (resp.error === false) {
                 this.respuesta = await this.consulta();
-                this.seleccionado=null;
+                this.seleccionado = null;
                 this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });
               }
             }
@@ -180,43 +184,5 @@ export class CotizacionesPage {
     return this.restService.consultar('usuario/getVendedores', 1);
   }
 
-  async confirmarAutorizar() {
-
-    if(this.seleccionado.COD_ESCO !== 3){
-      this.messageService.add({ severity: 'error', summary: '', detail: 'Solo se puede autorizar las cotizaciones en estado ELABORADO' });
-      return;
-    }
-
-    const alert = await this.alertController.create({
-      header: 'Confirmar!',
-      message: 'Está seguro de Aprobar la Cotización?',
-      buttons: [
-        {
-          text: 'CANCELAR',
-          role: 'cancel',
-          cssClass: 'secondary'
-        }, {
-          text: 'ACEPTAR',
-          handler: async () => {
-            
-
-           
-              const campos = { COD_ESCO: 4 };
-              const resp = await this.restService.actualizar('cotizacion/asignarEstado/' + this.seleccionado.COD_CABC, campos);
-              if (resp.error === false) {
-                this.respuesta = await this.consulta();
-                this.seleccionado=null;
-                this.messageService.add({ severity: 'success', summary: '', detail: 'Se guardo correctamente.' });
-              }
-            
-
-
-
-          }
-        }
-      ]
-    });
-    await alert.present();
-  }
 
 }

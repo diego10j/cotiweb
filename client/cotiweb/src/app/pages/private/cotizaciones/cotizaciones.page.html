@@ -12,6 +12,7 @@
   <app-nota [opciones]="listaBreadcrumb"></app-nota>
   <p-toast></p-toast>
   <ion-card class="bg-white">
+    
     <ion-toolbar color="light">
       <ion-buttons slot="start">
         <ion-button icon-left color="tertiary" (click)="abrirCambiarVendedor()" fill="solid" [disabled]="!seleccionado">
@@ -26,27 +27,20 @@
             CAMBIAR DE ESTADO
           </ion-label>
         </ion-button>
-        <ion-button  icon-left color="success" (click)="confirmarAutorizar()" fill="solid" [disabled]="!seleccionado">
-          <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-          <ion-label>
-            AUTORIZAR
-          </ion-label>
-        </ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
 
-        <ion-button icon-left (click)="crear()" title="IMPRIMIR"  [disabled]="!seleccionado">
-          <ion-icon slot="icon-only" name="print"></ion-icon>
-        </ion-button>
+      
         <ion-button icon-left (click)="ver()" title="VER COTIZACIÓN"  [disabled]="!seleccionado">
           <ion-icon slot="icon-only" name="search"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
+
     <ion-row class="ion-padding-top">
 
       <p-table #dt [value]="respuesta.datos" [paginator]="true" [rows]="10" [globalFilterFields]="['NOMBRES_CLIE']"
-        [style]="{width:'100%','overflow-x':'scroll'}" selectionMode="single" [(selection)]="seleccionado"
+        [style]="{width:'100%'}" selectionMode="single" [(selection)]="seleccionado" 
         dataKey="COD_CABC">
 
         <ng-template pTemplate="colgroup" let-columns>

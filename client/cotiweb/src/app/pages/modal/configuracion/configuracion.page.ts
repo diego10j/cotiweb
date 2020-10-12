@@ -33,9 +33,12 @@ export class ConfiguracionPage {
   public comboProductos: SelectItem[];
   public comboUnidades: SelectItem[];
   public comboIVA: SelectItem[];
+  public estadoPorAbrobar = false;
+  public estadoPorConcretar = false;
 
   constructor(private modalCtrl: ModalController,
     private restService: RestService,
+    private alertController: AlertController,
     private utilitario: UtilitarioService,
     private messageService: MessageService,
   ) {
@@ -72,6 +75,14 @@ export class ConfiguracionPage {
     this.comboProductos = this.utilitario.getCombo(await this.restService.getCombo('PRODUCTO', 'COD_PROD', 'NOMBRE_PROD'));
     this.comboUnidades = this.utilitario.getCombo(await this.restService.getCombo('UNIDAD_MEDIDA', 'COD_UNID', 'NOMBRE_UNID'));
     this.buscando = false;
+
+    if (this.respuesta.datos[0].COD_ESCO === 7) {
+      this.estadoPorAbrobar = true;
+    }
+    if (this.respuesta.datos[0].COD_ESCO === 4) {
+      this.estadoPorConcretar= true;
+    }
+
   }
 
   private consulta(): Promise<RestResponse> {
@@ -100,11 +111,122 @@ export class ConfiguracionPage {
 
   guardar() {
     this.modalCtrl.dismiss({
+      'dismissed': true
     });
   }
 
   cerrar() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss(
+      {
+        'dismissed': true
+      }
+    );
   }
+  
+
+  async confirmarAprobar() {
+    
+    //this.modalCtrl.dismiss();
+    if (this.respuesta.datos[0].COD_ESCO !== 7) {
+      this.messageService.add({ severity: 'error', summary: '', detail: 'Solo se puede Aprobar las cotizaciones en estado POR AUTORIZAR' });
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar!',
+      message: 'Está seguro de Aprobar la Cotización?',
+      buttons: [
+        {
+          text: 'CANCELAR',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'ACEPTAR',
+          handler: async () => {
+            const campos = { COD_ESCO: 4 };
+            const resp = await this.restService.actualizar('cotizacion/asignarEstado/' + this.COD_CABC, campos);
+            if (resp.error === false) {
+              this.respuesta = await this.consulta();
+              this.seleccionado = null;
+              this.modalCtrl.dismiss();
+            }
+            //llama enviar mail
+            this.restService.llamarServicioWeb('cotizacion/enviarMail', campos);
+           
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
+  async confirmarNoAprobar() {
+   
+    //this.modalCtrl.dismiss();
+    if (this.respuesta.datos[0].COD_ESCO !== 7) {
+      this.messageService.add({ severity: 'error', summary: '', detail: 'Solo se puede no Aprobar las cotizaciones en estado POR AUTORIZAR' });
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar!',
+      message: 'Está seguro de No Aprobar la Cotización?',
+      buttons: [
+        {
+          text: 'CANCELAR',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'ACEPTAR',
+          handler: async () => {
+            const campos = { COD_ESCO: 5 };
+            const resp = await this.restService.actualizar('cotizacion/asignarEstado/' + this.COD_CABC, campos);
+            if (resp.error === false) {
+              this.respuesta = await this.consulta();
+              this.seleccionado = null;
+              this.modalCtrl.dismiss();
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
+  async confirmarConcretar() {
+   
+    //this.modalCtrl.dismiss();
+    if (this.respuesta.datos[0].COD_ESCO !== 4) {
+      this.messageService.add({ severity: 'error', summary: '', detail: 'Solo se puede no Concretar las cotizaciones en estado ABROBADO' });
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar!',
+      message: 'Está seguro que la Cotización de concretó con el cliente ?',
+      buttons: [
+        {
+          text: 'CANCELAR',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'ACEPTAR',
+          handler: async () => {
+            const campos = { COD_ESCO: 8 };
+            const resp = await this.restService.actualizar('cotizacion/asignarEstado/' + this.COD_CABC, campos);
+            if (resp.error === false) {
+              this.respuesta = await this.consulta();
+              this.seleccionado = null;
+              this.modalCtrl.dismiss();
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
 
 }
