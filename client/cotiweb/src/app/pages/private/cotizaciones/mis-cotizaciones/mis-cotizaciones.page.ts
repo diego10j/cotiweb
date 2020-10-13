@@ -122,6 +122,11 @@ export class MisCotizacionesPage {
     await alert.present();
   }
 
-
+  async actualizar(){
+    this.buscando = true;
+    this.pagina = 1;
+    this.respuesta = await this.consulta();
+    this.buscando = false;
+  }
 
 }

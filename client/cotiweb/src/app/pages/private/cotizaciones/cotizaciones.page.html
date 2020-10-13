@@ -30,6 +30,9 @@
       </ion-buttons>
       <ion-buttons slot="end">
 
+        <ion-button icon-left (click)="actualizar()" title="ACTUALIZAR"  >
+          <ion-icon slot="icon-only" name="refresh"></ion-icon>
+        </ion-button>
       
         <ion-button icon-left (click)="ver()" title="VER COTIZACIÓN"  [disabled]="!seleccionado">
           <ion-icon slot="icon-only" name="search"></ion-icon>
