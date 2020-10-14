@@ -31,7 +31,7 @@ rutas.post('/actualizarParametro/:id',verificaToken,  utilitarioCtrl.actualizarP
 
 rutas.post('/guardarPermisos/:id',verificaToken,  utilitarioCtrl.guardarPermisos);
 
-
+rutas.post('/ping',  utilitarioCtrl.ping);
 
 
 export default rutas;

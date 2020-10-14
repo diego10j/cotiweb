@@ -579,6 +579,14 @@ class SistemaCtrl {
     }
 
 
+    public ping(req: Request, res: Response) {
+            res.json({
+                error: false,
+                mensaje:'ok'
+            });
+    }
+
+
 }
 
 
